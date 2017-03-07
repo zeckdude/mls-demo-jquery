@@ -1,0 +1,26 @@
+{
+  "name": "mls-demo",
+  "authors": [
+    "Chris Seckler <chris.seckler@chromeriver.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "leaflet": "^1.0.3",
+    "leaflet-draw": "^0.4.9",
+    "flexslider": "^2.6.3",
+    "lodash": "^4.17.4",
+    "jquery": "^3.1.1",
+    "jquery-number": "jquery-number#^2.1.6"
+  }
+}

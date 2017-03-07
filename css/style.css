@@ -1,0 +1,65 @@
+.leaflet-popup-content-wrapper {
+  padding: 0;
+  border-radius: 0;
+}
+
+.leaflet-popup-content {
+  margin: 0;
+}
+
+.leaflet-popup-content p {
+  margin: 0;
+}
+
+.leaflet-container a.leaflet-popup-close-button {
+  padding: 5px;
+  width: 14px;
+  background-color: #1e87f0;
+  color: #fff;
+  border-left: 2px solid #1e87f0;
+border-bottom: 2px solid #1e87f0;
+    z-index: 10;
+}
+
+.leaflet-container a.leaflet-popup-close-button::selection {
+  background-color: transparent;
+}
+
+.leaflet-container a.leaflet-popup-close-button:hover {
+  background-color: #fff;
+  color: #1e87f0;
+}
+
+.listing-popup-wrapper {
+  width: 400px;
+  max-width: 100%;
+}
+
+.listing-popup-wrapper .images-content {
+  height: 200px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.listing-popup-wrapper img {
+  width: 100%;
+  height: 100%;
+}
+
+.listing-popup-wrapper .uk-light .uk-slidenav {
+  color: #fff;
+}
+
+.listing-popup-content {
+  padding: 10px;
+}
+
+.listing-popup-content .mls-id {
+  font-size: 10px;
+  padding-top: 10px;
+}
+
+.uk-text-medium {
+  font-size: 1rem;
+  line-height: 1.5;
+}

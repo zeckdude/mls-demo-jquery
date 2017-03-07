@@ -1,0 +1,27 @@
+<div class='listing-popup-wrapper'>
+  <div class='photos-container'>
+    <div class='images uk-inline uk-light'>
+      <div class='images-content'>
+        <ul class='slides'>
+          <% _.forEach(photos, function(photo) { %>
+            <li><img src='<%= photo %>' alt=''/></li>
+          <% }); %>
+        </ul>
+      </div>
+      <div class="custom-navigation">
+        <a class="uk-position-center-left flex-prev" href="" uk-slidenav-previous></a>
+        <a class="uk-position-center-right flex-next" href="" uk-slidenav-next></a>
+      </div>
+    </div>
+    <div class='uk-inline uk-width'>
+      <span class="uk-label uk-position-bottom-left uk-margin-small uk-margin-small-left">$<%= listPrice %></span>
+      <span class="uk-label uk-position-bottom-right uk-margin-small uk-margin-small-right"><%= property.bedrooms %> beds <br/> <%= property.bathsFull %> baths</span>
+    </div>
+  </div>
+  <div class='listing-popup-content'>
+    <div class='detailed-info'>
+      <p class='uk-text-bold uk-text-primary uk-text-truncate uk-text-medium'><%= address.full %></p>
+    </div>
+    <div class='mls-id uk-flex uk-flex-center uk-text-muted'>MLS #<%= mlsId %></div>
+  </div>
+</div>

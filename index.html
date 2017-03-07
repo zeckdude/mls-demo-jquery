@@ -1,0 +1,122 @@
+<html>
+  <head>
+    <title>MLS Demo</title>
+
+    <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="bower_components/leaflet-draw/dist/leaflet.draw.css" />
+    <link rel="stylesheet" href="bower_components/flexslider/flexslider.css" />
+
+    <!-- From UI KIt -->
+    <link rel="stylesheet" href="css/theme.css" />
+
+    <link rel="stylesheet" href="css/style.css" />
+
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/lodash/dist/lodash.min.js"></script>
+    <script src="bower_components/leaflet/dist/leaflet.js"></script>
+    <script src="bower_components/leaflet-draw/dist/leaflet.draw.js"></script>
+    <script src="bower_components/flexslider/jquery.flexslider-min.js"></script>
+    <script src="bower_components/teamdf/jquery-number/jquery.number.min.js"></script>
+    
+    <script src="js/lodash-mixins.js"></script>
+  </head>
+
+  <script language="javascript">
+    $(document).ready(function() {
+      var map = new L.Map('map');
+
+      L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
+        maxZoom: 18
+      }).addTo(map);
+
+      var houston = new L.LatLng(29.97, -95.35);
+      map.setView(houston, 10);
+
+      var drawnItems = new L.FeatureGroup();
+      map.addLayer(drawnItems);
+
+      var drawControl = new L.Control.Draw({
+        edit: {
+          featureGroup: drawnItems
+        },
+        draw: {
+          circle: false,
+          marker: false,
+          polyline: false
+        }
+      });
+
+      map.addControl(drawControl);
+
+      var markers = [];
+      var polygon = null;
+      map.on('draw:created', function (e) {
+        // remove markers and polygon from the last run
+        $.each (markers, function (i) { map.removeLayer(markers[i]) });
+        if (polygon != null) map.removeLayer (polygon);
+
+        var latLngs = $.map(e.layer.getLatLngs()[0], function(o) {
+          return { name: "points", value: o.lat + "," + o.lng };
+        });
+
+        $.ajax({
+          url: 'https://api.simplyrets.com/properties',
+          data: latLngs,
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader("Authorization", "Basic " + btoa("simplyrets:simplyrets"))
+          },
+          success: function(response) {
+            $.each (response, function (i, listing) {
+              //Pre-load images for the current listing
+              $.each(listing.photos, function(i, photo){
+                var img = new Image();
+                img.src = photo;
+                console.log(img);
+              });
+
+              // Create a new marker based on the coordinates of the current listing
+              var markerLocation = new L.LatLng(listing.geo.lat, listing.geo.lng);
+              var marker = new L.Marker(markerLocation);
+
+              // Define the popup contents to show when the marker is clicked
+              marker.bindPopup(
+                _.templateFromUrl('templates/listing-popup-template.html', $.extend(listing, {listPrice: $.number(listing.listPrice, 0)}))
+              );
+
+              // When the popup opens after a user clicks it, perform a series of operations
+              marker.on('popupopen', function (e) {
+                var popup = e.popup;
+                var $popup = $(popup.getElement());
+                var $imagesContent = $popup.find('.images-content');
+
+                // Center the map on the marker and popup
+                var px = map.project(popup.getLatLng()); // find the pixel location on the map where the popup anchor is
+                px.y -= $popup.height()/2 // find the height of the popup container, divide by 2, subtract from the Y axis of marker location
+                map.panTo(map.unproject(px),{animate: true}); // pan to new center
+
+                // Initialize the flexslider to carousel through the images
+                $imagesContent.flexslider({
+                  animation: "slide",
+                  customDirectionNav: $imagesContent.next(".custom-navigation").find('a'),
+                  controlNav: false,
+                  easing: "linear"
+                });
+              });
+
+              map.addLayer(marker);
+              markers.push(marker);
+            });
+          }
+        });
+
+        polygon = e.layer;
+        map.addLayer(e.layer);
+      });
+    });
+  </script>
+
+  <body>
+    <div id="map" style="height: 100%"></div>
+  </body>
+</html>
