@@ -21,6 +21,7 @@
     "flexslider": "^2.6.3",
     "lodash": "^4.17.4",
     "jquery": "^3.1.1",
-    "jquery-number": "jquery-number#^2.1.6"
+    "jquery-number": "jquery-number#^2.1.6",
+    "uikit": "^3.0.0"
   }
 }
