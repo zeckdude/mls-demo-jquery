@@ -84,7 +84,7 @@
 
               // Define the popup contents to show when the marker is clicked
               marker.bindPopup(
-                _.templateFromUrl('templates/listing-popup-template.html', $.extend(listing, {listPrice: $.number(listing.listPrice, 0)}))
+                _.templateFromUrl('templates/listing-popup-template.html', $.extend({}, listing, {listPrice: $.number(listing.listPrice, 0)}))
               );
 
               // When the popup opens after a user clicks it, perform a series of operations
@@ -105,6 +105,22 @@
                   controlNav: false,
                   easing: "linear"
                 });
+
+                $('#listing-detail').on('beforeshow', function() {
+                  $(this).find('.listing-detail-content').html(
+                    _.templateFromUrl('templates/listing-detail-content.html', $.extend({}, listing, {listPrice: $.number(listing.listPrice, 0)}))
+                  );
+                });
+
+                $('#listing-detail').on('show', function() {
+                  var $listingDetailImagesContent = $(this).find('.images-content');
+                  $listingDetailImagesContent.flexslider({
+                    animation: "slide",
+                    customDirectionNav: $listingDetailImagesContent.next(".custom-navigation").find('a'),
+                    controlNav: false,
+                    easing: "linear"
+                  });
+                });
               });
 
               map.addLayer(marker);
@@ -122,16 +138,10 @@
   <body>
     <div id="map" style="height: 100%"></div>
 
-    <div id="modal-full" class="uk-modal-full" uk-modal>
-        <div class="uk-modal-dialog">
+    <div id="listing-detail" class="uk-modal-full" uk-modal>
+        <div class="listing-detail-content-container uk-modal-dialog">
             <button class="uk-modal-close-full" type="button" uk-close></button>
-            <div class="uk-grid-collapse uk-child-width-1-2@s uk-flex-middle" uk-grid>
-                <div class="uk-background-cover" style="background-image: url('../docs/images/photo.jpg');" uk-height-viewport></div>
-                <div class="uk-padding-large">
-                    <h1>Headline</h1>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                </div>
-            </div>
+            <div class="listing-detail-content"></div>
         </div>
     </div>
   </body>
