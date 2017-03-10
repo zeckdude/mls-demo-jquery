@@ -1,27 +1,55 @@
 <div class="uk-container">
   <div class="uk-padding-small uk-padding-remove-horizontal">
     <h1 class="uk-margin-remove"><%= address.streetNumber %> <%= address.streetName %></h1>
-    <p class="uk-margin-remove"><%= address.city %>, <%= address.state %> <%= address.postalCode %></p>
+    <p class="uk-margin-remove"><%= address.city %>, <%= stateAbbreviation %> <%= address.postalCode %></p>
   </div>
-  <div class="uk-grid-medium" uk-grid uk-height-viewport>
-      <div class="uk-width-2-3">
-        <div class='images uk-inline uk-light uk-width-1-1'>
-          <div class='images-content'>
-            <ul class='slides'>
-              <% _.forEach(photos, function(photo) { %>
-                <li class="ratio16_9"><div><img class='uk-width-1-1' src='<%= photo %>' alt=''/></div></li>
-              <% }); %>
-            </ul>
-          </div>
-          <div class="custom-navigation">
-            <a class="uk-position-center-left flex-prev" href="" uk-slidenav-previous></a>
-            <a class="uk-position-center-right flex-next" href="" uk-slidenav-next></a>
+
+  <div>
+    <div class="uk-grid-medium" uk-grid>
+        <div class="uk-width-2-3">
+          <div class='images uk-inline uk-light uk-width-1-1'>
+            <div class='images-content'>
+              <ul class='slides'>
+                <% _.forEach(photos, function(photo) { %>
+                  <li class="ratio16_9"><div><img class='uk-width-1-1' src='<%= photo %>' alt=''/></div></li>
+                <% }); %>
+              </ul>
+            </div>
+            <div class="custom-navigation">
+              <a class="uk-position-center-left flex-prev uk-slidenav-large" href="" uk-slidenav-previous></a>
+              <a class="uk-position-center-right flex-next uk-slidenav-large" href="" uk-slidenav-next></a>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="uk-width-1-3">
-          <h1>Headline</h1>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-      </div>
+        <div class="uk-width-1-3">
+          <h2 class="uk-heading-divider">Quick Summary</h2>
+
+          <dl class="left-right-definition-list">
+            <dt>Location</dt>
+            <dd><%= address.city %>, <%= stateAbbreviation %> <%= address.postalCode %></dd>
+
+            <dt>Price</dt>
+            <dd><span class="tag price">$<%= listPrice %></span></dd>
+
+            <dt>Status:</dt>
+            <dd><%= mls.status %></dd>
+
+            <dt>Year Built:</dt>
+            <dd><%= property.yearBuilt %></dd>
+
+            <dt>Area:</dt>
+            <dd><%= property.area %> Sq Ft</dd>
+
+            <dt>Beds:</dt>
+            <dd><%= property.bedrooms %></dd>
+
+            <dt>Baths:</dt>
+            <dd><%= property.bathsFull %></dd>
+
+            <dt>Garage Spaces:</dt>
+            <dd><%= _.round(property.garageSpaces) %></dd>
+          </dl>
+        </div>
+    </div>
   </div>
 </div>

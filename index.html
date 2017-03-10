@@ -21,12 +21,13 @@
     <script src="bower_components/uikit/dist/js/uikit.min.js"></script>
     <script src="bower_components/uikit/dist/js/uikit-icons.min.js"></script>
 
-    <script src="js/lodash-mixins.js"></script>
+    <script src="js/functions.js"></script>
   </head>
 
   <script language="javascript">
     $(document).ready(function() {
       var map = new L.Map('map');
+      var $spinner = $('#spinner');
 
       L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
@@ -67,9 +68,28 @@
           url: 'https://api.simplyrets.com/properties',
           data: latLngs,
           beforeSend: function(xhr) {
-            xhr.setRequestHeader("Authorization", "Basic " + btoa("simplyrets:simplyrets"))
+            $spinner.show({
+              complete: function() {
+                $(this).css('opacity', '1');
+              }
+            });
+            xhr.setRequestHeader("Authorization", "Basic " + btoa("simplyrets:simplyrets"));
           },
           success: function(response) {
+            var spinnerTimeOut = setTimeout(function(){
+              $spinner
+                .css('opacity', '0')
+                .on("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd",
+                 function(e){
+                    $(this).hide();
+                    $(this).off(e);
+
+                    clearTimeout(spinnerTimeOut);
+                 });
+            }, 5000);
+
+            //clearTimeout(spinnerTimeOut);
+
             $.each (response, function (i, listing) {
               //Pre-load images for the current listing
               $.each(listing.photos, function(i, photo){
@@ -84,7 +104,10 @@
 
               // Define the popup contents to show when the marker is clicked
               marker.bindPopup(
-                _.templateFromUrl('templates/listing-popup-template.html', $.extend({}, listing, {listPrice: $.number(listing.listPrice, 0)}))
+                _.templateFromUrl('templates/listing-popup-template.html',
+                $.extend({}, listing, {
+                  listPrice: $.number(listing.listPrice, 0)
+                }))
               );
 
               // When the popup opens after a user clicks it, perform a series of operations
@@ -108,7 +131,11 @@
 
                 $('#listing-detail').on('beforeshow', function() {
                   $(this).find('.listing-detail-content').html(
-                    _.templateFromUrl('templates/listing-detail-content.html', $.extend({}, listing, {listPrice: $.number(listing.listPrice, 0)}))
+                    _.templateFromUrl('templates/listing-detail-content.html',
+                    $.extend({}, listing, {
+                      listPrice: $.number(listing.listPrice, 0),
+                      stateAbbreviation: convertState(listing.address.state, 'abbreviation')
+                    }))
                   );
                 });
 
@@ -136,9 +163,15 @@
   </script>
 
   <body>
+    <div id="spinner" class="uk-overlay-primary">
+      <div class="uk-position-center">
+          <span uk-spinner></span>
+      </div>
+    </div>
+
     <div id="map" style="height: 100%"></div>
 
-    <div id="listing-detail" class="uk-modal-full" uk-modal>
+    <div id="listing-detail" class="listing-detail" uk-modal>
         <div class="listing-detail-content-container uk-modal-dialog">
             <button class="uk-modal-close-full" type="button" uk-close></button>
             <div class="listing-detail-content"></div>
