@@ -1,3 +1,26 @@
+header {
+  z-index: 4000;
+  height: 93px;
+}
+
+header #logo {
+  font-family: 'Slabo 27px', serif;
+  font-weight: bold;
+  font-size: 30px;
+}
+
+header #logo span[class*="flaticon-"]:before {
+  font-size: 30px;
+margin-right: 5px;
+top: 2px;
+position: relative;
+font-weight: normal;
+}
+
+#map {
+  height: calc(75vh - 93px) !important;
+}
+
 .leaflet-popup-content-wrapper {
   padding: 0;
   border-radius: 0;
@@ -28,6 +51,46 @@ border-bottom: 2px solid #1e87f0;
 .leaflet-container a.leaflet-popup-close-button:hover {
   background-color: #fff;
   color: #1e87f0;
+}
+
+.leaflet-control-zoom {
+  float: left !important;
+}
+
+.leaflet-draw {
+  clear: none;
+}
+
+.leaflet-bar {
+  border: none !important;
+}
+
+.leaflet-bar a {
+  float: left;
+  margin-right: 3px;
+  border: none;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  color: #999;
+}
+
+.leaflet-draw-toolbar a {
+  background-image: none;
+}
+
+.leaflet-draw-toolbar a:before {
+  font-family: Flaticon;
+  font-size: 15px;
+  font-style: normal;
+}
+
+.leaflet-touch .leaflet-draw-toolbar .leaflet-draw-draw-polygon:before {
+  content: "\f120";
+}
+
+.leaflet-touch .leaflet-draw-toolbar .leaflet-draw-draw-rectangle:before {
+  content: "\f11e";
+  font-size: 13px;
 }
 
 .listing-popup-wrapper {
@@ -64,8 +127,23 @@ border-bottom: 2px solid #1e87f0;
   line-height: 1.5;
 }
 
+.uk-form-group {
+  display: flex;
+}
+
+.uk-form-group .uk-input-group-addon {
+  min-width: 30px;
+  background-color: #f9f5f5;
+  border: 1px solid #e5e5e5;
+  border-right: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .listing-detail {
   padding: 0;
+  z-index: 5000;
 }
 
 .listing-detail-content-container {
@@ -141,4 +219,64 @@ dl.left-right-definition-list dt {
 dl.left-right-definition-list dd {
   margin-bottom: 8px;
   text-align: right;
+}
+
+#search-box {
+  box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.15);
+  position: relative;
+  top: -90px;
+  z-index: 4000;
+}
+
+/* Tablet landscape and bigger */
+@media (min-width: 960px) {
+  #search-box #search-box-search-btn {
+    margin-top: 25px;
+  }
+}
+
+.slides{
+    padding:0;
+    margin:0;
+}
+
+
+#main-navbar {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  #main-navbar {
+    display: flex;
+  }
+
+  #mobile-navbar {
+    display: none;
+  }
+}
+
+@media (max-width: 770px) {
+  #logo {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #logo .icon-logo {
+    display: flex;
+    justify-content: center;
+  }
+
+  #logo .icon-logo:before {
+    font-size: 27px;
+  }
+
+  #logo .text-logo {
+    font-size: 23px;
+    top: -5px;
+    position: relative;
+  }
+}
+
+#offcanvas-nav {
+  z-index: 10000;
 }
