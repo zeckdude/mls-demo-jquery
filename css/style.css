@@ -280,3 +280,11 @@ dl.left-right-definition-list dd {
 #offcanvas-nav {
   z-index: 10000;
 }
+
+.color-bar {
+  padding: 5px;
+}
+
+.uk-card {
+  box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.15);
+}
