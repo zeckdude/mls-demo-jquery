@@ -1,0 +1,26 @@
+<div>
+  <div class="search-result-single uk-card uk-card-default uk-background-light-grey uk-text-dark-grey">
+    <div class="ratio16_9">
+      <div><img class="uk-width-expand" src='<%= photos[0] %>' alt=''/></div>
+    </div>
+    <h4 class="uk-background-primary uk-margin-remove uk-text-white uk-padding-small uk-text-truncate"><%= address.streetNumber %> <%= address.streetName %></h4>
+    <div class="search-results-property-features uk-child-width-expand@s uk-padding-small" uk-grid>
+        <div>
+          <ul class="uk-list">
+            <li class="uk-text-truncate"><span class="flaticon-select-an-objecto-tool"></span> <%= property.area %> sq ft</li>
+            <li class="uk-text-truncate"><span class="flaticon-bed"></span> <%= property.bedrooms %> Bedrooms</li>
+          </ul>
+        </div>
+        <div>
+          <ul class="uk-list">
+            <li class="uk-text-truncate"><span class="flaticon-vehicle-1"></span> <%= _.round(property.garageSpaces) %> Garage Spaces</li>
+            <li class="uk-text-truncate"><span class="flaticon-shower"></span> <%= property.bathsFull %> Bathrooms</li>
+          </ul>
+        </div>
+    </div>
+    <div class="uk-card-footer uk-flex uk-padding-small">
+      <h5 class="uk-margin-remove uk-text-dark-grey">$<%= listPrice %></h5>
+      <small class='uk-flex-1 uk-flex uk-flex-bottom uk-flex-right'>MLS #<%= listingId %></small>
+    </div>
+  </div>
+</div>
