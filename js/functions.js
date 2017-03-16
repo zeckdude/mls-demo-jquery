@@ -1,63 +1,122 @@
-// Lodash Mixins
+function getSearchResults(data) {
+  var result = [];
+  $.ajax({
+    url: 'https://api.simplyrets.com/properties',
+    data: data,
+    async: false,
+    beforeSend: function(xhr) {
+      // $spinner.show({
+      //   complete: function() {
+      //     $(this).css('opacity', '1');
+      //   }
+      // });
+      xhr.setRequestHeader("Authorization", "Basic " + btoa("simplyrets:simplyrets"));
+    },
+    success: function(response) {
+      result = response;
+    }
+  });
 
-// From http://stackoverflow.com/a/19766275/83916
-_.mixin({templateFromUrl: function (url, data, settings) {
-  var templateHtml = "";
-  this.cache = this.cache || {};
+  return result;
+}
 
-  if (this.cache[url]) {
-    templateHtml = this.cache[url];
-  } else {
-    $.ajax({
-      url: url,
-      method: "GET",
-      async: false,
-      success: function(data) {
-        templateHtml = data;
-      }
+function preLoadImages(photos) {
+  $.each(photos, function(i, photo){
+    var img = new Image();
+    img.src = photo;
+  });
+}
+
+function createMarkerOnMap(listing, map, markers) {
+  // Create a new marker based on the coordinates of the current listing
+  var markerLocation = new L.LatLng(listing.geo.lat, listing.geo.lng);
+  var marker = new L.Marker(markerLocation);
+
+  // Define the popup contents to show when the marker is clicked
+  marker.bindPopup(
+    _.templateFromUrl('templates/listing-popup-template.html',
+    $.extend({}, listing, {
+      listPrice: $.number(listing.listPrice, 0)
+    }))
+  );
+
+  // When the popup opens after a user clicks it, perform a series of operations
+  marker.on('popupopen', function (e) {
+    var popup = e.popup;
+    var $popup = $(popup.getElement());
+    var $imagesContent = $popup.find('.images-content');
+
+    // Center the map on the marker and popup
+    var px = map.project(popup.getLatLng()); // find the pixel location on the map where the popup anchor is
+    px.y -= $popup.height()/2 // find the height of the popup container, divide by 2, subtract from the Y axis of marker location
+    map.panTo(map.unproject(px),{animate: true}); // pan to new center
+
+    // Initialize the flexslider to carousel through the images
+    $imagesContent.flexslider({
+      animation: "slide",
+      customDirectionNav: $imagesContent.next(".custom-navigation").find('a'),
+      controlNav: false,
+      easing: "linear"
     });
 
-    this.cache[url] = templateHtml;
-  }
-
-  return _.template(templateHtml)(data);
-}});
-
-
-// Utility Functions
-function convertState(name, to) {
-    var name = name.toUpperCase();
-    var states = new Array(                         {'name':'Alabama', 'abbrev':'AL'},          {'name':'Alaska', 'abbrev':'AK'},
-        {'name':'Arizona', 'abbrev':'AZ'},          {'name':'Arkansas', 'abbrev':'AR'},         {'name':'California', 'abbrev':'CA'},
-        {'name':'Colorado', 'abbrev':'CO'},         {'name':'Connecticut', 'abbrev':'CT'},      {'name':'Delaware', 'abbrev':'DE'},
-        {'name':'Florida', 'abbrev':'FL'},          {'name':'Georgia', 'abbrev':'GA'},          {'name':'Hawaii', 'abbrev':'HI'},
-        {'name':'Idaho', 'abbrev':'ID'},            {'name':'Illinois', 'abbrev':'IL'},         {'name':'Indiana', 'abbrev':'IN'},
-        {'name':'Iowa', 'abbrev':'IA'},             {'name':'Kansas', 'abbrev':'KS'},           {'name':'Kentucky', 'abbrev':'KY'},
-        {'name':'Louisiana', 'abbrev':'LA'},        {'name':'Maine', 'abbrev':'ME'},            {'name':'Maryland', 'abbrev':'MD'},
-        {'name':'Massachusetts', 'abbrev':'MA'},    {'name':'Michigan', 'abbrev':'MI'},         {'name':'Minnesota', 'abbrev':'MN'},
-        {'name':'Mississippi', 'abbrev':'MS'},      {'name':'Missouri', 'abbrev':'MO'},         {'name':'Montana', 'abbrev':'MT'},
-        {'name':'Nebraska', 'abbrev':'NE'},         {'name':'Nevada', 'abbrev':'NV'},           {'name':'New Hampshire', 'abbrev':'NH'},
-        {'name':'New Jersey', 'abbrev':'NJ'},       {'name':'New Mexico', 'abbrev':'NM'},       {'name':'New York', 'abbrev':'NY'},
-        {'name':'North Carolina', 'abbrev':'NC'},   {'name':'North Dakota', 'abbrev':'ND'},     {'name':'Ohio', 'abbrev':'OH'},
-        {'name':'Oklahoma', 'abbrev':'OK'},         {'name':'Oregon', 'abbrev':'OR'},           {'name':'Pennsylvania', 'abbrev':'PA'},
-        {'name':'Rhode Island', 'abbrev':'RI'},     {'name':'South Carolina', 'abbrev':'SC'},   {'name':'South Dakota', 'abbrev':'SD'},
-        {'name':'Tennessee', 'abbrev':'TN'},        {'name':'Texas', 'abbrev':'TX'},            {'name':'Utah', 'abbrev':'UT'},
-        {'name':'Vermont', 'abbrev':'VT'},          {'name':'Virginia', 'abbrev':'VA'},         {'name':'Washington', 'abbrev':'WA'},
-        {'name':'West Virginia', 'abbrev':'WV'},    {'name':'Wisconsin', 'abbrev':'WI'},        {'name':'Wyoming', 'abbrev':'WY'}
-        );
-    var returnthis = false;
-    $.each(states, function(index, value){
-        if (to == 'name') {
-            if (value.abbrev == name){
-                returnthis = value.name;
-                return false;
-            }
-        } else if (to == 'abbreviation') {
-            if (value.name.toUpperCase() == name){
-                returnthis = value.abbrev;
-                return false;
-            }
-        }
+    $('#listing-detail').on('beforeshow', function() {
+      $(this).find('.listing-detail-content').html(
+        _.templateFromUrl('templates/listing-detail-content.html',
+        $.extend({}, listing, {
+          listPrice: $.number(listing.listPrice, 0),
+          stateAbbreviation: convertState(listing.address.state, 'abbreviation')
+        }))
+      );
     });
-    return returnthis;
+
+    $('#listing-detail').on('show', function() {
+      var $listingDetailImagesContent = $(this).find('.images-content');
+      $listingDetailImagesContent.flexslider({
+        animation: "slide",
+        customDirectionNav: $listingDetailImagesContent.next(".custom-navigation").find('a'),
+        controlNav: false,
+        easing: "linear"
+      });
+    });
+  });
+
+  map.addLayer(marker);
+  markers.push(marker);
+}
+
+function createCardInGrid(listing, $gridElement) {
+  $gridElement.append(
+    _.templateFromUrl('templates/search-result-single.html',
+    $.extend({}, listing, {
+      listPrice: $.number(listing.listPrice, 0),
+      stateAbbreviation: convertState(listing.address.state, 'abbreviation')
+    }))
+  );
+}
+
+function displaySearchResults(listings, $gridElement, mapReference, markers) {
+  // var spinnerTimeOut = setTimeout(function(){
+  //   $spinner
+  //     .css('opacity', '0')
+  //     .on("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd",
+  //      function(e){
+  //         $(this).hide();
+  //         $(this).off(e);
+  //      });
+  //
+  //      clearTimeout(spinnerTimeOut);
+  // }, 500);
+
+  $gridElement.html('');
+
+  $.each (listings, function (i, listing) {
+    //Pre-load images for the current listing
+    preLoadImages(listing.photos);
+
+    // Add the marker to the map and bind a popup to it
+    createMarkerOnMap(listing, mapReference, markers);
+
+    // Add the card to the search resuls grid
+    createCardInGrid(listing, $gridElement);
+  });
 }
