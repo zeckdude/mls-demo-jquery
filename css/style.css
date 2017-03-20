@@ -315,3 +315,13 @@ ul.uk-navbar-nav li:last-child a {
   font-size: 17px;
   margin-right: 3px;
 }
+
+#clear-search-parameters-btn, #remove-shape-btn {
+  top: -40px;
+}
+
+.uk-button-default:disabled, .uk-button-primary:disabled, .uk-button-secondary:disabled, .uk-button-danger:disabled {
+  background-color: #e5e5e5;
+  color: #999;
+  border-color: #d8d7d7;
+}
