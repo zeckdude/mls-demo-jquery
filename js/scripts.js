@@ -10,7 +10,7 @@ $(document).ready(function() {
   var map = createMap();
 
   // Debugging: Show the bounds of the map where properties will be shown for search results when the map tool is not used
-  //showMapViewingArea(map);
+  showMapViewingArea(map);
 
   // On Page load, search for all properties on the current map viewing area
   performSearch(map, $searchResultsGrid, markers, shape, searchParameters, true);
@@ -44,6 +44,9 @@ $(document).ready(function() {
       // Perform the search
       performSearch(map, $searchResultsGrid, markers, shape, searchParameters, true);
 
+      // Slide the lower container down and toggle the filters button text (if on mobile)
+      toggleFiltersBtn();
+
       // Add 'Clear Filters' button above the search box
       $searchBox.prepend('<button id="clear-search-parameters-btn" class="uk-position-top-left uk-button uk-button-primary">Clear Filters</button>');
     //}
@@ -74,4 +77,18 @@ $(document).ready(function() {
     performSearch(map, $searchResultsGrid, markers, shape, searchParameters, false);
     $(this).remove();
   });
+
+  function toggleFiltersBtn() {
+    $('#toggle-filters-btn').text(function(i, text){
+      return text === "Show Filters" ? "Hide Filters" : "Show Filters";
+    });
+    $('#lower-container').toggleClass('show-lower-container-mobile');
+  }
+
+  $('#toggle-filters-btn').on('click', function() {
+    toggleFiltersBtn();
+  });
+
+
+
 });

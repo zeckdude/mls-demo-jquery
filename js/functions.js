@@ -39,14 +39,14 @@ function createMap() {
 
   // Add the zoom control manually at a specified position on the map
   var zoomControl = L.control.zoom({
-      position: 'topright'
+      position: 'topleft'
   });
   map.addControl(zoomControl);
 
   // Add draw toolbar to the map
   var drawnItems = new L.FeatureGroup();
   var drawControl = new L.Control.Draw({
-    position: 'topright',
+    position: 'topleft',
     edit: {
       featureGroup: drawnItems,
       edit: false,
