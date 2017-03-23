@@ -6,7 +6,7 @@ header {
 header #logo {
   font-family: 'Slabo 27px', serif;
   font-weight: bold;
-  font-size: 30px;
+  font-size: 27px;
 }
 
 header #logo span[class*="flaticon-"]:before {
@@ -353,4 +353,17 @@ ul.uk-navbar-nav li:last-child a {
   .uk-navbar-toggle {
     padding-right: 0;
   }
+
+  #search-box {
+    position: absolute;
+    top: 74px;
+  }
+
+
+
+
+
+
+
+
 }

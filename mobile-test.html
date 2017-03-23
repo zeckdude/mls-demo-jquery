@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Mobile Test</title>
+  <link rel="stylesheet" href="css/normalize.css">
+<style>
+  body {
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .upper {
+    z-index: 1;
+  }
+
+  .lower {
+    z-index: 2;
+  }
+
+  .general-styling {
+    box-sizing: border-box;
+    width: 100%;
+    border-width: 10px;
+    border-style: solid;
+  }
+
+  .movable {
+    transition: all 0.3s ease;
+    position: absolute;
+    top: 100vh;
+    z-index: 44;
+  }
+
+  .map {
+    background-color: red;
+    border-color: pink;
+    height: 100vh;
+  }
+
+  .search {
+    background-color: green;
+    border-color: yellow;
+    height: 600px;
+  }
+
+  .results {
+    background-color: blue;
+    border-color: orange;
+    height: 1000px;
+  }
+
+  .lifted {
+    top: 0;
+  }
+</style>
+</head>
+<body>
+  <div class="main">
+    <div class="upper">
+      <div class="map general-styling"></div>
+    </div>
+  </div>
+  <div class="search general-styling movable lifted"></div>
+  <div class="results general-styling movable"></div>
+  <!-- <div class="lower"></div> -->
+</body>
+</html>
