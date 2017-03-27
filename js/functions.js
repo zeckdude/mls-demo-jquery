@@ -127,10 +127,18 @@ function showMapViewingArea(map) {
   });
 }
 
-function performSearch(map, $searchResultsGrid, markers, shape, searchParameters, shouldRemoveMarkers) {
+function performSearch(options) {
   var data;
   var searchBounds;
   var searchResults;
+  var map = options.map;
+  var $searchResultsGrid = options.$searchResultsGrid;
+  var $noResultsFoundContainer = options.$noResultsFoundContainer;
+  var $resultsNumContainer = options.$resultsNumContainer;
+  var markers = options.markers;
+  var shape = options.shape;
+  var searchParameters = options.searchParameters;
+  var shouldRemoveMarkers = options.shouldRemoveMarkers;
 
   // 1. Remove the existing markers if necessary
   if (shouldRemoveMarkers) {
@@ -153,7 +161,14 @@ function performSearch(map, $searchResultsGrid, markers, shape, searchParameters
   searchResults = getSearchResults(data);
 
   // 5. Display the search results on the map and grid
-  displaySearchResults(searchResults, $searchResultsGrid, map, markers);
+  displaySearchResults({
+    searchResults: searchResults,
+    $searchResultsGrid: $searchResultsGrid,
+    $noResultsFoundContainer: $noResultsFoundContainer,
+    $resultsNumContainer: $resultsNumContainer,
+    map: map,
+    markers: markers
+  });
 }
 
 function createMarkerOnMap(listing, map, markers) {
@@ -223,7 +238,7 @@ function createCardInGrid(listing, $gridElement) {
   );
 }
 
-function displaySearchResults(listings, $gridElement, mapReference, markers) {
+function displaySearchResults(options) {
   // var spinnerTimeOut = setTimeout(function(){
   //   $spinner
   //     .css('opacity', '0')
@@ -235,17 +250,31 @@ function displaySearchResults(listings, $gridElement, mapReference, markers) {
   //
   //      clearTimeout(spinnerTimeOut);
   // }, 500);
+  var listings = options.searchResults;
+  var $gridElement = options.$searchResultsGrid;
+  var $noResultsFoundContainer = options.$noResultsFoundContainer;
+  var $resultsNumContainer = options.$resultsNumContainer;
+  var mapReference = options.map;
+  var markers = options.markers;
+  var numListings = listings.length;
 
   $gridElement.html('');
+  $noResultsFoundContainer.html('');
 
-  $.each (listings, function (i, listing) {
-    //Pre-load images for the current listing
-    preLoadImages(listing.photos);
+  $resultsNumContainer.html(numListings);
 
-    // Add the marker to the map and bind a popup to it
-    createMarkerOnMap(listing, mapReference, markers);
+  if (numListings > 0) {
+    $.each (listings, function (i, listing) {
+      //Pre-load images for the current listing
+      preLoadImages(listing.photos);
 
-    // Add the card to the search resuls grid
-    createCardInGrid(listing, $gridElement);
-  });
+      // Add the marker to the map and bind a popup to it
+      createMarkerOnMap(listing, mapReference, markers);
+
+      // Add the card to the search resuls grid
+      createCardInGrid(listing, $gridElement);
+    });
+  } else {
+    $noResultsFoundContainer.html('<p>There was no results found with the provided filters and/or in the marked search area. Please broaden your search to view listings.</p>');
+  }
 }
