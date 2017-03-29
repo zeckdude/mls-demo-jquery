@@ -75,7 +75,7 @@
       </div>
     </div>
 
-    <div id="offcanvas-nav" uk-offcanvas="mode: push; overlay: true">
+    <div id="offcanvas-nav" uk-offcanvas="mode: slide; overlay: true">
       <div class="uk-offcanvas-bar">
 
         <ul class="uk-nav uk-nav-default">
@@ -89,7 +89,7 @@
       </div>
     </div>
 
-    <div>
+    <div id="page-container">
       <header class="uk-card uk-card-default uk-box-shadow-small">
         <div class="color-bar uk-background-primary uk-padding-small"></div>
         <div class="uk-container">
@@ -131,7 +131,7 @@
           <div class="uk-padding-small">
             <div class="uk-heading-divider uk-flex uk-flex-top uk-margin-bottom">
               <h3 class="uk-flex-1 uk-margin-remove-bottom">Filter Search </h3>
-              <button id="clear-search-parameters-btn" class="uk-hidden uk-button uk-button-primary uk-button-small">Clear Filters</button>
+              <button class="uk-hidden uk-button uk-button-primary uk-button-small clear-search-parameters-btn">Clear Filters</button>
             </div>
             <div id="search-box" class="uk-padding-small uk-card uk-card-default uk-box-shadow-small uk-remove-margin-top@m">
               <form id="properties-search-form" class="uk-grid-small uk-form-stacked" uk-grid>
@@ -242,7 +242,11 @@
 
         <div id="search-results-panel" class="mobile-panel">
           <div class="uk-padding-small">
-            <h3 class="uk-heading-divider">Search Results (<span class="results-num"></span>)</h3>
+            <!-- <h3 class="uk-heading-divider">Search Results (<span class="results-num"></span>)</h3> -->
+            <div class="uk-heading-divider uk-flex uk-flex-top uk-margin-bottom">
+              <h3 class="uk-flex-1 uk-margin-remove-bottom">Search Results (<span class="results-num"></span>)</h3>
+              <button class="uk-hidden uk-button uk-button-primary uk-button-small clear-search-parameters-btn">Clear Filters</button>
+            </div>
             <div id="search-results-not-found-container"></div>
             <div id="search-results-grid" class="uk-child-width-1-2@s uk-child-width-1-3@m uk-grid uk-grid-match" uk-grid></div>
           </div>

@@ -29,7 +29,7 @@ function preLoadImages(photos) {
 
 function createMap() {
   var map = new L.Map('map', {
-    layers: [basic],
+    layers: [getTileLayer('another')],
     center: new L.LatLng(29.72, -95.35),
     zoom: 10,
     maxZoom: 18,
@@ -95,11 +95,18 @@ function getShapeBounds(shape) {
 
 function getMapBoundsInViewingArea(map) {
   var data = [];
+  // var mapBounds = {
+  //   northWest: { lat: map.getBounds().getNorthWest().lat - .05, lng: map.getBounds().getNorthWest().lng + .05 },
+  //   northEast: { lat: map.getBounds().getNorthEast().lat - .05, lng: map.getBounds().getNorthEast().lng - .25 },
+  //   southEast: { lat: map.getBounds().getSouthEast().lat + .12, lng: map.getBounds().getSouthEast().lng - .25 },
+  //   southWest: { lat: map.getBounds().getSouthWest().lat + .12, lng: map.getBounds().getSouthWest().lng + .05 }
+  // };
+
   var mapBounds = {
-    northWest: { lat: map.getBounds().getNorthWest().lat - .05, lng: map.getBounds().getNorthWest().lng + .05 },
-    northEast: { lat: map.getBounds().getNorthEast().lat - .05, lng: map.getBounds().getNorthEast().lng - .25 },
-    southEast: { lat: map.getBounds().getSouthEast().lat + .12, lng: map.getBounds().getSouthEast().lng - .25 },
-    southWest: { lat: map.getBounds().getSouthWest().lat + .12, lng: map.getBounds().getSouthWest().lng + .05 }
+    northWest: { lat: map.getBounds().getNorthWest().lat, lng: map.getBounds().getNorthWest().lng },
+    northEast: { lat: map.getBounds().getNorthEast().lat, lng: map.getBounds().getNorthEast().lng },
+    southEast: { lat: map.getBounds().getSouthEast().lat, lng: map.getBounds().getSouthEast().lng },
+    southWest: { lat: map.getBounds().getSouthWest().lat, lng: map.getBounds().getSouthWest().lng }
   };
 
   $.each (mapBounds, function (i, latLngSet) {

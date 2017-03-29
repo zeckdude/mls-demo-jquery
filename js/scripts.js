@@ -5,7 +5,7 @@ $(document).ready(function() {
   var $resultsNumContainer = $('.results-num');
   var $searchFormElement = $('#properties-search-form');
   var $searchBox = $searchFormElement.parent();
-  var $clearFiltersBtn = $('#clear-search-parameters-btn');
+  var $clearFiltersBtn = $('.clear-search-parameters-btn');
   var $mapPanel = $('#map-panel');
   var $searchPanel = $('#search-panel');
   var $removeShapeBtn = $('#remove-shape-btn');
@@ -18,7 +18,7 @@ $(document).ready(function() {
   var map = createMap();
 
   // Debugging: Show the bounds of the map where properties will be shown for search results when the map tool is not used
-  showMapViewingArea(map);
+  //showMapViewingArea(map);
 
   // On Page load, search for all properties on the current map viewing area
   performSearch({
@@ -97,7 +97,7 @@ $(document).ready(function() {
     });
   });
 
-  $searchPanel.on('click', '#clear-search-parameters-btn', function() {
+  $(document).on('click', '.clear-search-parameters-btn', function() {
     $searchFormElement[0].reset();
     $('#search-box-search-btn').prop("disabled", true);
     searchParameters = [];
