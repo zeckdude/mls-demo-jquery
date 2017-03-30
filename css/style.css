@@ -344,18 +344,50 @@ ul.uk-navbar-nav li:last-child a {
 
 #remove-shape-btn {
   z-index: 10;
-  margin: 15px;
+  margin: 10px;
   border-radius: 4px;
-  top: 64px;
 }
 
 .leaflet-control-attribution, .leaflet-control-attribution > * {
   color: #6b6969 !important;
 }
 
+#search-panel-container {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.uk-fixed-alert {
+  position: absolute;
+  z-index: 300;
+  align-self: center;
+  box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.15);
+  padding-right: 40px;
+  top: -117px;
+  width: 510px;
+  max-width: 100%;
+  border: 1px solid #bee4d6;
+}
+
 @media (max-width: 768px) {
+
+
+  .uk-fixed-alert {
+    position: fixed;
+    top: initial;
+    width: inherit;
+    max-width: initial;
+  }
+
+
   #lower-container {
     padding-bottom: 0;
+  }
+
+  #remove-shape-btn {
+    margin: 15px;
+    top: 64px;
   }
 
   #lower-container > * {

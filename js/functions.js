@@ -285,3 +285,38 @@ function displaySearchResults(options) {
     $noResultsFoundContainer.html('<p>There was no results found with the provided filters and/or in the marked search area. Please broaden your search to view listings.</p>');
   }
 }
+
+function runSearchFilters(options) {
+  var map = options.map;
+  var $searchFormElement = options.$searchFormElement;
+  var $searchResultsGrid = options.$searchResultsGrid;
+  var $noResultsFoundContainer = options.$noResultsFoundContainer;
+  var $resultsNumContainer = options.$resultsNumContainer;
+  var markers = options.markers;
+  var shape = options.shape;
+  var shouldRemoveMarkers = options.shouldRemoveMarkers;
+  var callback = options.callback;
+  var $clearFiltersBtn = options.$clearFiltersBtn;
+
+  // Save the chosen search parameters for reference
+  var searchParameters = getArraySearchFormValues($searchFormElement);
+
+  // Perform the search
+  performSearch({
+    map: map,
+    $searchResultsGrid: $searchResultsGrid,
+    $noResultsFoundContainer: $noResultsFoundContainer,
+    $resultsNumContainer: $resultsNumContainer,
+    markers: markers,
+    shape: shape,
+    searchParameters: searchParameters,
+    shouldRemoveMarkers: shouldRemoveMarkers
+  });
+
+  callback();
+
+  // Show 'Clear Filters' button
+  $clearFiltersBtn.removeClass('uk-hidden');
+
+  return searchParameters;
+}

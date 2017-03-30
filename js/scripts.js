@@ -4,6 +4,7 @@ $(document).ready(function() {
   var $noResultsFoundContainer = $('#search-results-not-found-container');
   var $resultsNumContainer = $('.results-num');
   var $searchFormElement = $('#properties-search-form');
+  var $searchFormFields = $('#properties-search-form :input');
   var $searchBox = $searchFormElement.parent();
   var $clearFiltersBtn = $('.clear-search-parameters-btn');
   var $mapPanel = $('#map-panel');
@@ -59,40 +60,59 @@ $(document).ready(function() {
   });
 
   // When the search parameters form is used to filter search results
-  $('#properties-search-form').on('submit', function(e) {
+  $searchFormElement.on('submit', function(e) {
     e.preventDefault();
 
-    // Save the chosen search parameters for reference
-    searchParameters = getArraySearchFormValues($searchFormElement);
-
-    // Perform the search
-    performSearch({
+    searchParameters = runSearchFilters({
       map: map,
+      $searchFormElement: $searchFormElement,
       $searchResultsGrid: $searchResultsGrid,
       $noResultsFoundContainer: $noResultsFoundContainer,
       $resultsNumContainer: $resultsNumContainer,
       markers: markers,
       shape: shape,
-      searchParameters: searchParameters,
-      shouldRemoveMarkers: true
+      shouldRemoveMarkers: true,
+      $clearFiltersBtn: $clearFiltersBtn,
+      callback: function() {
+        // Hide the Search Panel
+        $searchPanel.removeClass('lifted');
+        $('#mobile-search-button').removeClass('active');
+        $('#mobile-map-button').addClass('active');
+      }
     });
-
-    // Hide the Search Panel
-    $searchPanel.removeClass('lifted');
-    $('#mobile-search-button').removeClass('active');
-    $('#mobile-map-button').addClass('active');
-
-    // Show 'Clear Filters' button
-    $clearFiltersBtn.removeClass('uk-hidden');
   });
 
   // Change disabled attribute on search box submit button depending on if there is a value in any field
-  $('#properties-search-form :input').on('change keyup', function() {
+  $searchFormFields.on('change keyup', function() {
     $('#search-box-search-btn').prop("disabled", true);
-    $('#properties-search-form :input').each(function() {
+    $searchFormFields.each(function() {
       if( $(this).val().length > 0 ) {
         $('#search-box-search-btn').prop("disabled", false);
         return false; // break the loop
+      }
+    });
+  });
+
+  // Submit form when the value of a field changes
+  $searchFormFields.on('change', function() {
+    searchParameters = runSearchFilters({
+      map: map,
+      $searchFormElement: $searchFormElement,
+      $searchResultsGrid: $searchResultsGrid,
+      $noResultsFoundContainer: $noResultsFoundContainer,
+      $resultsNumContainer: $resultsNumContainer,
+      markers: markers,
+      shape: shape,
+      shouldRemoveMarkers: true,
+      $clearFiltersBtn: $clearFiltersBtn,
+      callback: function() {
+        // Display success message at the top of the search panel
+        if ($('#search-confirmation-message').length === 0) {
+          $('#search-panel-container').prepend('<div id="search-confirmation-message" class="uk-fixed-alert uk-alert-success" uk-alert><a class="uk-alert-close" uk-close></a><p>Your filters have been updated.</p></div>');
+          setTimeout(function(){
+            $('#search-confirmation-message').find('.uk-alert-close').trigger('click');
+          }, 2500);
+        }
       }
     });
   });
