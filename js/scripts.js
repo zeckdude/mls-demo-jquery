@@ -15,11 +15,14 @@ $(document).ready(function() {
   var markers = [];
   var shape = null;
   var searchParameters = [];
+  var lastClickedMarker = null;
 
   var map = createMap();
 
   // Debugging: Show the bounds of the map where properties will be shown for search results when the map tool is not used
   //showMapViewingArea(map);
+
+  $('body').addClass(getOrientation());
 
   // On Page load, search for all properties on the current map viewing area
   performSearch({
@@ -184,6 +187,16 @@ $(document).ready(function() {
     $(window).trigger("resize")
   });
 
+  window.addEventListener("orientationchange", function() {
+    $('body').removeClass('portrait landscape').addClass(getOrientation());
+  }, false);
 
+  if ('ontouchmove' in window) {
+    $(document).on('focus', 'textarea,input,select', function() {
+      //alert('h');
+      window.scrollTo(0, 0);
+      document.body.scrollTop = 0;
+    });
+  }
 
 });

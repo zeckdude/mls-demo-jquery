@@ -4,7 +4,7 @@
       <div class='images-content'>
         <ul class='slides'>
           <% _.forEach(photos, function(photo) { %>
-            <li><img src='<%= photo %>' alt=''/></li>
+            <li><a href="#listing-detail" uk-toggle><img src='<%= photo %>' alt=''/></a></li>
           <% }); %>
         </ul>
       </div>
@@ -20,8 +20,8 @@
   </div>
   <div class='listing-popup-content'>
     <div class='detailed-info'>
-      <p class='uk-text-bold uk-text-primary uk-text-truncate uk-text-medium'><%= address.streetNumber %> <%= address.streetName %></p>
-      <a class="uk-button uk-button-default" href="#listing-detail" uk-toggle>Open</a>
+      <p class='uk-text-bold uk-text-primary uk-text-truncate uk-text-medium'><a href="#listing-detail" uk-toggle><%= address.streetNumber %> <%= address.streetName %></a></p>
+      <button class="open-listing-details-btn uk-button uk-button-primary uk-margin-small uk-width-1-1 uk-button-small" href="#listing-detail" uk-toggle>View Details</button>
     </div>
     <div class='mls-id uk-flex uk-flex-center uk-text-muted'>MLS #<%= listingId %></div>
   </div>

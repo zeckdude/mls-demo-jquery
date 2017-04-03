@@ -1,6 +1,7 @@
 header {
   z-index: 20;
   height: 93px;
+  border-top: 10px solid #1e87f0;
 }
 
 header #logo {
@@ -15,6 +16,10 @@ margin-right: 5px;
 top: 2px;
 position: relative;
 font-weight: normal;
+}
+
+#page-container {
+  position: relative;
 }
 
 #map {
@@ -263,8 +268,8 @@ dl.left-right-definition-list dd {
   z-index: 200;
 }
 
-.color-bar {
-  padding: 5px;
+body.landscape .open-listing-details-btn {
+  display: none;
 }
 
 .uk-card {
@@ -373,11 +378,28 @@ ul.uk-navbar-nav li:last-child a {
 @media (max-width: 768px) {
 
 
+
   .uk-fixed-alert {
     position: fixed;
     top: initial;
     width: inherit;
     max-width: initial;
+  }
+
+  body.portrait .listing-popup-wrapper {
+    width: 250px;
+  }
+
+  body.portrait .listing-popup-wrapper .images-content {
+    height: 125px;
+  }
+
+  body.landscape .listing-popup-wrapper {
+    width: 200px;
+  }
+
+  body.landscape .listing-popup-wrapper .images-content {
+    height: 100px;
   }
 
 

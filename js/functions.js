@@ -20,6 +20,16 @@ function getSearchResults(data) {
   return result;
 }
 
+function getOrientation() {
+  if(window.innerHeight > window.innerWidth){
+    // Portrait orientation
+    return 'portrait';
+  } else {
+    // Landscape orientation
+    return 'landscape';
+  }
+}
+
 function preLoadImages(photos) {
   $.each(photos, function(i, photo){
     var img = new Image();
@@ -186,9 +196,14 @@ function createMarkerOnMap(listing, map, markers) {
   // Define the popup contents to show when the marker is clicked
   marker.bindPopup(
     _.templateFromUrl('templates/listing-popup-template.html',
-    $.extend({}, listing, {
-      listPrice: $.number(listing.listPrice, 0)
-    }))
+      $.extend({}, listing, {
+        listPrice: $.number(listing.listPrice, 0)
+      })
+    ),
+    {
+      maxWidth: 'auto',
+      closeButton: false
+    }
   );
 
   // When the popup opens after a user clicks it, perform a series of operations
@@ -196,6 +211,12 @@ function createMarkerOnMap(listing, map, markers) {
     var popup = e.popup;
     var $popup = $(popup.getElement());
     var $imagesContent = $popup.find('.images-content');
+
+    // Sometimes the images haven't been added to the cache by the time the popup is clicked to open which causes issues since it can't compute the container size. This detects the issue and re-calculates the popup. This issue happens alot when you are in desktop mode and switch to mobile mode or vice versa.
+    if ($imagesContent.width() === 0) {
+      popup.update();
+      console.log('updated popup because of no width found for images');
+    }
 
     // Center the map on the marker and popup
     var px = map.project(popup.getLatLng()); // find the pixel location on the map where the popup anchor is
@@ -229,6 +250,11 @@ function createMarkerOnMap(listing, map, markers) {
         easing: "linear"
       });
     });
+
+    // Re-calculate the leaflet div widths based on whether it is in landscape or portrait mode
+    window.addEventListener("orientationchange", function() {
+      popup.update();
+    }, false);
   });
 
   map.addLayer(marker);
