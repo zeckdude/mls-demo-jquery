@@ -16,8 +16,11 @@ $(document).ready(function() {
   var shape = null;
   var searchParameters = [];
   var lastClickedMarker = null;
+  var searchResults = null;
 
   var map = createMap();
+
+  var hello = 'hello1';
 
   // Debugging: Show the bounds of the map where properties will be shown for search results when the map tool is not used
   //showMapViewingArea(map);
@@ -25,7 +28,7 @@ $(document).ready(function() {
   $('body').addClass(getOrientation());
 
   // On Page load, search for all properties on the current map viewing area
-  performSearch({
+  searchResults = performSearch({
     map: map,
     $searchResultsGrid: $searchResultsGrid,
     $noResultsFoundContainer: $noResultsFoundContainer,
@@ -44,7 +47,7 @@ $(document).ready(function() {
     shape = e.layer;
 
     // Perform the search
-    performSearch({
+    searchResults = performSearch({
       map: map,
       $searchResultsGrid: $searchResultsGrid,
       $noResultsFoundContainer: $noResultsFoundContainer,
@@ -126,7 +129,7 @@ $(document).ready(function() {
     searchParameters = [];
 
     // Perform a search based on default search criteria
-    performSearch({
+    searchResults = performSearch({
       map: map,
       $searchResultsGrid: $searchResultsGrid,
       $noResultsFoundContainer: $noResultsFoundContainer,
@@ -149,7 +152,7 @@ $(document).ready(function() {
   $mapPanel.on('click', '#remove-shape-btn', function() {
     removeShapeAndMarkers(map, shape, markers);
     shape = null;
-    performSearch({
+    searchResults = performSearch({
       map: map,
       $searchResultsGrid: $searchResultsGrid,
       $noResultsFoundContainer: $noResultsFoundContainer,
@@ -198,5 +201,30 @@ $(document).ready(function() {
       document.body.scrollTop = 0;
     });
   }
+
+  $(document).on('click', '.modal-dialog', function (e) {
+    e.preventDefault();
+    $(this).blur();
+    var listingId = $(this).attr('data-listing-id')
+    var listing = $.grep(searchResults, function(e){ return e.listingId == listingId; })[0];
+    var modal = UIkit.modal.dialog(_.templateFromUrl('templates/listing-detail-content.html',
+      $.extend({}, listing, {
+        listPrice: $.number(listing.listPrice, 0),
+        stateAbbreviation: convertState(listing.address.state, 'abbreviation')
+      })
+    ));
+
+    var $modal = modal.$el;
+
+    $modal.addClass('uk-modal-full listing-detail-modal');
+
+    var $listingDetailImagesContent = $modal.find('.images-content');
+    $listingDetailImagesContent.flexslider({
+      animation: "slide",
+      customDirectionNav: $listingDetailImagesContent.next(".custom-navigation").find('a'),
+      controlNav: false,
+      easing: "linear"
+    });
+  });
 
 });

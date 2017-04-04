@@ -6,6 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Mobile Test</title>
   <link rel="stylesheet" href="css/normalize.css">
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>
 <style>
   body {
     height: 100vh;
@@ -31,8 +32,10 @@
   .movable {
     transition: all 0.3s ease;
     position: absolute;
-    top: 100vh;
     z-index: 44;
+    width: 100vw;
+    min-height: 100vh;
+    background-color: white;
   }
 
   .map {
@@ -56,16 +59,44 @@
   .lifted {
     top: 0;
   }
+
+  .buttons {
+    position: absolute;
+    z-index: 1000;
+    top: 40px;
+    right: 40px;
+  }
 </style>
+<script>
+  $(document).ready(function() {
+    var $toggleResultsBtn = $('#toggle-results');
+    var $resultsArea = $('#results-area');
+    var $body = $('body');
+
+    $('.movable').css('top', $body.height());
+
+    $toggleResultsBtn.on('click', function(){
+      $toggleResultsBtn.text(function(i, text){
+        return text === "Show Results" ? "Hide Results" : "Show Results";
+      });
+      $resultsArea.css('top', function(i, value){
+        return value === '0px' ? $body.height() : '0px';
+      });
+    });
+  });
+</script>
 </head>
 <body>
-  <div class="main">
-    <div class="upper">
-      <div class="map general-styling"></div>
-    </div>
+  <div class='buttons'>
+    <button id="toggle-results">Show Results</button>
   </div>
-  <div class="search general-styling movable lifted"></div>
-  <div class="results general-styling movable"></div>
+  <div class="map general-styling"></div>
+  <div id="search-area" class='movable'>
+    <div class="search general-styling"></div>
+  </div>
+  <div id="results-area" class='movable'>
+    <div class="results general-styling"></div>
+  </div>
   <!-- <div class="lower"></div> -->
 </body>
 </html>

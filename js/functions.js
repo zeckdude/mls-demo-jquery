@@ -186,6 +186,9 @@ function performSearch(options) {
     map: map,
     markers: markers
   });
+
+  // 6. Return the search results
+  return searchResults;
 }
 
 function createMarkerOnMap(listing, map, markers) {
@@ -202,7 +205,7 @@ function createMarkerOnMap(listing, map, markers) {
     ),
     {
       maxWidth: 'auto',
-      closeButton: false
+      closeButton: true
     }
   );
 
@@ -229,26 +232,6 @@ function createMarkerOnMap(listing, map, markers) {
       customDirectionNav: $imagesContent.next(".custom-navigation").find('a'),
       controlNav: false,
       easing: "linear"
-    });
-
-    $('#listing-detail').on('beforeshow', function() {
-      $(this).find('.listing-detail-content').html(
-        _.templateFromUrl('templates/listing-detail-content.html',
-        $.extend({}, listing, {
-          listPrice: $.number(listing.listPrice, 0),
-          stateAbbreviation: convertState(listing.address.state, 'abbreviation')
-        }))
-      );
-    });
-
-    $('#listing-detail').on('show', function() {
-      var $listingDetailImagesContent = $(this).find('.images-content');
-      $listingDetailImagesContent.flexslider({
-        animation: "slide",
-        customDirectionNav: $listingDetailImagesContent.next(".custom-navigation").find('a'),
-        controlNav: false,
-        easing: "linear"
-      });
     });
 
     // Re-calculate the leaflet div widths based on whether it is in landscape or portrait mode

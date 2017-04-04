@@ -26,6 +26,10 @@ font-weight: normal;
   height: calc(75vh - 93px) !important;
 }
 
+.uk-padding-tiny {
+  padding: 10px;
+}
+
 .leaflet-popup-content-wrapper {
   padding: 0;
   border-radius: 0;
@@ -44,8 +48,8 @@ font-weight: normal;
   width: 14px;
   background-color: #1e87f0;
   color: #fff;
-  border-left: 2px solid #1e87f0;
-border-bottom: 2px solid #1e87f0;
+  /*border-left: 2px solid #1e87f0;
+border-bottom: 2px solid #1e87f0;*/
     z-index: 10;
 }
 
@@ -136,16 +140,21 @@ border-bottom: 2px solid #1e87f0;
   align-items: center;
 }
 
+.listing-detail-modal {
+  padding: 40px;
+  background: rgba(0,0,0,0.6);
+}
+
 .listing-detail {
   padding: 0;
   z-index: 30;
 }
 
 .listing-detail-content-container {
-  margin: 50px;
+  /*margin: 50px;
   width: calc(100vw - 100px);
   height: calc(100vh - 100px);
-  overflow: scroll;
+  overflow: scroll;*/
 }
 
 .listing-detail-content .uk-slidenav {
@@ -268,10 +277,6 @@ dl.left-right-definition-list dd {
   z-index: 200;
 }
 
-body.landscape .open-listing-details-btn {
-  display: none;
-}
-
 .uk-card {
   box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.15);
 }
@@ -375,9 +380,29 @@ ul.uk-navbar-nav li:last-child a {
   border: 1px solid #bee4d6;
 }
 
+a.modal-dialog {
+  color: inherit;
+  background-color: transparent;
+}
+
+a.modal-dialog:hover {
+  text-decoration: none;
+}
+
 @media (max-width: 768px) {
 
+  .listing-detail-modal {
+    padding: 0;
+    background: none;
+  }
 
+  .listing-detail-modal .uk-modal-dialog {
+    height: 100%;
+  }
+
+  body.landscape .open-listing-details-btn {
+    display: none;
+  }
 
   .uk-fixed-alert {
     position: fixed;
