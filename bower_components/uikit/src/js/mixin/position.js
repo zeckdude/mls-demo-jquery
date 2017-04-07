@@ -16,20 +16,27 @@ export default {
         clsPos: ''
     },
 
-    init() {
-        this.pos = (this.pos + (!~this.pos.indexOf('-') ? '-center' : '')).split('-');
-        this.dir = this.pos[0];
-        this.align = this.pos[1];
+    computed: {
+
+        pos() {
+            return (this.$props.pos + (!~this.$props.pos.indexOf('-') ? '-center' : '')).split('-');
+        },
+
+        dir() {
+            return this.pos[0];
+        },
+
+        align() {
+            return this.pos[1];
+        }
+
     },
 
     methods: {
 
         positionAt(element, target, boundary) {
 
-            removeClass(element, this.clsPos + '-(top|bottom|left|right)(-[a-z]+)?').css({top: '', left: ''});
-
-            this.dir = this.pos[0];
-            this.align = this.pos[1];
+            removeClass(element, `${this.clsPos}-(top|bottom|left|right)(-[a-z]+)?`).css({top: '', left: ''});
 
             var offset = toNumber(this.offset) || 0,
                 axis = this.getAxis(),
@@ -47,12 +54,12 @@ export default {
             this.dir = axis === 'x' ? flipped.target.x : flipped.target.y;
             this.align = axis === 'x' ? flipped.target.y : flipped.target.x;
 
-            element.css('display', '').toggleClass(`${this.clsPos}-${this.dir}-${this.align}`, this.offset === false);
+            element.toggleClass(`${this.clsPos}-${this.dir}-${this.align}`, this.offset === false);
 
         },
 
         getAxis() {
-            return this.pos[0] === 'top' || this.pos[0] === 'bottom' ? 'y' : 'x';
+            return this.dir === 'top' || this.dir === 'bottom' ? 'y' : 'x';
         }
 
     }

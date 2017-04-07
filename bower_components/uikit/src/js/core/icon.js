@@ -39,6 +39,8 @@ export default function (UIkit) {
 
     UIkit.component('icon', UIkit.components.svg.extend({
 
+        attrs: ['icon', 'ratio'],
+
         mixins: [Class],
 
         name: 'icon',
@@ -174,9 +176,7 @@ export default function (UIkit) {
 
     });
 
-    UIkit.icon.add = added => {
-        extend(icons, added)
-    };
+    UIkit.icon.add = added => extend(icons, added);
 
     function registerComponent(name, mixin) {
 

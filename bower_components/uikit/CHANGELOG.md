@@ -1,5 +1,77 @@
 # Changelog
 
+## 3.0.0 beta 20 (April 5, 2017)
+
+### Added
+
+- Add breakpoint classes for flex alignment
+
+### Fixed
+
+- Fix Drop positioning
+- Fix imports in Modal
+- Fix 'click' default behaviour prevention in Toggle
+- Fix queued Toggle
+- Fix closing Offcanvas with swipe gesture (Android)
+- Fix Toggle icons preventing Drops from opening
+- Fix loading UIkit deferred
+
+## 3.0.0 beta 19 (March 31, 2017)
+
+### Added
+
+- Add SASS support
+- Add Leader to utility component
+- Add Offcanvas close button
+- Add margin auto vertical classes
+- Add padding left/right remove classes
+- Add tripadvisor and yelp icons
+- Add computed properties
+
+### Changed
+
+- IMPORTANT: Offcanvas requires to wrap page in extra div
+- Refactored Offcanvas component
+- Update instagram, tumblr and vimeo icons
+- Component Constructor initializes multiple components at once
+
+### Fixed
+
+- Fix Offcanvas scrolling on touch devices
+- Fix Scrollspy in view check
+- Fix text wrapping for Firefox in position component
+- Fix closing Accordion without animation
+
+## 3.0.0 beta 18 (March 10, 2017)
+
+### Fixed
+
+- Fix regression with positioning
+
+## 3.0.0 beta 17 (March 10, 2017)
+
+### Added
+
+- Add tile component
+- Add grid item match modifier to grid component
+- Tooltip is now attribute reactive
+
+### Changed
+
+- Rename uk-background to uk-background-default
+- Drop, Dropdown, Toggle component's mode is a comma separated list now (to support hover only mode)
+
+### Fixed
+
+- Fix deferred UIKit loading
+- Fix Dropdowns not closing immediately upon hovering other navbar item in Navbar component
+- Fix navbar groups center left/right in IE 11
+- Fix "sticky on up" behaviour in Sticky component
+- Fix Offcanvas closing without animation
+- Fix links in Notification message clickable
+- Fix overriding default icons
+- Fix Scrollspy nav when scrolling beyond last item
+
 ## 3.0.0 beta 16 (March 01, 2017)
 
 ### Fixed

@@ -297,6 +297,10 @@ ul.uk-navbar-nav li:last-child a {
   background-color: #fbfbfb;
 }
 
+.uk-background-white {
+   background-color: #fff;
+}
+
 /*.uk-background-primary, .uk-button-primary {
   background-color: #43becc !important;
 }*/
@@ -389,16 +393,70 @@ a.modal-dialog:hover {
   text-decoration: none;
 }
 
+.listing-detail-modal .uk-modal-dialog {
+  max-width: 100%;
+  /*width: 1200px;*/
+  width: 1000px;
+  background-color: #f6f6f6;
+}
+
+.listing-detail-modal .uk-modal-dialog .uk-modal-close-full {
+  background-color: transparent;
+}
+
+.listing-detail-modal h1 {
+  padding-right: 30px;
+  font-weight: 500;
+  font-size: 28px;
+  padding-bottom: 3px;
+}
+
+.secondary-tab-switcher .uk-tab {
+  margin-top: -42px;
+  margin-left: -41px;
+}
+
+.secondary-tab-switcher .uk-tab:before {
+  border: none;
+}
+
+.secondary-tab-switcher .uk-tab li {
+  background-color: #ebebeb;
+  border-right: 1px solid #e5e5e5;
+  margin-right: 3px;
+  padding-left: 0;
+  border-top: 1px solid #e5e5e5;
+  border-left: 1px solid #e5e5e5;
+}
+
+.secondary-tab-switcher .uk-tab li.uk-active {
+  border-bottom: 0;
+  background-color: white;
+}
+
+.secondary-tab-switcher .uk-tab li:hover {
+  background-color: #1e87f0;
+}
+
+.secondary-tab-switcher .uk-tab li:hover a {
+  color: white;
+  /*border-color: white;*/
+}
+
+.secondary-tab-switcher .uk-card {
+  padding-top: 0;
+  margin-top: 41px;
+}
+
+.secondary-tab-switcher .uk-switcher {
+  margin-left: -20px;
+  margin-right: -20px;
+  margin-bottom: -20px;
+}
+
+
+
 @media (max-width: 768px) {
-
-  .listing-detail-modal {
-    padding: 0;
-    background: none;
-  }
-
-  .listing-detail-modal .uk-modal-dialog {
-    height: 100%;
-  }
 
   body.landscape .open-listing-details-btn {
     display: none;
@@ -505,9 +563,6 @@ a.modal-dialog:hover {
     margin: 0;
   }
 
-
-
-
   #map {
     height: 100% !important;
   }
@@ -535,5 +590,22 @@ a.modal-dialog:hover {
 
   #map-panel.lifted, #search-panel.lifted, #search-results-panel.lifted {
     height: calc(100vh - 50px) !important;
+  }
+}
+
+
+@media (max-width: 1000px) {
+  .listing-detail-modal {
+    padding: 0;
+    background: none;
+    margin: 0;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .listing-detail-modal .uk-modal-dialog {
+    height: 100%;
+    margin-top: 0;
+    margin-bottom: 0;
   }
 }

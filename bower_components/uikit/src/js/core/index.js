@@ -1,4 +1,4 @@
-import { animationstart, getStyle, fastdom, on, requestAnimationFrame, toMs, win } from '../util/index';
+import { animationstart, getStyle, on, requestAnimationFrame, toMs, win } from '../util/index';
 
 import Accordion from './accordion';
 import Alert from './alert';
@@ -26,6 +26,7 @@ import Svg from './svg';
 import Switcher from './switcher';
 import Tab from './tab';
 import Toggle from './toggle';
+import Leader from './leader';
 
 export default function (UIkit) {
 
@@ -33,7 +34,7 @@ export default function (UIkit) {
 
     win
         .on('load', UIkit.update)
-        .on('resize orientationchange', e => {
+        .on('resize', e => {
             if (!resizing) {
                 requestAnimationFrame(() => {
                     UIkit.update(e);
@@ -46,6 +47,10 @@ export default function (UIkit) {
 
             if (scroll === null) {
                 scroll = 0;
+            }
+
+            if (scroll === window.pageYOffset) {
+                return;
             }
 
             dir = scroll < window.pageYOffset;
@@ -61,19 +66,15 @@ export default function (UIkit) {
         });
 
     on(document, animationstart, ({target}) => {
-        fastdom.measure(() => {
-            if ((getStyle(target, 'animationName') || '').lastIndexOf('uk-', 0) === 0) {
-                fastdom.mutate(() => {
-                    started++;
-                    document.body.style.overflowX = 'hidden';
-                    setTimeout(() => fastdom.mutate(() => {
-                        if (!--started) {
-                            document.body.style.overflowX = '';
-                        }
-                    }), toMs(getStyle(target, 'animationDuration')));
-                });
-            }
-        });
+        if ((getStyle(target, 'animationName') || '').match(/^uk-.*(left|right)/)) {
+            started++;
+            document.body.style.overflowX = 'hidden';
+            setTimeout(() => {
+                if (!--started) {
+                    document.body.style.overflowX = '';
+                }
+            }, toMs(getStyle(target, 'animationDuration')) + 100);
+        }
     }, true);
 
     // core components
@@ -90,6 +91,7 @@ export default function (UIkit) {
     UIkit.use(Margin);
     UIkit.use(Gif);
     UIkit.use(Grid);
+    UIkit.use(Leader);
     UIkit.use(Modal);
     UIkit.use(Nav);
     UIkit.use(Navbar);

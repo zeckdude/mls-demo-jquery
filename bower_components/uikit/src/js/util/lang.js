@@ -1,5 +1,5 @@
-import $ from 'jquery';
-import { getCssVar, isJQuery, query } from './index';
+import $, { isArray } from 'jquery';
+import { getCssVar, hasPromise, isJQuery, query } from './index';
 
 export { $ };
 export { ajax, each, extend, map, merge, isArray, isNumeric, isFunction, isPlainObject } from 'jquery';
@@ -18,8 +18,8 @@ export function hasOwn(obj, key) {
 
 export function promise(executor) {
 
-    if (!isUndefined(window.Promise)) {
-        return new window.Promise(executor);
+    if (hasPromise) {
+        return new Promise(executor);
     }
 
     var def = $.Deferred();
@@ -42,12 +42,9 @@ promise.reject = function (value) {
 };
 
 promise.all = function (iterable) {
-
-    if (!isUndefined(window.Promise)) {
-        return window.Promise.all(iterable);
-    }
-
-    return $.when.apply($, iterable);
+    return hasPromise
+        ? Promise.all(iterable)
+        : $.when.apply($, iterable);
 };
 
 export function classify(str) {
@@ -60,7 +57,7 @@ export function hyphenate(str) {
         .toLowerCase()
 }
 
-var camelizeRE = /-(\w)/g;
+const camelizeRE = /-(\w)/g;
 export function camelize(str) {
     return str.replace(camelizeRE, toUpper)
 }
@@ -89,7 +86,7 @@ export function getContextSelectors(selector) {
     return isContextSelector(selector) && selector.split(/(?=\s(?:!|>|\+|-))/g).map(value => value.trim());
 }
 
-var contextSelectors = {'!': 'closest', '+': 'nextAll', '-': 'prevAll'};
+const contextSelectors = {'!': 'closest', '+': 'nextAll', '-': 'prevAll'};
 export function toJQuery(element, context) {
 
     if (element === true) {
@@ -141,11 +138,24 @@ export function toNumber(value) {
     return !isNaN(number) ? number : false;
 }
 
+export function toList(value) {
+    return isArray(value)
+        ? value
+        : isString(value)
+            ? value.split(',').map(value => toBoolean(value.trim()))
+            : [value];
+}
+
 var vars = {};
 export function toMedia(value) {
-    if (isString(value) && value[0] == '@') {
-        var name = `media-${value.substr(1)}`;
-        value = vars[name] || (vars[name] = parseFloat(getCssVar(name)));
+
+    if (isString(value)) {
+        if (value[0] == '@') {
+            var name = `media-${value.substr(1)}`;
+            value = vars[name] || (vars[name] = parseFloat(getCssVar(name)));
+        } else if (value.match(/^\(min-width:/)) {
+            return value;
+        }
     }
 
     return value && !isNaN(value) ? `(min-width: ${value}px)` : false;
@@ -159,6 +169,8 @@ export function coerce(type, value, context) {
         return toNumber(value);
     } else if (type === 'jQuery') {
         return query(value, context);
+    } else if (type === 'list') {
+        return toList(value);
     } else if (type === 'media') {
         return toMedia(value);
     }

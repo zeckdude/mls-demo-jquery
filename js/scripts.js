@@ -216,7 +216,7 @@ $(document).ready(function() {
 
     var $modal = modal.$el;
 
-    $modal.addClass('uk-modal-full listing-detail-modal');
+    $modal.addClass('listing-detail-modal');
 
     var $listingDetailImagesContent = $modal.find('.images-content');
     $listingDetailImagesContent.flexslider({
@@ -225,6 +225,7 @@ $(document).ready(function() {
       controlNav: false,
       easing: "linear"
     });
+
   });
 
 });

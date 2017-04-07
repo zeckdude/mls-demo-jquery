@@ -112,7 +112,7 @@ export function animate(element, animation, duration = 200, origin, out) {
 
         reset();
 
-        element
+        requestAnimationFrame(() => element
             .one(animationend || 'animationend', e => {
                 e.promise = p;
                 p.then(reset);
@@ -120,7 +120,8 @@ export function animate(element, animation, duration = 200, origin, out) {
             })
             .css('animation-duration', `${duration}ms`)
             .addClass(animation)
-            .addClass(cls);
+            .addClass(cls)
+        );
 
         if (!animationend) {
             requestAnimationFrame(() => Animation.cancel(element));
@@ -164,8 +165,8 @@ export function isJQuery(obj) {
 export function isWithin(element, selector) {
     element = $(element);
     return element.is(selector) || !!(isString(selector)
-            ? element.parents(selector).length
-            : $.contains(toNode(selector), element[0]));
+        ? element.parents(selector).length
+        : $.contains(toNode(selector), element[0]));
 }
 
 export function attrFilter(element, attr, pattern, replacement) {
@@ -193,18 +194,12 @@ export function createEvent(e, bubbles = true, cancelable = false, data = false)
 
 export function isInView(element, offsetTop = 0, offsetLeft = 0) {
 
-    element = $(element);
+    var rect = toNode(element).getBoundingClientRect();
 
-    if (!element.is(':visible')) {
-        return false;
-    }
-
-    var scrollLeft = win.scrollLeft(), scrollTop = win.scrollTop(), {top, left} = element.offset();
-
-    return top + element.height() >= scrollTop
-        && top - offsetTop <= scrollTop + win.height()
-        && left + element.width() >= scrollLeft
-        && left - offsetLeft <= scrollLeft + win.width();
+    return rect.bottom >= -1 * offsetTop
+        && rect.right >= -1 * offsetLeft
+        && rect.top <= (window.innerHeight || document.documentElement.clientHeight) + offsetTop
+        && rect.left <= (window.innerWidth || document.documentElement.clientWidth) + offsetLeft;
 }
 
 export function getIndex(index, elements, current = 0) {
