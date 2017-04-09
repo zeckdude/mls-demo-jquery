@@ -55,6 +55,7 @@
     <script src="bower_components/uikit/dist/js/uikit-icons.min.js"></script>
 
     <!-- Site Scripts -->
+    <script src="js/jquery-functions.js"></script>
     <script src="js/utilities.js"></script>
     <script src="js/functions.js"></script>
     <script src="js/mapbox-styles.js"></script>
@@ -68,22 +69,14 @@
       </div>
     </div>
 
-    <div id="listing-detail" class="listing-detail" uk-modal>
-      <div class="listing-detail-content-container uk-modal-dialog">
-        <button class="uk-modal-close-full" type="button" uk-close></button>
-        <div class="listing-detail-content"></div>
-      </div>
-    </div>
-
     <div id="offcanvas-nav" uk-offcanvas="mode: slide; overlay: true">
       <div class="uk-offcanvas-bar">
 
         <ul class="uk-nav uk-nav-default">
           <li class="uk-active"><a class="uk-text-capitalize" href="#">Home</a></li>
-          <li><a class="uk-text-capitalize" href="#">Properties</a></li>
-          <li><a class="uk-text-capitalize" href="#">Agents</a></li>
-          <li><a class="uk-text-capitalize" href="#">Blog</a></li>
-          <li><a class="uk-text-capitalize" href="#">Contact</a></li>
+          <li><a class="uk-text-capitalize js-modal-dialog" data-href="about" href="#">About</a></li>
+          <li><a class="uk-text-capitalize js-modal-dialog" data-href="agents" href="#">Agents</a></li>
+          <li><a class="uk-text-capitalize js-modal-dialog" data-href="contact" href="#">Contact</a></li>
         </ul>
 
       </div>
@@ -98,10 +91,9 @@
               <div class="uk-navbar-right">
                 <ul class="uk-navbar-nav">
                   <li class="uk-active"><a class="uk-text-capitalize" href="#">Home</a></li>
-                  <li><a class="uk-text-capitalize" href="#">Properties</a></li>
-                  <li><a class="uk-text-capitalize" href="#">Agents</a></li>
-                  <li><a class="uk-text-capitalize" href="#">Blog</a></li>
-                  <li><a class="uk-text-capitalize" href="#">Contact</a></li>
+                  <li><a class="uk-text-capitalize js-modal-dialog" data-href="about" href="#">About</a></li>
+                  <li><a class="uk-text-capitalize js-modal-dialog" data-href="agents" href="#">Agents</a></li>
+                  <li><a class="uk-text-capitalize js-modal-dialog" data-href="contact" href="#">Contact</a></li>
                 </ul>
               </div>
             </nav>
@@ -116,7 +108,7 @@
         </div>
       </header>
       <div id="map-panel" class="uk-position-relative">
-        <div id="map" style="height: 100%"></div>
+        <div id="map" class="map" style="height: 100%"></div>
         <button id="remove-shape-btn" class="uk-hidden uk-position-top-right uk-button uk-button-primary uk-button-small">Remove Shape</button>
         <div id="mobile-bottom-menu" class="uk-position-bottom-center uk-container uk-background-primary uk-flex-center uk-width-1-1">
           <button id="mobile-search-button" class="uk-button uk-button-primary flaticon-magnifying-glass" data-panel="#search-panel"></button>

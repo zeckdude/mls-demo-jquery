@@ -404,16 +404,36 @@ a.modal-dialog:hover {
   background-color: transparent;
 }
 
-.listing-detail-modal h1 {
+.listing-detail-content-header > div {
   padding-right: 30px;
-  font-weight: 500;
-  font-size: 28px;
+}
+
+.listing-detail-content-header h2 {
+  padding-right: 30px;
   padding-bottom: 3px;
+  line-height: 1;
+}
+
+.listing-detail-content-header h4 {
+  line-height: 1;
+}
+
+.listing-detail-content-header p {
+  font-weight: 300;
+}
+
+.listing-detail-modal .uk-slidenav-previous {
+  left: 10px;
+}
+
+.listing-detail-modal .uk-slidenav-next {
+  right: 10px;
 }
 
 .secondary-tab-switcher .uk-tab {
-  margin-top: -42px;
-  margin-left: -41px;
+  flex-direction: column;
+  margin-top: -165px;
+  margin-left: 0;
 }
 
 .secondary-tab-switcher .uk-tab:before {
@@ -423,7 +443,7 @@ a.modal-dialog:hover {
 .secondary-tab-switcher .uk-tab li {
   background-color: #ebebeb;
   border-right: 1px solid #e5e5e5;
-  margin-right: 3px;
+  margin-right: 0;
   padding-left: 0;
   border-top: 1px solid #e5e5e5;
   border-left: 1px solid #e5e5e5;
@@ -444,14 +464,69 @@ a.modal-dialog:hover {
 }
 
 .secondary-tab-switcher .uk-card {
-  padding-top: 0;
-  margin-top: 41px;
+  margin-top: 165px;
+  padding: 0;
 }
 
 .secondary-tab-switcher .uk-switcher {
-  margin-left: -20px;
-  margin-right: -20px;
-  margin-bottom: -20px;
+  padding: 20px;
+  padding-top: 0;
+}
+
+.address-list {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.address-list li {
+  margin-bottom: 10px;
+}
+
+.uk-padding-20px {
+  padding: 20px;
+}
+
+@media (min-width: 640px) {
+  .uk-flex-row\@s {
+    -ms-flex-direction: row;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+  }
+
+  .uk-flex-1\@s {
+    -ms-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+  }
+
+  .uk-margin-remove\@s {
+    margin: 0 !important;
+  }
+
+  .secondary-tab-switcher .uk-card {
+    margin-top: 41px;
+  }
+
+  .secondary-tab-switcher ul.uk-tab {
+    flex-direction: row;
+    margin-top: -42px;
+  }
+
+  .secondary-tab-switcher ul.uk-tab li {
+    margin-right: 3px;
+  }
+}
+
+.map-short .listing-popup-wrapper {
+  width: 200px;
+}
+
+.map-short .listing-popup-wrapper .images-content {
+  height: 100px;
+}
+
+.map-short .open-listing-details-btn {
+  display: none;
 }
 
 
@@ -604,7 +679,6 @@ a.modal-dialog:hover {
   }
 
   .listing-detail-modal .uk-modal-dialog {
-    height: 100%;
     margin-top: 0;
     margin-bottom: 0;
   }

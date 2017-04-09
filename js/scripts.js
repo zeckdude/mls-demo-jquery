@@ -17,6 +17,7 @@ $(document).ready(function() {
   var searchParameters = [];
   var lastClickedMarker = null;
   var searchResults = null;
+  var $map = $('#map');
 
   var map = createMap();
 
@@ -187,7 +188,7 @@ $(document).ready(function() {
     $clickedButton.addClass('active');
 
     // Trigger a resize so that UI kit grid updates the margins programmatically
-    $(window).trigger("resize")
+    $(window).trigger("resize");
   });
 
   window.addEventListener("orientationchange", function() {
@@ -202,30 +203,78 @@ $(document).ready(function() {
     });
   }
 
-  $(document).on('click', '.modal-dialog', function (e) {
+  $(document).on('click', '.js-modal-dialog', function (e) {
     e.preventDefault();
-    $(this).blur();
-    var listingId = $(this).attr('data-listing-id')
-    var listing = $.grep(searchResults, function(e){ return e.listingId == listingId; })[0];
-    var modal = UIkit.modal.dialog(_.templateFromUrl('templates/listing-detail-content.html',
-      $.extend({}, listing, {
-        listPrice: $.number(listing.listPrice, 0),
-        stateAbbreviation: convertState(listing.address.state, 'abbreviation')
-      })
-    ));
+    $modalDialogBtn = $(this);
+    $modalDialogBtn.blur();
+    var modalHref = $modalDialogBtn.attr('data-href');
 
-    var $modal = modal.$el;
+    if (modalHref === 'about') {
+      alert('yo');
+    }
 
-    $modal.addClass('listing-detail-modal');
+    if (modalHref === 'listing-detail') {
+      var listingId = $modalDialogBtn.attr('data-listing-id');
+      var listing = $.grep(searchResults, function (e) {
+        return e.listingId == listingId;
+      })[0];
+      var modal = UIkit.modal.dialog(_.templateFromUrl('templates/listing-detail-content.html',
+        $.extend({}, listing, {
+          listPrice: $.number(listing.listPrice, 0),
+          stateAbbreviation: convertState(listing.address.state, 'abbreviation'),
+          amenitiesSplit: listing.association.amenities.split(',')
+        })
+      ));
 
-    var $listingDetailImagesContent = $modal.find('.images-content');
-    $listingDetailImagesContent.flexslider({
-      animation: "slide",
-      customDirectionNav: $listingDetailImagesContent.next(".custom-navigation").find('a'),
-      controlNav: false,
-      easing: "linear"
-    });
+      var $modal = modal.$el;
 
+      $modal.addClass('listing-detail-modal');
+
+      var $listingDetailImagesContent = $modal.find('.images-content');
+      $listingDetailImagesContent.flexslider({
+        animation: "slide",
+        customDirectionNav: $listingDetailImagesContent.next(".custom-navigation").find('a'),
+        controlNav: false,
+        easing: "linear"
+      });
+
+      // If the map is loaded when its container is hidden, the tiles don't load correctly.
+      // It is difficult to listen for when the map tab is clicked, so instead just listen for the click on the tab and set a short timeout before loading the map
+      $(document).on('click', '#property-details-map-btn', function () {
+        $propertyDetailsMap = $modal.find('.property-details-map');
+
+        setTimeout(function () {
+
+          // If the map was already initialized previously, remove that instance before creating it again
+          if (typeof propertyDetailsMap !== 'undefined') {
+            propertyDetailsMap.remove();
+          }
+
+          propertyDetailsMap = new L.Map($propertyDetailsMap[0], {
+            layers: [getTileLayer('another')],
+            center: new L.LatLng(listing.geo.lat, listing.geo.lng),
+            zoom: 16,
+            maxZoom: 18,
+            zoomControl: true,
+            scrollWheelZoom: false
+          });
+
+          var markerLocation = new L.LatLng(listing.geo.lat, listing.geo.lng);
+          var marker = new L.Marker(markerLocation);
+          propertyDetailsMap.addLayer(marker);
+        }, 1);
+      });
+    }
+  });
+
+  function toggleMapTallClass() {
+    $map.toggleClass('map-short', $map.height() < 500);
+  }
+
+  toggleMapTallClass();
+
+  $(window).onDelayed('resize',200,function(){
+    toggleMapTallClass();
   });
 
 });

@@ -1,9 +1,9 @@
 <div>
   <div class="search-result-single uk-card uk-card-default uk-background-light-grey uk-text-dark-grey">
     <div class="ratio16_9">
-      <div><a class="modal-dialog" data-listing-id="<%= listingId %>" href="#"><img class="uk-width-expand" src='<%= photos[0] %>' alt=''/></a></div>
+      <div><a class="js-modal-dialog" data-listing-id="<%= listingId %>" data-href="listing-detail" href="#"><img class="uk-width-expand" src='<%= photos[0] %>' alt=''/></a></div>
     </div>
-    <h4 class="uk-background-primary uk-margin-remove uk-text-white uk-padding-tiny uk-text-truncate"><a class="modal-dialog" data-listing-id="<%= listingId %>" href="#"><%= address.streetNumber %> <%= address.streetName %></a></h4>
+    <h4 class="uk-background-primary uk-margin-remove uk-text-white uk-padding-tiny uk-text-truncate"><a class="js-modal-dialog modal-dialog" data-listing-id="<%= listingId %>" data-href="listing-detail" href="#"><%= address.streetNumber %> <%= address.streetName %></a></h4>
     <div class="search-results-property-features uk-child-width-expand uk-padding-tiny" uk-grid>
         <div>
           <ul class="uk-list">

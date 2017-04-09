@@ -5,14 +5,12 @@
       <div class="listing-detail-content">
 
         <div class="listing-detail-content-header uk-padding-small uk-padding-remove-horizontal uk-padding-remove-top">
-          <div class="uk-flex uk-flex-column uk-flex-row@s">
+
             <div class="uk-flex uk-flex-column uk-flex-auto uk-flex-1@s">
-              <h2 class="uk-margin-remove"><%= address.streetNumber %> <%= address.streetName %></h2>
-              <p class="uk-margin-remove"><%= address.city %>, <%= stateAbbreviation %> <%= address.postalCode %></p>
+              <h2 class="uk-margin-remove">About</h2>
+              <p class="uk-margin-remove">A little information regarding the developer of this site</p>
             </div>
 
-            <h4 class="uk-margin-small-top uk-margin-remove-bottom uk-margin-remove@s">$<%= listPrice %></h4>
-          </div>
         </div>
 
         <div>
@@ -20,15 +18,7 @@
             <div class="uk-width-1-1">
               <div class='images uk-inline uk-light uk-width-1-1'>
                 <div class='images-content'>
-                  <ul class='slides'>
-                    <% _.forEach(photos, function(photo) { %>
-                      <li class="ratio16_9"><div><img class='uk-width-1-1' src='<%= photo %>' alt=''/></div></li>
-                    <% }); %>
-                  </ul>
-                </div>
-                <div class="custom-navigation">
-                  <a class="uk-position-center-left flex-prev uk-slidenav-large" href="" uk-slidenav-previous></a>
-                  <a class="uk-position-center-right flex-next uk-slidenav-large" href="" uk-slidenav-next></a>
+
                 </div>
               </div>
             </div>
