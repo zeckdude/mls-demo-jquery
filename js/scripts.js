@@ -210,7 +210,9 @@ $(document).ready(function() {
     var modalHref = $modalDialogBtn.attr('data-href');
 
     if (modalHref === 'about') {
-      alert('yo');
+      var modal = UIkit.modal.dialog(_.templateFromUrl('templates/about.html'));
+      var $modal = modal.$el;
+      $modal.addClass('listing-detail-modal');
     }
 
     if (modalHref === 'listing-detail') {
@@ -227,7 +229,6 @@ $(document).ready(function() {
       ));
 
       var $modal = modal.$el;
-
       $modal.addClass('listing-detail-modal');
 
       var $listingDetailImagesContent = $modal.find('.images-content');
