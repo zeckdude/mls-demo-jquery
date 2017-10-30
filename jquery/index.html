@@ -1,141 +1,138 @@
 <html>
-  <head>
-    <title>HomeSearch.com - MLS Demo</title>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<head>
+  <title>HomeSearch.com - MLS Demo</title>
 
-    <!-- Favicon -->
-    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="img/favicon/apple-touch-icon-57x57.png" />
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="img/favicon/apple-touch-icon-114x114.png" />
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="img/favicon/apple-touch-icon-72x72.png" />
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="img/favicon/apple-touch-icon-144x144.png" />
-    <link rel="apple-touch-icon-precomposed" sizes="60x60" href="img/favicon/apple-touch-icon-60x60.png" />
-    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="img/favicon/apple-touch-icon-120x120.png" />
-    <link rel="apple-touch-icon-precomposed" sizes="76x76" href="img/favicon/apple-touch-icon-76x76.png" />
-    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="img/favicon/apple-touch-icon-152x152.png" />
-    <link rel="icon" type="image/png" href="img/favicon/favicon-196x196.png" sizes="196x196" />
-    <link rel="icon" type="image/png" href="img/favicon/favicon-96x96.png" sizes="96x96" />
-    <link rel="icon" type="image/png" href="img/favicon/favicon-32x32.png" sizes="32x32" />
-    <link rel="icon" type="image/png" href="img/favicon/favicon-16x16.png" sizes="16x16" />
-    <link rel="icon" type="image/png" href="img/favicon/favicon-128.png" sizes="128x128" />
-    <meta name="application-name" content="&nbsp;"/>
-    <meta name="msapplication-TileColor" content="#FFFFFF" />
-    <meta name="msapplication-TileImage" content="img/favicon/mstile-144x144.png" />
-    <meta name="msapplication-square70x70logo" content="img/favicon/mstile-70x70.png" />
-    <meta name="msapplication-square150x150logo" content="img/favicon/mstile-150x150.png" />
-    <meta name="msapplication-wide310x150logo" content="img/favicon/mstile-310x150.png" />
-    <meta name="msapplication-square310x310logo" content="img/favicon/mstile-310x310.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-    <!-- Vendor Stylesheets -->
-    <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css" />
-    <link rel="stylesheet" href="bower_components/leaflet-draw/dist/leaflet.draw.css" />
-    <link rel="stylesheet" href="bower_components/flexslider/flexslider.css" />
-    <!-- <link rel="stylesheet" href="bower_components/uikit/dist/css/uikit.min.css" /> -->
+  <!-- Favicon -->
+  <link rel="apple-touch-icon-precomposed" sizes="57x57" href="img/favicon/apple-touch-icon-57x57.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="img/favicon/apple-touch-icon-114x114.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="img/favicon/apple-touch-icon-72x72.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="img/favicon/apple-touch-icon-144x144.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="60x60" href="img/favicon/apple-touch-icon-60x60.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="120x120" href="img/favicon/apple-touch-icon-120x120.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="76x76" href="img/favicon/apple-touch-icon-76x76.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="152x152" href="img/favicon/apple-touch-icon-152x152.png" />
+  <link rel="icon" type="image/png" href="img/favicon/favicon-196x196.png" sizes="196x196" />
+  <link rel="icon" type="image/png" href="img/favicon/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/png" href="img/favicon/favicon-32x32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="img/favicon/favicon-16x16.png" sizes="16x16" />
+  <link rel="icon" type="image/png" href="img/favicon/favicon-128.png" sizes="128x128" />
+  <meta name="application-name" content="&nbsp;" />
+  <meta name="msapplication-TileColor" content="#FFFFFF" />
+  <meta name="msapplication-TileImage" content="img/favicon/mstile-144x144.png" />
+  <meta name="msapplication-square70x70logo" content="img/favicon/mstile-70x70.png" />
+  <meta name="msapplication-square150x150logo" content="img/favicon/mstile-150x150.png" />
+  <meta name="msapplication-wide310x150logo" content="img/favicon/mstile-310x150.png" />
+  <meta name="msapplication-square310x310logo" content="img/favicon/mstile-310x310.png" />
 
-    <!-- From UI KIt -->
-    <link rel="stylesheet" href="css/theme.css" />
+  <!-- Vendor Stylesheets -->
+  <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="bower_components/leaflet-draw/dist/leaflet.draw.css" />
+  <link rel="stylesheet" href="bower_components/flexslider/flexslider.css" />
+  <!-- <link rel="stylesheet" href="bower_components/uikit/dist/css/uikit.min.css" /> -->
 
-    <!-- Custom Fonts -->
-    <link rel="stylesheet" href="css/flaticon.css" />
-    <link href="https://fonts.googleapis.com/css?family=Slabo+27px" rel="stylesheet">
+  <!-- From UI KIt -->
+  <link rel="stylesheet" href="css/theme.css" />
 
-    <!-- Site Main Stylesheet -->
-    <link rel="stylesheet" href="css/style.css" />
+  <!-- Custom Fonts -->
+  <link rel="stylesheet" href="css/flaticon.css" />
+  <link href="https://fonts.googleapis.com/css?family=Slabo+27px" rel="stylesheet">
+
+  <!-- Site Main Stylesheet -->
+  <link rel="stylesheet" href="css/style.css" />
 
 
-    <!-- Vendor Scripts -->
-    <script src="bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="bower_components/lodash/dist/lodash.min.js"></script>
-    <script src="bower_components/leaflet/dist/leaflet.js"></script>
-    <script src="bower_components/leaflet-draw/dist/leaflet.draw.js"></script>
-    <script src="bower_components/leaflet-sprite/dist/leaflet.sprite.js"></script>
-    <script src="bower_components/flexslider/jquery.flexslider-min.js"></script>
-    <script src="bower_components/teamdf/jquery-number/jquery.number.min.js"></script>
-    <script src="bower_components/uikit/dist/js/uikit.js"></script>
-    <script src="bower_components/uikit/dist/js/uikit-icons.min.js"></script>
+  <!-- Vendor Scripts -->
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="bower_components/lodash/dist/lodash.min.js"></script>
+  <script src="bower_components/leaflet/dist/leaflet.js"></script>
+  <script src="bower_components/leaflet-draw/dist/leaflet.draw.js"></script>
+  <script src="bower_components/leaflet-sprite/dist/leaflet.sprite.js"></script>
+  <script src="bower_components/flexslider/jquery.flexslider-min.js"></script>
+  <script src="bower_components/teamdf/jquery-number/jquery.number.min.js"></script>
+  <script src="bower_components/uikit/dist/js/uikit.js"></script>
+  <script src="bower_components/uikit/dist/js/uikit-icons.min.js"></script>
 
-    <!-- Site Scripts -->
-    <script src="js/jquery-functions.js"></script>
-    <script src="js/utilities.js"></script>
-    <script src="js/functions.js"></script>
-    <script src="js/mapbox-styles.js"></script>
-    <script src="js/scripts.js"></script>
-  </head>
+  <!-- Site Scripts -->
+  <script src="js/jquery-functions.js"></script>
+  <script src="js/utilities.js"></script>
+  <script src="js/functions.js"></script>
+  <script src="js/mapbox-styles.js"></script>
+  <script src="js/scripts.js"></script>
+</head>
 
-  <body>
-    <div id="spinner" class="uk-overlay-primary">
-      <div class="uk-position-center">
-        <span uk-spinner></span>
-      </div>
+<body>
+  <div id="spinner" class="uk-overlay-primary">
+    <div class="uk-position-center">
+      <span uk-spinner></span>
     </div>
+  </div>
 
-    <div id="offcanvas-nav" uk-offcanvas="mode: slide; overlay: true">
-      <div class="uk-offcanvas-bar">
-
-        <ul class="uk-nav uk-nav-default">
-          <li class="uk-active"><a class="uk-text-capitalize" href="#">Home</a></li>
-          <li><a class="uk-text-capitalize js-modal-dialog" data-href="about" href="#">About</a></li>
-          <!-- <li><a class="uk-text-capitalize js-modal-dialog" data-href="agents" href="#">Agents</a></li>
-          <li><a class="uk-text-capitalize js-modal-dialog" data-href="contact" href="#">Contact</a></li> -->
-        </ul>
-
-      </div>
+  <div id="offcanvas-nav" uk-offcanvas="mode: slide; overlay: true">
+    <div class="uk-offcanvas-bar">
+      <ul class="uk-nav uk-nav-default">
+        <li class="uk-active"><a class="uk-text-capitalize" href="#">Home</a></li>
+        <li><a class="uk-text-capitalize js-modal-dialog" data-href="about" href="#">About</a></li>
+      </ul>
     </div>
+  </div>
 
-    <div id="page-container">
-      <header id="main-nav" class="uk-card uk-card-default uk-box-shadow-small">
-        <div class="uk-container">
-          <div class="uk-flex uk-flex-middle uk-height-1-1">
-            <div id="logo"><span class="icon-logo flaticon-hand"></span> <span class="text-logo">HomeSearch.com</span></div>
-            <nav id="main-navbar" class="uk-flex-1" uk-navbar>
-              <div class="uk-navbar-right">
-                <ul class="uk-navbar-nav">
-                  <li class="uk-active"><a class="uk-text-capitalize" href="#">Home</a></li>
-                  <li><a class="uk-text-capitalize js-modal-dialog" data-href="about" href="#">About</a></li>
-                  <!-- <li><a class="uk-text-capitalize js-modal-dialog" data-href="agents" href="#">Agents</a></li>
+  <div id="page-container">
+    <header id="main-nav" class="uk-card uk-card-default uk-box-shadow-small">
+      <div class="uk-container">
+        <div class="uk-flex uk-flex-middle uk-height-1-1">
+          <div id="logo"><span class="icon-logo flaticon-hand"></span> <span class="text-logo">HomeSearch.com</span></div>
+          <nav id="main-navbar" class="uk-flex-1" uk-navbar>
+            <div class="uk-navbar-right">
+              <ul class="uk-navbar-nav">
+                <li class="uk-active"><a class="uk-text-capitalize" href="#">Home</a></li>
+                <li><a class="uk-text-capitalize js-modal-dialog" data-href="about" href="#">About</a></li>
+                <!-- <li><a class="uk-text-capitalize js-modal-dialog" data-href="agents" href="#">Agents</a></li>
                   <li><a class="uk-text-capitalize js-modal-dialog" data-href="contact" href="#">Contact</a></li> -->
-                </ul>
-              </div>
-            </nav>
-            <nav id="mobile-navbar" class="uk-flex-1" uk-navbar>
-              <div class="uk-navbar-right">
-                <a class="uk-navbar-toggle" href="#" uk-toggle="target: #offcanvas-nav">
+              </ul>
+            </div>
+          </nav>
+          <nav id="mobile-navbar" class="uk-flex-1" uk-navbar>
+            <div class="uk-navbar-right">
+              <a class="uk-navbar-toggle" href="#" uk-toggle="target: #offcanvas-nav">
                   <span uk-navbar-toggle-icon></span> <span class="uk-margin-small-left">Menu</span>
                 </a>
-              </div>
-            </nav>
-          </div>
-        </div>
-      </header>
-      <div id="map-panel" class="uk-position-relative">
-        <div id="map" class="map" style="height: 100%"></div>
-        <button id="remove-shape-btn" class="uk-hidden uk-position-top-right uk-button uk-button-primary uk-button-small">Remove Shape</button>
-        <div id="mobile-bottom-menu" class="uk-position-bottom-center uk-container uk-background-primary uk-flex-center uk-width-1-1">
-          <button id="mobile-search-button" class="uk-button uk-button-primary flaticon-magnifying-glass" data-panel="#search-panel"></button>
-          <button id="mobile-results-button" class="uk-button uk-button-primary flaticon-interface" data-panel="#search-results-panel"><span class="uk-badge results-num">0</span></button>
-          <button id="mobile-map-button" class="uk-button uk-button-primary flaticon-world active"></button>
+            </div>
+          </nav>
         </div>
       </div>
+    </header>
+    <div id="map-panel" class="uk-position-relative">
+      <div id="map" class="map" style="height: 100%"></div>
+      <button id="remove-shape-btn" class="uk-hidden uk-position-top-right uk-button uk-button-primary uk-button-small">Remove Shape</button>
+      <div id="mobile-bottom-menu" class="uk-position-bottom-center uk-container uk-background-primary uk-flex-center uk-width-1-1">
+        <button id="mobile-search-button" class="uk-button uk-button-primary flaticon-magnifying-glass" data-panel="#search-panel"></button>
+        <button id="mobile-results-button" class="uk-button uk-button-primary flaticon-interface" data-panel="#search-results-panel"><span class="uk-badge results-num">0</span></button>
+        <button id="mobile-map-button" class="uk-button uk-button-primary flaticon-world active"></button>
+      </div>
+    </div>
 
-      <section id="lower-container" class="uk-container uk-padding uk-padding-remove-top uk-remove-padding@m">
-        <div id="search-panel" class="mobile-panel">
-          <div id="search-panel-container" class="uk-padding-small">
-            <div class="uk-heading-divider uk-flex uk-flex-top uk-margin-bottom">
-              <h3 class="uk-flex-1 uk-margin-remove-bottom">Filter Search </h3>
-              <button class="uk-hidden uk-button uk-button-primary uk-button-small clear-search-parameters-btn">Clear Filters</button>
-            </div>
-            <div id="search-box" class="uk-padding-small uk-card uk-card-default uk-box-shadow-small uk-remove-margin-top@m">
-              <form id="properties-search-form" class="uk-grid-small uk-form-stacked" uk-grid>
-                <div class="uk-width-1-3@s uk-width-1-4@m">
-                  <label class="uk-form-label" for="search-box-keyword-field">Keyword</label>
-                  <div class="uk-form-controls">
-                    <input class="uk-input" id="search-box-keyword-field" name="q" type="text" placeholder="Any Keyword">
-                  </div>
+    <section id="lower-container" class="uk-container uk-padding uk-padding-remove-top uk-remove-padding@m">
+      <div id="search-panel" class="mobile-panel">
+        <div id="search-panel-container" class="uk-padding-small">
+          <div class="uk-heading-divider uk-flex uk-flex-top uk-margin-bottom">
+            <h3 class="uk-flex-1 uk-margin-remove-bottom">Filter Search </h3>
+            <button class="uk-hidden uk-button uk-button-primary uk-button-small clear-search-parameters-btn">Clear Filters</button>
+          </div>
+          <div id="search-box" class="uk-padding-small uk-card uk-card-default uk-box-shadow-small uk-remove-margin-top@m">
+            <form id="properties-search-form" class="uk-grid-small uk-form-stacked" uk-grid>
+              <div class="uk-width-1-3@s uk-width-1-4@m">
+                <label class="uk-form-label" for="search-box-keyword-field">Keyword</label>
+                <div class="uk-form-controls">
+                  <input class="uk-input" id="search-box-keyword-field" name="q" type="text" placeholder="Any Keyword">
                 </div>
-                <div class="uk-width-1-3@s uk-width-1-4@m">
-                  <label class="uk-form-label" for="search-box-status-field">Property Status</label>
-                  <div class="uk-form-controls">
-                    <select class="uk-select" id="search-box-status-field" name="status">
+              </div>
+              <div class="uk-width-1-3@s uk-width-1-4@m">
+                <label class="uk-form-label" for="search-box-status-field">Property Status</label>
+                <div class="uk-form-controls">
+                  <select class="uk-select" id="search-box-status-field" name="status">
                       <option value="">Any Status</option>
                       <option value="Active">Active</option>
                       <option value="Pending">Pending</option>
@@ -147,12 +144,12 @@
                       <option value="Incomplete">Incomplete</option>
                       <option value="ComingSoon">Coming Soon</option>
                     </select>
-                  </div>
                 </div>
-                <div class="uk-width-1-3@s uk-width-1-4@m">
-                  <label class="uk-form-label" for="search-box-type-field">Property Type</label>
-                  <div class="uk-form-controls">
-                    <select class="uk-select" id="search-box-type-field" name="type">
+              </div>
+              <div class="uk-width-1-3@s uk-width-1-4@m">
+                <label class="uk-form-label" for="search-box-type-field">Property Type</label>
+                <div class="uk-form-controls">
+                  <select class="uk-select" id="search-box-type-field" name="type">
                       <option value="">Any Type</option>
                       <option value="residential">Residential</option>
                       <option value="rental">Rental</option>
@@ -161,12 +158,12 @@
                       <option value="commercial">Commercial</option>
                       <option value="land">Land</option>
                     </select>
-                  </div>
                 </div>
-                <div class="uk-width-1-3@s uk-width-1-4@m">
-                  <label class="uk-form-label" for="search-box-rooms-field">Min Rooms</label>
-                  <div class="uk-form-controls">
-                    <select class="uk-select" id="search-box-rooms-field" name="minbeds">
+              </div>
+              <div class="uk-width-1-3@s uk-width-1-4@m">
+                <label class="uk-form-label" for="search-box-rooms-field">Min Rooms</label>
+                <div class="uk-form-controls">
+                  <select class="uk-select" id="search-box-rooms-field" name="minbeds">
                       <option value="">Any Rooms</option>
                       <option value="1">1</option>
                       <option value="2">2</option>
@@ -178,12 +175,12 @@
                       <option value="8">8</option>
                       <option value="9">9</option>
                     </select>
-                  </div>
                 </div>
-                <div class="uk-width-1-3@s uk-width-1-6@m">
-                  <label class="uk-form-label" for="search-box-baths-field">Min Baths</label>
-                  <div class="uk-form-controls">
-                    <select class="uk-select" id="search-box-baths-field" name="minbaths">
+              </div>
+              <div class="uk-width-1-3@s uk-width-1-6@m">
+                <label class="uk-form-label" for="search-box-baths-field">Min Baths</label>
+                <div class="uk-form-controls">
+                  <select class="uk-select" id="search-box-baths-field" name="minbaths">
                       <option value="">Any Bathrooms</option>
                       <option value="1">1</option>
                       <option value="2">2</option>
@@ -195,54 +192,55 @@
                       <option value="8">8</option>
                       <option value="9">9</option>
                     </select>
-                  </div>
                 </div>
-                <div class="uk-width-1-3@s uk-width-1-6@m">
-                  <label class="uk-form-label" for="search-box-minprice-field">Min Price</label>
-                  <div class="uk-form-controls uk-form-group">
-                    <div class="uk-input-group-addon">$</div>
-                    <input class="uk-input" id="search-box-minprice-field" type="text" placeholder="No Min Price" name="minprice">
-                  </div>
+              </div>
+              <div class="uk-width-1-3@s uk-width-1-6@m">
+                <label class="uk-form-label" for="search-box-minprice-field">Min Price</label>
+                <div class="uk-form-controls uk-form-group">
+                  <div class="uk-input-group-addon">$</div>
+                  <input class="uk-input" id="search-box-minprice-field" type="text" placeholder="No Min Price" name="minprice">
                 </div>
-                <div class="uk-width-1-3@s uk-width-1-6@m">
-                  <label class="uk-form-label" for="search-box-maxprice-field">Max Price</label>
-                  <div class="uk-form-controls uk-form-group">
-                    <div class="uk-input-group-addon">$</div>
-                    <input class="uk-input" id="search-box-maxprice-field" type="text" placeholder="No Max Price" name="maxprice">
-                  </div>
+              </div>
+              <div class="uk-width-1-3@s uk-width-1-6@m">
+                <label class="uk-form-label" for="search-box-maxprice-field">Max Price</label>
+                <div class="uk-form-controls uk-form-group">
+                  <div class="uk-input-group-addon">$</div>
+                  <input class="uk-input" id="search-box-maxprice-field" type="text" placeholder="No Max Price" name="maxprice">
                 </div>
-                <div class="uk-width-1-3@s uk-width-1-6@m">
-                  <label class="uk-form-label" for="search-box-minarea-field">Min Area <small class="uk-text-muted">(sq ft)</small></label>
-                  <div class="uk-form-controls">
-                    <input class="uk-input" id="search-box-minarea-field" type="text" placeholder="No Min Area" name="minarea">
-                  </div>
+              </div>
+              <div class="uk-width-1-3@s uk-width-1-6@m">
+                <label class="uk-form-label" for="search-box-minarea-field">Min Area <small class="uk-text-muted">(sq ft)</small></label>
+                <div class="uk-form-controls">
+                  <input class="uk-input" id="search-box-minarea-field" type="text" placeholder="No Min Area" name="minarea">
                 </div>
-                <div class="uk-width-1-3@s uk-width-1-6@m">
-                  <label class="uk-form-label" for="search-box-maxarea-field">Max Area <small class="uk-text-muted">(sq ft)</small></label>
-                  <div class="uk-form-controls">
-                    <input class="uk-input" id="search-box-maxarea-field" type="text" placeholder="No Max Area" name="maxarea">
-                  </div>
+              </div>
+              <div class="uk-width-1-3@s uk-width-1-6@m">
+                <label class="uk-form-label" for="search-box-maxarea-field">Max Area <small class="uk-text-muted">(sq ft)</small></label>
+                <div class="uk-form-controls">
+                  <input class="uk-input" id="search-box-maxarea-field" type="text" placeholder="No Max Area" name="maxarea">
                 </div>
-                <div class="uk-width-expand@s uk-width-1-6@m">
-                  <button class="uk-button uk-button-primary uk-width-1-1" id="search-box-search-btn" disabled>Search</button>
-                </div>
-              </form>
-            </div>
+              </div>
+              <div class="uk-width-expand@s uk-width-1-6@m">
+                <button class="uk-button uk-button-primary uk-width-1-1" id="search-box-search-btn" disabled>Search</button>
+              </div>
+            </form>
           </div>
         </div>
+      </div>
 
-        <div id="search-results-panel" class="mobile-panel">
-          <div class="uk-padding-small">
-            <!-- <h3 class="uk-heading-divider">Search Results (<span class="results-num"></span>)</h3> -->
-            <div class="uk-heading-divider uk-flex uk-flex-top uk-margin-bottom">
-              <h3 class="uk-flex-1 uk-margin-remove-bottom">Search Results (<span class="results-num"></span>)</h3>
-              <button class="uk-hidden uk-button uk-button-primary uk-button-small clear-search-parameters-btn">Clear Filters</button>
-            </div>
-            <div id="search-results-not-found-container"></div>
-            <div id="search-results-grid" class="uk-child-width-1-2@s uk-child-width-1-3@m uk-grid uk-grid-match" uk-grid></div>
+      <div id="search-results-panel" class="mobile-panel">
+        <div class="uk-padding-small">
+          <!-- <h3 class="uk-heading-divider">Search Results (<span class="results-num"></span>)</h3> -->
+          <div class="uk-heading-divider uk-flex uk-flex-top uk-margin-bottom">
+            <h3 class="uk-flex-1 uk-margin-remove-bottom">Search Results (<span class="results-num"></span>)</h3>
+            <button class="uk-hidden uk-button uk-button-primary uk-button-small clear-search-parameters-btn">Clear Filters</button>
           </div>
+          <div id="search-results-not-found-container"></div>
+          <div id="search-results-grid" class="uk-child-width-1-2@s uk-child-width-1-3@m uk-grid uk-grid-match" uk-grid></div>
         </div>
-      </section>
-    </div>
-  </body>
+      </div>
+    </section>
+  </div>
+</body>
+
 </html>

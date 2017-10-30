@@ -92,6 +92,10 @@ border-bottom: 2px solid #1e87f0;*/
   font-size: 13px;
 }
 
+.leaflet-touch .leaflet-control-zoom-out {
+  font-size: 20px;
+}
+
 .listing-popup-wrapper {
   width: 400px;
   max-width: 100%;

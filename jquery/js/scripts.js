@@ -21,8 +21,6 @@ $(document).ready(function() {
 
   var map = createMap();
 
-  var hello = 'hello1';
-
   // Debugging: Show the bounds of the map where properties will be shown for search results when the map tool is not used
   //showMapViewingArea(map);
 
@@ -40,7 +38,7 @@ $(document).ready(function() {
     shouldRemoveMarkers: true
   });
 
-  map.on('draw:created', function (e) {
+  map.on('draw:created', function(e) {
     // Remove the existing shape and markers
     removeShapeAndMarkers(map, shape, markers);
 
@@ -91,10 +89,10 @@ $(document).ready(function() {
 
   // Change disabled attribute on search box submit button depending on if there is a value in any field
   $searchFormFields.on('change keyup', function() {
-    $('#search-box-search-btn').prop("disabled", true);
+    $('#search-box-search-btn').prop('disabled', true);
     $searchFormFields.each(function() {
-      if( $(this).val().length > 0 ) {
-        $('#search-box-search-btn').prop("disabled", false);
+      if ($(this).val().length > 0) {
+        $('#search-box-search-btn').prop('disabled', false);
         return false; // break the loop
       }
     });
@@ -116,8 +114,10 @@ $(document).ready(function() {
         // Display success message at the top of the search panel
         if ($('#search-confirmation-message').length === 0) {
           $('#search-panel-container').prepend('<div id="search-confirmation-message" class="uk-fixed-alert uk-alert-success" uk-alert><a class="uk-alert-close" uk-close></a><p>Your filters have been updated.</p></div>');
-          setTimeout(function(){
-            $('#search-confirmation-message').find('.uk-alert-close').trigger('click');
+          setTimeout(function() {
+            $('#search-confirmation-message')
+              .find('.uk-alert-close')
+              .trigger('click');
           }, 2500);
         }
       }
@@ -126,7 +126,7 @@ $(document).ready(function() {
 
   $(document).on('click', '.clear-search-parameters-btn', function() {
     $searchFormElement[0].reset();
-    $('#search-box-search-btn').prop("disabled", true);
+    $('#search-box-search-btn').prop('disabled', true);
     searchParameters = [];
 
     // Perform a search based on default search criteria
@@ -188,12 +188,18 @@ $(document).ready(function() {
     $clickedButton.addClass('active');
 
     // Trigger a resize so that UI kit grid updates the margins programmatically
-    $(window).trigger("resize");
+    $(window).trigger('resize');
   });
 
-  window.addEventListener("orientationchange", function() {
-    $('body').removeClass('portrait landscape').addClass(getOrientation());
-  }, false);
+  window.addEventListener(
+    'orientationchange',
+    function() {
+      $('body')
+        .removeClass('portrait landscape')
+        .addClass(getOrientation());
+    },
+    false
+  );
 
   if ('ontouchmove' in window) {
     $(document).on('focus', 'textarea,input,select', function() {
@@ -203,7 +209,7 @@ $(document).ready(function() {
     });
   }
 
-  $(document).on('click', '.js-modal-dialog', function (e) {
+  $(document).on('click', '.js-modal-dialog', function(e) {
     e.preventDefault();
     $modalDialogBtn = $(this);
     $modalDialogBtn.blur();
@@ -217,35 +223,37 @@ $(document).ready(function() {
 
     if (modalHref === 'listing-detail') {
       var listingId = $modalDialogBtn.attr('data-listing-id');
-      var listing = $.grep(searchResults, function (e) {
+      var listing = $.grep(searchResults, function(e) {
         return e.listingId == listingId;
       })[0];
-      var modal = UIkit.modal.dialog(_.templateFromUrl('templates/listing-detail-content.html',
-        $.extend({}, listing, {
-          listPrice: $.number(listing.listPrice, 0),
-          stateAbbreviation: convertState(listing.address.state, 'abbreviation'),
-          amenitiesSplit: listing.association.amenities.split(',')
-        })
-      ));
+      var modal = UIkit.modal.dialog(
+        _.templateFromUrl(
+          'templates/listing-detail-content.html',
+          $.extend({}, listing, {
+            listPrice: $.number(listing.listPrice, 0),
+            stateAbbreviation: convertState(listing.address.state, 'abbreviation'),
+            amenitiesSplit: listing.association.amenities.split(',')
+          })
+        )
+      );
 
       var $modal = modal.$el;
       $modal.addClass('listing-detail-modal');
 
       var $listingDetailImagesContent = $modal.find('.images-content');
       $listingDetailImagesContent.flexslider({
-        animation: "slide",
-        customDirectionNav: $listingDetailImagesContent.next(".custom-navigation").find('a'),
+        animation: 'slide',
+        customDirectionNav: $listingDetailImagesContent.next('.custom-navigation').find('a'),
         controlNav: false,
-        easing: "linear"
+        easing: 'linear'
       });
 
       // If the map is loaded when its container is hidden, the tiles don't load correctly.
       // It is difficult to listen for when the map tab is clicked, so instead just listen for the click on the tab and set a short timeout before loading the map
-      $(document).on('click', '#property-details-map-btn', function () {
+      $(document).on('click', '#property-details-map-btn', function() {
         $propertyDetailsMap = $modal.find('.property-details-map');
 
-        setTimeout(function () {
-
+        setTimeout(function() {
           // If the map was already initialized previously, remove that instance before creating it again
           if (typeof propertyDetailsMap !== 'undefined') {
             propertyDetailsMap.remove();
@@ -274,8 +282,7 @@ $(document).ready(function() {
 
   toggleMapTallClass();
 
-  $(window).onDelayed('resize',200,function(){
+  $(window).onDelayed('resize', 200, function() {
     toggleMapTallClass();
   });
-
 });

@@ -1,0 +1,21 @@
+{
+  "extends": "airbnb",
+  "parserOptions": {
+    "ecmaVersion": 6
+  },
+  "env": {
+    "node": true,
+    "browser": true,
+    "es6": true
+  },
+  "rules": {
+    "max-len": [2, 400],
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "react/jsx-first-prop-new-line": [2, "multiline-multiprop"],
+    "react/jsx-max-props-per-line": [2, { "maximum": 3 }],
+    "class-methods-use-this": [0],
+    "jsx-a11y/href-no-hash": [0],
+    "jsx-a11y/anchor-is-valid": [0],
+    "comma-dangle": [error, always-multiline, {functions: never}]
+  }
+}

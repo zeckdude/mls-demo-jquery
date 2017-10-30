@@ -130,12 +130,16 @@ function getMapBoundsInViewingArea(map) {
     });
   });
 
+
+  console.log('mapBounds: ', data);
   return data;
 }
 
 function showMapViewingArea(map) {
   // Verify corners of map
   var mapBounds = getMapBoundsInViewingArea(map);
+
+  debugger;
 
   $.each (mapBounds, function (i, latLngSet) {
     var markerLocation = new L.LatLng(latLngSet.data.lat, latLngSet.data.lng);
