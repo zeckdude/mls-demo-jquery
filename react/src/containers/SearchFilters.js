@@ -1,135 +1,184 @@
 import React, { Component } from 'react';
+import { Field, reduxForm } from 'redux-form';
+import { bindActionCreators } from 'redux';
+import { map as _map, has as _has } from 'lodash';
+import { connect } from 'react-redux';
+import { SEARCH_FILTERS_FORM_FIELDS } from '../config/form/formFields';
+import { setSearchParameters } from '../actions';
 
-export default class SearchFilters extends Component {
+class SearchFilters extends Component {
   constructor(props) {
     super(props);
-    console.log('aaa');
+    this.onSubmit = this.onSubmit.bind(this);
+    this.renderField = this.renderField.bind(this);
+    this.renderAlert = this.renderAlert.bind(this);
+    this.areFormValuesDifferentSinceLastSubmit = this.areFormValuesDifferentSinceLastSubmit.bind(this);
+
+    // this.boundActionCreators = bindActionCreators(setSearchParameters, this.dispatch);
+    // console.log(this.boundActionCreators)
+
+    this.state = {
+      values: {},
+      isAlertVisible: false,
+    };
+  }
+
+  /**
+   * If the form values have changed since the last time this method was ran, then set the new search parameters in the store
+   * When a form field loses focus or the form is submitted, this method is ran
+   * @param  {object} values All of the form fields that are filled out (automatically sent from redux-form)
+   * @return void
+   */
+  onSubmit(values) {
+    // Check if states are same, if not, setState and perform action
+    if (this.areFormValuesDifferentSinceLastSubmit()) {
+      // Assign the form values to the component state for comparison on the next submit
+      this.setState({
+        values,
+      });
+
+      // Set the initial values for the form on the redux store (This is used by redux form to compare the current values to the initial values so we can determine if there are new values since the last submit)
+      this.props.initialize(values);
+
+      // Set the search parameters on the redux store
+      this.props.setSearchParameters(values);
+
+      // If the alert box is not already active, make it active for a specified amount of time
+      if (!this.state.isAlertVisible) {
+        this.setState({
+          isAlertVisible: true,
+        });
+
+        setTimeout(() => {
+          this.setState({
+            isAlertVisible: false,
+          });
+        }, 2500);
+      }
+    }
+  }
+
+  /**
+   * Check if the form fields values have changed since the last form submit
+   * This is accomplished by comparing the current form fields values (which are saved in this.props.SearchFiltersForm.values in the redux store) against the last submitted values that were saved on the component state
+   * @return {boolean} Have any form fields changed since the last submit?
+   */
+  areFormValuesDifferentSinceLastSubmit() {
+    // When all form fields are blank, the `values` property on this.props.SearchFiltersForm is removed, so we assign a blank object to compare against in that case
+    const searchFiltersFormPropValues = !_has(this.props.SearchFiltersForm, 'values') ? {} : this.props.SearchFiltersForm.values;
+    return JSON.stringify(this.state.values) !== JSON.stringify(searchFiltersFormPropValues);
+  }
+
+  buildOptions(options) {
+    return options.map(option => <option key={option.value} value={option.value}>{option.text}</option>);
+  }
+
+  buildFieldElement(field) {
+    switch (field.type) {
+      case 'input':
+        return (
+          <input
+            id={field.id}
+            className="uk-input"
+            type="text"
+            placeholder={field.placeholder}
+            {...field.input}
+          />
+        );
+      case 'select':
+        return (
+          <select
+            id={field.id}
+            className="uk-select"
+            {...field.input}
+          >
+            {this.buildOptions(field.options)}
+          </select>
+        );
+      default:
+        return null;
+    }
+  }
+
+  renderAlert() {
+    const visibilityClass = this.state.isAlertVisible ? 'alert-visible' : '';
+    const messageTypeClass = 'uk-alert-success';
+    return (
+      <div id="search-confirmation-message" className={`uk-fixed-alert uk-alert ${visibilityClass} ${messageTypeClass}`} data-uk-alert>
+        <a className="uk-alert-close" data-uk-close />
+        <p>Your filters have been updated.</p>
+      </div>
+    );
+  }
+
+  renderField(field) {
+    const { meta: { touched, error } } = field;
+    const formControlsClassName = field.addOn ? 'uk-form-controls uk-form-group' : 'uk-form-controls';
+
+    return (
+      <div className={field.containerClassName}>
+        <label className="uk-form-label" htmlFor={field.input.name}>
+          {field.label} {field.labelSecondary && <small className="uk-text-muted">(sq ft)</small>}
+        </label>
+        <div className={formControlsClassName}>
+          {field.addOn &&
+            <div className="uk-input-group-addon">{field.addOn}</div>
+          }
+          {this.buildFieldElement(field)}
+        </div>
+      </div>
+    );
   }
 
   render() {
+    const {
+      handleSubmit, pristine, submitting, invalid,
+    } = this.props;
+
     return (
       <div id="search-panel" className="mobile-panel">
         <div id="search-panel-container" className="uk-padding-small">
+          {this.renderAlert()}
           <div className="uk-heading-divider uk-flex uk-flex-top uk-margin-bottom">
             <h3 className="uk-flex-1 uk-margin-remove-bottom">Filter Search </h3>
             <button className="uk-hidden uk-button uk-button-primary uk-button-small clear-search-parameters-btn">Clear Filters</button>
           </div>
           <div id="search-box" className="uk-padding-small uk-card uk-card-default uk-box-shadow-small uk-remove-margin-top@m">
-            <form id="properties-search-form" className="uk-grid-small uk-form-stacked" data-uk-grid>
-              <div className="uk-width-1-3@s uk-width-1-4@m">
-                <label className="uk-form-label" htmlFor="search-box-keyword-field">Keyword</label>
-                <div className="uk-form-controls">
-                  <input
-                    className="uk-input" id="search-box-keyword-field" name="q"
-                    type="text" placeholder="Any Keyword"
-                  />
-                </div>
-              </div>
-              <div className="uk-width-1-3@s uk-width-1-4@m">
-                <label className="uk-form-label" htmlFor="search-box-status-field">Property Status</label>
-                <div className="uk-form-controls">
-                  <select className="uk-select" id="search-box-status-field" name="status">
-                    <option value="">Any Status</option>
-                    <option value="Active">Active</option>
-                    <option value="Pending">Pending</option>
-                    <option value="Closed">Closed</option>
-                    <option value="ActiveUnderContract">Active - Under Contract</option>
-                    <option value="Hold">Hold</option>
-                    <option value="Expired">Expired</option>
-                    <option value="Delete">Delete</option>
-                    <option value="Incomplete">Incomplete</option>
-                    <option value="ComingSoon">Coming Soon</option>
-                  </select>
-                </div>
-              </div>
-              <div className="uk-width-1-3@s uk-width-1-4@m">
-                <label className="uk-form-label" htmlFor="search-box-type-field">Property Type</label>
-                <div className="uk-form-controls">
-                  <select className="uk-select" id="search-box-type-field" name="type">
-                    <option value="">Any Type</option>
-                    <option value="residential">Residential</option>
-                    <option value="rental">Rental</option>
-                    <option value="multifamily">Multi-Family</option>
-                    <option value="condominium">Condominium</option>
-                    <option value="commercial">Commercial</option>
-                    <option value="land">Land</option>
-                  </select>
-                </div>
-              </div>
-              <div className="uk-width-1-3@s uk-width-1-4@m">
-                <label className="uk-form-label" htmlFor="search-box-rooms-field">Min Rooms</label>
-                <div className="uk-form-controls">
-                  <select className="uk-select" id="search-box-rooms-field" name="minbeds">
-                    <option value="">Any Rooms</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                  </select>
-                </div>
-              </div>
-              <div className="uk-width-1-3@s uk-width-1-6@m">
-                <label className="uk-form-label" htmlFor="search-box-baths-field">Min Baths</label>
-                <div className="uk-form-controls">
-                  <select className="uk-select" id="search-box-baths-field" name="minbaths">
-                    <option value="">Any Bathrooms</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                  </select>
-                </div>
-              </div>
-              <div className="uk-width-1-3@s uk-width-1-6@m">
-                <label className="uk-form-label" htmlFor="search-box-minprice-field">Min Price</label>
-                <div className="uk-form-controls uk-form-group">
-                  <div className="uk-input-group-addon">$</div>
-                  <input
-                    className="uk-input" id="search-box-minprice-field" type="text"
-                    placeholder="No Min Price" name="minprice"
-                  />
-                </div>
-              </div>
-              <div className="uk-width-1-3@s uk-width-1-6@m">
-                <label className="uk-form-label" htmlFor="search-box-maxprice-field">Max Price</label>
-                <div className="uk-form-controls uk-form-group">
-                  <div className="uk-input-group-addon">$</div>
-                  <input
-                    className="uk-input" id="search-box-maxprice-field" type="text"
-                    placeholder="No Max Price" name="maxprice"
-                  />
-                </div>
-              </div>
-              <div className="uk-width-1-3@s uk-width-1-6@m">
-                <label className="uk-form-label" htmlFor="search-box-minarea-field">Min Area <small className="uk-text-muted">(sq ft)</small></label>
-                <div className="uk-form-controls">
-                  <input
-                    className="uk-input" id="search-box-minarea-field" type="text"
-                    placeholder="No Min Area" name="minarea"
-                  />
-                </div>
-              </div>
-              <div className="uk-width-1-3@s uk-width-1-6@m">
-                <label className="uk-form-label" htmlFor="search-box-maxarea-field">Max Area <small className="uk-text-muted">(sq ft)</small></label>
-                <div className="uk-form-controls">
-                  <input
-                    className="uk-input" id="search-box-maxarea-field" type="text"
-                    placeholder="No Max Area" name="maxarea"
-                  />
-                </div>
-              </div>
+            <form
+              ref={(form) => { this.form = form; }}
+              onSubmit={handleSubmit(this.onSubmit)}
+              onChange={this.onChange}
+              id="properties-search-form"
+              className="uk-grid-small uk-form-stacked"
+              data-uk-grid
+            >
+              {_map(SEARCH_FILTERS_FORM_FIELDS, ({
+                containerClassName, fieldClassName, type, label, labelSecondary = false, placeholder = false, options, addOn = false, apiName = false,
+              }, fieldName) => (
+                <Field
+                  component={this.renderField}
+                  key={fieldName}
+                  type={type}
+                  containerClassName={containerClassName}
+                  fieldClassName={fieldClassName}
+                  label={label}
+                  labelSecondary={labelSecondary}
+                  name={apiName || fieldName}
+                  id={fieldName}
+                  placeholder={placeholder}
+                  options={options}
+                  addOn={addOn}
+                  onBlur={handleSubmit(this.onSubmit)}
+                />
+              ))}
               <div className="uk-width-expand@s uk-width-1-6@m">
-                <button className="uk-button uk-button-primary uk-width-1-1" id="search-box-search-btn" disabled>Search</button>
+                <button
+                  type="submit"
+                  className="uk-button uk-button-primary uk-width-1-1"
+                  id="search-box-search-btn"
+                  disabled={submitting || !this.areFormValuesDifferentSinceLastSubmit() || invalid}
+                >Search
+                </button>
               </div>
             </form>
           </div>
@@ -138,3 +187,48 @@ export default class SearchFilters extends Component {
     );
   }
 }
+
+const validate = (values) => {
+  const errors = {};
+
+  console.log('values in validate()', values);
+
+  // Check for required fields
+  // _each(SEARCH_FILTERS_FORM_FIELDS, (fieldObject, fieldName) => {
+  //   // Check if the FIELDS config object has a custom validation function to run
+  //   if (fieldObject.validation) {
+  //     fieldObject.validation(values, errors);
+  //   }
+  //
+  //   // If the field is required as per the config object, check if the field is filled out
+  //   if (fieldObject.required && !values[fieldName]) {
+  //     errors[fieldName] = `Enter ${fieldName}`;
+  //   }
+  // });
+
+  // If errors is empty, the form is fine to submit
+  // If errors has any properties, redux form assumes form is invalid
+  return errors;
+};
+
+/**
+ * mapStateToProps which gives the component access to the redux store
+ * @return {object} - Mapping of state properties (in the redux store) to prop properties that will be available within the component
+ */
+// const mapStateToProps = state => ({
+//   SearchFiltersForm: state.form.SearchFiltersForm,
+// });
+const mapStateToProps = (state) => {
+  console.log('state in mapStateToProps', state);
+  return {
+    SearchFiltersForm: state.form.SearchFiltersForm,
+  };
+};
+
+export default reduxForm({
+  validate,
+  form: 'SearchFiltersForm',
+  enableReinitialize: true,
+  keepDirtyOnReinitialize: true,
+  initialValues: { q: 'jeff' },
+})(connect(mapStateToProps, { setSearchParameters })(SearchFilters));

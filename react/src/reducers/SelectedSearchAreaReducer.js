@@ -1,4 +1,4 @@
-import { SELECT_SEARCH_AREA } from '../actions';
+import { SELECT_SEARCH_AREA, RESET_SEARCH_AREA } from '../actions';
 
 const initialState = { points: [], shape: {} };
 
@@ -7,6 +7,7 @@ export default (state = initialState, action) => {
 
   switch (action.type) {
     case SELECT_SEARCH_AREA:
+    case RESET_SEARCH_AREA:
       // Assign the selected search area points coordinates to state.selectedSearchArea
       return { points, shape };
     default:

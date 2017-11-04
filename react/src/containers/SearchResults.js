@@ -7,6 +7,7 @@ import SingleResult from '../components/SingleResult';
 
 class SearchResults extends Component {
   componentDidUpdate() {
+    // The UIkit grid needs to re-initialized whenever the search results re-rendered
     UIkit.grid('#search-results-grid');
   }
 
@@ -42,6 +43,10 @@ class SearchResults extends Component {
     });
   }
 
+  /**
+   * Render search results
+   * @return {ReactElement} - Markup of search results grid
+   */
   renderSearchResults() {
     if (Object.keys(this.props.listings).length > 0) {
       return (

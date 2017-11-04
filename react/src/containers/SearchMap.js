@@ -3,7 +3,7 @@ import { Map, Marker, Popup } from 'react-leaflet';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { isEmpty as _isEmpty, map as _map } from 'lodash';
-import { fetchListings } from '../actions';
+import { resetSearchArea, setViewingArea } from '../actions';
 import CustomTileLayer from '../components/CustomTileLayer';
 import SearchControls from './SearchControls';
 
@@ -13,13 +13,18 @@ import SearchControls from './SearchControls';
 class SearchMap extends Component {
   constructor(props) {
     super(props);
+    this.onRemoveShapeButtonClick = this.onRemoveShapeButtonClick.bind(this);
 
     // Map starting position
     // Houston, Texas (Area where the demo data is located)
     this.state = {
-      lat: 29.72,
-      lng: -95.35,
-      zoom: 10,
+      map: {
+        center: {
+          lat: 29.72,
+          lng: -95.35,
+        },
+        zoom: 10,
+      },
     };
   }
 
@@ -28,20 +33,19 @@ class SearchMap extends Component {
    * @return void
    */
   componentDidMount() {
-    const searchAreaPointsQueryString = this.createPointsQueryString(this.getLatLngSetsInViewingArea());
-    this.props.fetchListings(searchAreaPointsQueryString);
+    this.props.setViewingArea(this.getLatLngSetsInViewingArea());
   }
 
   /**
-   * Internal event to run after any state that this component is using has been updated and the component has been re-rendered
+   * When the remove shape button is clicked, fetch all listings that fit within the map viewing area
+   * When the fetch is complete, remove the selected search area shape and reset its properties on the store
    * @return void
    */
-  componentDidUpdate(prevProps) {
-    // Make sure that the props are actually updated, since componentDidUpdate will also run when the component is mounted
-    if (prevProps.selectedSearchArea.points !== this.props.selectedSearchArea.points) {
-      const searchAreaPointsQueryString = this.createPointsQueryString(this.getSearchLatLngSets());
-      this.props.fetchListings(searchAreaPointsQueryString);
-    }
+  onRemoveShapeButtonClick() {
+    // Remove previously drawn shape from the map
+    this.props.selectedSearchArea.shape.remove();
+    // Reset the state properties for the selected search area
+    this.props.resetSearchArea();
   }
 
   /**
@@ -61,41 +65,6 @@ class SearchMap extends Component {
       { lat: southWestCoordinates.lat, lng: southWestCoordinates.lng },
       { lat: southEastCoordinates.lat, lng: southEastCoordinates.lng },
     ];
-  }
-
-  /**
-   * Determine whether the map's viewing area or the selected search area should be used to provide the approprate latitude/longitude sets
-   * @return {[type]} An array of objects for each point with its latitude and longitude coordinates
-   */
-  getSearchLatLngSets() {
-    // If a search area is not selected with the search shapes tools, then use the map's viewing area coordinates
-    if (_isEmpty(this.props.selectedSearchArea.points)) {
-      return this.getLatLngSetsInViewingArea();
-    }
-
-    // Otherwise use the selected search area's coordinates
-    return this.props.selectedSearchArea.points;
-  }
-
-  /**
-   * Create encoded URL string for all points of an area on a map
-   * @param  {[object]} LatLngSets - An array of objects for each point with its latitude and longitude coordinates
-   * @example <caption>Example usage of createPointsQueryString.</caption>
-   * let LatLngSets = [
-   *   { lat: 29.969211659636688, lng: -96.21826171875001 },
-   *   { lat: 29.969211659636688, lng: -94.48104858398439 },
-   *   { lat: 29.470687864832556, lng: -96.21826171875001 },
-   *   { lat: 29.470687864832556, lng: -94.48104858398439 }
-   * ]
-   * SearchMap.createPointsQueryString(pointsCoordinateSets);
-   * // returns "points=29.969211659636688,-96.21826171875001&points=29.969211659636688,-94.48104858398439&points=29.470687864832556,-96.21826171875001&points=29.470687864832556,-94.48104858398439"
-   * @return {string} - URL encoded string of all points
-   */
-  createPointsQueryString(LatLngSets) {
-    return `?${_map(LatLngSets, (latLngSet) => {
-      const { lat, lng } = latLngSet;
-      return `points=${encodeURIComponent(lat)},${encodeURIComponent(lng)}`;
-    }).join('&')}`;
   }
 
   /**
@@ -123,8 +92,8 @@ class SearchMap extends Component {
   renderMap() {
     return (
       <Map
-        center={[this.state.lat, this.state.lng]}
-        zoom={this.state.zoom}
+        center={[this.state.map.center.lat, this.state.map.center.lng]}
+        zoom={this.state.map.zoom}
         maxZoom={18}
         id="map"
         className="map"
@@ -140,6 +109,22 @@ class SearchMap extends Component {
   }
 
   /**
+   * Render the remove shape button if a shape has been selected
+   * @return {ReactElement} - Markup of remove shape button
+   */
+  renderRemoveShapeButton() {
+    if (!_isEmpty(this.props.selectedSearchArea.points)) {
+      return (
+        <button id="remove-shape-btn" className="uk-position-top-right uk-button uk-button-primary uk-button-small" onClick={this.onRemoveShapeButtonClick}>
+          Remove Shape
+        </button>
+      );
+    }
+
+    return false;
+  }
+
+  /**
    * Render the component
    * @return {ReactElement} - Markup of component
    */
@@ -148,10 +133,7 @@ class SearchMap extends Component {
       <div>
         <div id="map-panel" className="uk-position-relative">
           {this.renderMap()}
-
-          <button id="remove-shape-btn" className="uk-hidden uk-position-top-right uk-button uk-button-primary uk-button-small">
-            Remove Shape
-          </button>
+          {this.renderRemoveShapeButton()}
           <div id="mobile-bottom-menu" className="uk-position-bottom-center uk-container uk-background-primary uk-flex-center uk-width-1-1">
             <button id="mobile-search-button" className="uk-button uk-button-primary flaticon-magnifying-glass" data-panel="#search-panel" />
             <button id="mobile-results-button" className="uk-button uk-button-primary flaticon-interface" data-panel="#search-results-panel">
@@ -171,13 +153,14 @@ class SearchMap extends Component {
  */
 const mapStateToProps = state => ({
   listings: state.listings,
+  map: state.map,
   selectedSearchArea: state.selectedSearchArea,
 });
 
-export default connect(mapStateToProps, { fetchListings })(SearchMap);
+export default connect(mapStateToProps, { resetSearchArea, setViewingArea })(SearchMap);
 
 SearchMap.propTypes = {
-  fetchListings: PropTypes.func.isRequired,
+  resetSearchArea: PropTypes.func.isRequired,
   listings: PropTypes.objectOf(PropTypes.object).isRequired,
   selectedSearchArea: PropTypes.shape({
     points: PropTypes.arrayOf(PropTypes.object).isRequired,

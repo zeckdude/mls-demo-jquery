@@ -1,7 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { round as _round } from 'lodash';
 
-export default ({
+const SingleResult = ({
   featuredPhoto, streetNumber, streetName, area, bedrooms, garageSpaces, bathsFull, listPrice, listingId,
 }) => (
   <div>
@@ -57,3 +58,17 @@ export default ({
     </div>
   </div>
 );
+
+export default SingleResult;
+
+SingleResult.propTypes = {
+  featuredPhoto: PropTypes.string.isRequired,
+  streetNumber: PropTypes.number.isRequired,
+  streetName: PropTypes.string.isRequired,
+  area: PropTypes.number.isRequired,
+  bedrooms: PropTypes.number.isRequired,
+  garageSpaces: PropTypes.number.isRequired,
+  bathsFull: PropTypes.number.isRequired,
+  listPrice: PropTypes.number.isRequired,
+  listingId: PropTypes.string.isRequired,
+};

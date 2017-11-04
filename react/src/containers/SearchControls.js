@@ -13,7 +13,7 @@ class SearchControls extends Component {
   }
 
   onCreate(e) {
-    // Remove previously drawn shapes from the map
+    // Remove previously drawn shape from the map
     if (!_isEmpty(this.props.selectedSearchArea.shape)) {
       this.props.selectedSearchArea.shape.remove();
     }

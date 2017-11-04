@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "axios": "^0.17.0",
+    "eslint-scope": "^3.7.1",
+    "espree": "^3.5.1",
     "leaflet": "^1.2.0",
     "leaflet-draw": "0.4.9",
     "leaflet-sprite": "^1.0.0",
@@ -17,8 +19,9 @@
     "react-scripts": "1.0.14",
     "react-styleguidist": "^6.0.31",
     "redux": "^3.7.2",
+    "redux-form": "^7.1.2",
     "redux-thunk": "^2.2.0",
-    "uikit": "^3.0.0-beta.32"
+    "uikit": "^3.0.0-beta.33"
   },
   "scripts": {
     "start": "react-scripts start",

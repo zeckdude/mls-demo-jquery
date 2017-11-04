@@ -1,9 +1,12 @@
 import axios from 'axios';
-import { ROOT_URL, AUTH_HEADER } from '../config/simplyrets';
+import { ROOT_URL, AUTH_HEADER } from '../config/api/simplyrets';
 
 export const FETCH_LISTINGS = 'FETCH_LISTINGS';
 export const FETCH_LISTING = 'FETCH_LISTING';
 export const SELECT_SEARCH_AREA = 'SELECT_SEARCH_AREA';
+export const RESET_SEARCH_AREA = 'RESET_SEARCH_AREA';
+export const SET_VIEWING_AREA = 'SET_VIEWING_AREA';
+export const SET_SEARCH_PARAMETERS = 'SET_SEARCH_PARAMETERS';
 
 // export const fetchListings = () => {
 //   const request = axios.get(`${ROOT_URL}/properties`);
@@ -25,13 +28,13 @@ export const SELECT_SEARCH_AREA = 'SELECT_SEARCH_AREA';
 // };
 
 
-export const fetchListings = (searchBounds) => {
+export const fetchListings = (searchBounds, callback = () => {}) => {
   const request = axios.get(`${ROOT_URL}/properties${searchBounds}`, AUTH_HEADER);
 
   return dispatch =>
     request.then(// Success callback
       ({ data }) => {
-        console.log(data);
+        callback();
 
         // Dispatch the action to the reducer
         dispatch({
@@ -50,4 +53,20 @@ export const selectSearchArea = ({ points, shape }) => ({
   type: SELECT_SEARCH_AREA,
   points,
   shape,
+});
+
+export const resetSearchArea = () => ({
+  type: RESET_SEARCH_AREA,
+  points: [],
+  shape: {},
+});
+
+export const setViewingArea = points => ({
+  type: SET_VIEWING_AREA,
+  points,
+});
+
+export const setSearchParameters = properties => ({
+  type: SET_SEARCH_PARAMETERS,
+  properties,
 });
