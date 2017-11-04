@@ -25,7 +25,7 @@ class App extends Component {
     if (
       prevProps.map.points !== this.props.map.points ||
       prevProps.selectedSearchArea.points !== this.props.selectedSearchArea.points ||
-      prevProps.searchParameters.properties !== this.props.searchParameters.properties
+      prevProps.SearchFiltersForm.initial !== this.props.SearchFiltersForm.initial
     ) {
       this.updateListings();
     }
@@ -52,7 +52,7 @@ class App extends Component {
   updateListings() {
     // Build query string that specifies the latitude/longitude sets within the selected search area
     const searchPointsArray = this.createPointsArray(this.getSearchLatLngSets());
-    const searchQueryString = createQueryStringFromArray([...searchPointsArray, this.props.searchParameters.properties]);
+    const searchQueryString = createQueryStringFromArray([...searchPointsArray, this.props.SearchFiltersForm.initial]);
     // Call the action creator to fetch the listings
     this.props.fetchListings(`?${searchQueryString}`);
   }
@@ -110,7 +110,7 @@ class App extends Component {
 const mapStateToProps = state => ({
   map: state.map,
   selectedSearchArea: state.selectedSearchArea,
-  searchParameters: state.searchParameters,
+  SearchFiltersForm: state.form.SearchFiltersForm,
 });
 
 export default connect(mapStateToProps, { fetchListings })(App);

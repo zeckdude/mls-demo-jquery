@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
-import { bindActionCreators } from 'redux';
 import { map as _map, has as _has } from 'lodash';
 import { connect } from 'react-redux';
 import { SEARCH_FILTERS_FORM_FIELDS } from '../config/form/formFields';
-import { setSearchParameters } from '../actions';
 
 class SearchFilters extends Component {
   constructor(props) {
@@ -12,36 +10,25 @@ class SearchFilters extends Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.renderField = this.renderField.bind(this);
     this.renderAlert = this.renderAlert.bind(this);
-    this.areFormValuesDifferentSinceLastSubmit = this.areFormValuesDifferentSinceLastSubmit.bind(this);
-
-    // this.boundActionCreators = bindActionCreators(setSearchParameters, this.dispatch);
-    // console.log(this.boundActionCreators)
 
     this.state = {
-      values: {},
       isAlertVisible: false,
     };
   }
 
   /**
-   * If the form values have changed since the last time this method was ran, then set the new search parameters in the store
+   * If the form values have changed since the last time this method was ran, then set the new form values in the store
    * When a form field loses focus or the form is submitted, this method is ran
    * @param  {object} values All of the form fields that are filled out (automatically sent from redux-form)
    * @return void
    */
   onSubmit(values) {
-    // Check if states are same, if not, setState and perform action
-    if (this.areFormValuesDifferentSinceLastSubmit()) {
-      // Assign the form values to the component state for comparison on the next submit
-      this.setState({
-        values,
-      });
-
+    // Check if the form values have changed since the last submit
+    // The dirty boolean (signifies if the form has changed from its initial values) is established by redux-form by comparing the currently entered values to the initial form values
+    // After we identify the form as having been changed, we will send the new form values to replace the original initial form values so redux-form is always comparing the current form values against the last submitted form values
+    if (this.props.dirty) {
       // Set the initial values for the form on the redux store (This is used by redux form to compare the current values to the initial values so we can determine if there are new values since the last submit)
       this.props.initialize(values);
-
-      // Set the search parameters on the redux store
-      this.props.setSearchParameters(values);
 
       // If the alert box is not already active, make it active for a specified amount of time
       if (!this.state.isAlertVisible) {
@@ -56,17 +43,6 @@ class SearchFilters extends Component {
         }, 2500);
       }
     }
-  }
-
-  /**
-   * Check if the form fields values have changed since the last form submit
-   * This is accomplished by comparing the current form fields values (which are saved in this.props.SearchFiltersForm.values in the redux store) against the last submitted values that were saved on the component state
-   * @return {boolean} Have any form fields changed since the last submit?
-   */
-  areFormValuesDifferentSinceLastSubmit() {
-    // When all form fields are blank, the `values` property on this.props.SearchFiltersForm is removed, so we assign a blank object to compare against in that case
-    const searchFiltersFormPropValues = !_has(this.props.SearchFiltersForm, 'values') ? {} : this.props.SearchFiltersForm.values;
-    return JSON.stringify(this.state.values) !== JSON.stringify(searchFiltersFormPropValues);
   }
 
   buildOptions(options) {
@@ -169,6 +145,7 @@ class SearchFilters extends Component {
                   options={options}
                   addOn={addOn}
                   onBlur={handleSubmit(this.onSubmit)}
+                  format={null}
                 />
               ))}
               <div className="uk-width-expand@s uk-width-1-6@m">
@@ -176,7 +153,7 @@ class SearchFilters extends Component {
                   type="submit"
                   className="uk-button uk-button-primary uk-width-1-1"
                   id="search-box-search-btn"
-                  disabled={submitting || !this.areFormValuesDifferentSinceLastSubmit() || invalid}
+                  disabled={submitting || pristine || invalid}
                 >Search
                 </button>
               </div>
@@ -218,12 +195,9 @@ const validate = (values) => {
 // const mapStateToProps = state => ({
 //   SearchFiltersForm: state.form.SearchFiltersForm,
 // });
-const mapStateToProps = (state) => {
-  console.log('state in mapStateToProps', state);
-  return {
-    SearchFiltersForm: state.form.SearchFiltersForm,
-  };
-};
+const mapStateToProps = state => ({
+  SearchFiltersForm: state.form.SearchFiltersForm,
+});
 
 export default reduxForm({
   validate,
@@ -231,4 +205,4 @@ export default reduxForm({
   enableReinitialize: true,
   keepDirtyOnReinitialize: true,
   initialValues: { q: 'jeff' },
-})(connect(mapStateToProps, { setSearchParameters })(SearchFilters));
+})(connect(mapStateToProps)(SearchFilters));

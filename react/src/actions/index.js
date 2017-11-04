@@ -6,7 +6,6 @@ export const FETCH_LISTING = 'FETCH_LISTING';
 export const SELECT_SEARCH_AREA = 'SELECT_SEARCH_AREA';
 export const RESET_SEARCH_AREA = 'RESET_SEARCH_AREA';
 export const SET_VIEWING_AREA = 'SET_VIEWING_AREA';
-export const SET_SEARCH_PARAMETERS = 'SET_SEARCH_PARAMETERS';
 
 // export const fetchListings = () => {
 //   const request = axios.get(`${ROOT_URL}/properties`);
@@ -64,9 +63,4 @@ export const resetSearchArea = () => ({
 export const setViewingArea = points => ({
   type: SET_VIEWING_AREA,
   points,
-});
-
-export const setSearchParameters = properties => ({
-  type: SET_SEARCH_PARAMETERS,
-  properties,
 });
