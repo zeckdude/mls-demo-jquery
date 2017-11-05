@@ -145,7 +145,6 @@ class SearchFilters extends Component {
                   options={options}
                   addOn={addOn}
                   onBlur={handleSubmit(this.onSubmit)}
-                  format={null}
                 />
               ))}
               <div className="uk-width-expand@s uk-width-1-6@m">

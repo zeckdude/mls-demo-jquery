@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { isEmpty as _isEmpty, map as _map } from 'lodash';
+import { isEmpty as _isEmpty, map as _map, pickBy as _pickBy } from 'lodash';
 import Spinner from './Spinner';
 import NavBarOffCanvas from './NavBarOffCanvas';
 import NavBar from './NavBar';
@@ -52,7 +52,8 @@ class App extends Component {
   updateListings() {
     // Build query string that specifies the latitude/longitude sets within the selected search area
     const searchPointsArray = this.createPointsArray(this.getSearchLatLngSets());
-    const searchQueryString = createQueryStringFromArray([...searchPointsArray, this.props.SearchFiltersForm.initial]);
+    const searchParameters = _pickBy(this.props.SearchFiltersForm.values, (val, key) => val !== '');
+    const searchQueryString = createQueryStringFromArray([...searchPointsArray, searchParameters]);
     // Call the action creator to fetch the listings
     this.props.fetchListings(`?${searchQueryString}`);
   }
