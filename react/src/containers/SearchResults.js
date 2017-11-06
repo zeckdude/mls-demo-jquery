@@ -16,7 +16,7 @@ class SearchResults extends Component {
    * @return {ReactElement} - Markup of single listing
    */
   renderSingleResults() {
-    return _map(this.props.listings, (listing) => {
+    return _map(this.props.properties, (listing) => {
       const {
         listingId,
         listPrice,
@@ -48,7 +48,7 @@ class SearchResults extends Component {
    * @return {ReactElement} - Markup of search results grid
    */
   renderSearchResults() {
-    if (Object.keys(this.props.listings).length > 0) {
+    if (Object.keys(this.props.properties).length > 0) {
       return (
         <div id="search-results-grid" className="uk-child-width-1-2@s uk-child-width-1-3@m uk-grid uk-grid-match" data-uk-grid>
           {this.renderSingleResults()}
@@ -67,7 +67,7 @@ class SearchResults extends Component {
         <div className="uk-padding-small">
           <div className="uk-heading-divider uk-flex uk-flex-top uk-margin-bottom">
             <h3 className="uk-flex-1 uk-margin-remove-bottom">
-              Search Results (<span className="results-num">{Object.keys(this.props.listings).length}</span>)
+              Search Results (<span className="results-num">{Object.keys(this.props.properties).length}</span>)
             </h3>
             <button className="uk-hidden uk-button uk-button-primary uk-button-small clear-search-parameters-btn">Clear Filters</button>
           </div>
@@ -83,11 +83,11 @@ class SearchResults extends Component {
  * @return {object} - Mapping of state properties (in the redux store) to prop properties that will be available within the component
  */
 const mapStateToProps = state => ({
-  listings: state.listings,
+  properties: state.listings.properties,
 });
 
 export default connect(mapStateToProps, null)(SearchResults);
 
 SearchResults.propTypes = {
-  listings: PropTypes.objectOf(PropTypes.object).isRequired,
+  properties: PropTypes.objectOf(PropTypes.object).isRequired,
 };

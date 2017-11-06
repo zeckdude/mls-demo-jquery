@@ -13,16 +13,22 @@ class SearchControls extends Component {
   }
 
   onCreate(e) {
-    // Remove previously drawn shape from the map
-    if (!_isEmpty(this.props.selectedSearchArea.shape)) {
-      this.props.selectedSearchArea.shape.remove();
-    }
-
     const polyline = e.layer;
+    // polyline.onRemove = (e) => {
+    //   alert('this works');
+    // };
+
+    polyline.remove();
+
+
     this.props.selectSearchArea({
       points: polyline.getLatLngs()[0],
-      shape: polyline,
+      // shape: polyline,
     });
+
+    // Remove the drawn shape from the map because the points are being saved in the store and being rendered on the map so they are reactive
+    // If I find a method in react-leaflet-draw to get the drawn points without rendering it, I will implement that instead. For now, this is the workaround.
+    // polyline.remove();
   }
 
   _onEditPath(e) {
@@ -98,6 +104,5 @@ SearchControls.propTypes = {
   selectSearchArea: PropTypes.func.isRequired,
   selectedSearchArea: PropTypes.shape({
     points: PropTypes.arrayOf(PropTypes.object).isRequired,
-    shape: PropTypes.object.isRequired,
   }).isRequired,
 };

@@ -6,6 +6,7 @@ import SelectedSearchAreaReducer from './SelectedSearchAreaReducer';
 
 const rootReducer = combineReducers({
   listings: ListingsReducer,
+  // listingsFetchStatus: makeFlagReducer('LOADING', 'LOADED', ['FETCH_LISTINGS'], ['FETCH_LISTINGS_COMPLETE'], 'IDLE'),
   map: MapReducer,
   selectedSearchArea: SelectedSearchAreaReducer,
   form: formReducer,

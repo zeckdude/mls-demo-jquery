@@ -4,8 +4,7 @@
   "private": true,
   "dependencies": {
     "axios": "^0.17.0",
-    "eslint-scope": "^3.7.1",
-    "espree": "^3.5.1",
+    "dot-prop-immutable-chain": "0.0.3",
     "leaflet": "^1.2.0",
     "leaflet-draw": "0.4.9",
     "leaflet-sprite": "^1.0.0",

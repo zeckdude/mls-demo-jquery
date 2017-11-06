@@ -203,5 +203,5 @@ export default reduxForm({
   form: 'SearchFiltersForm',
   enableReinitialize: true,
   keepDirtyOnReinitialize: true,
-  initialValues: { q: 'jeff' },
+  // initialValues: { q: 'jeff' },
 })(connect(mapStateToProps)(SearchFilters));

@@ -2,6 +2,7 @@ import axios from 'axios';
 import { ROOT_URL, AUTH_HEADER } from '../config/api/simplyrets';
 
 export const FETCH_LISTINGS = 'FETCH_LISTINGS';
+export const FETCH_LISTINGS_COMPLETE = 'FETCH_LISTINGS_COMPLETE';
 export const FETCH_LISTING = 'FETCH_LISTING';
 export const SELECT_SEARCH_AREA = 'SELECT_SEARCH_AREA';
 export const RESET_SEARCH_AREA = 'RESET_SEARCH_AREA';
@@ -30,14 +31,20 @@ export const SET_VIEWING_AREA = 'SET_VIEWING_AREA';
 export const fetchListings = (searchBounds, callback = () => {}) => {
   const request = axios.get(`${ROOT_URL}/properties${searchBounds}`, AUTH_HEADER);
 
-  return dispatch =>
-    request.then(// Success callback
+
+  return (dispatch) => {
+    // Dispatch the action to the reducer
+    dispatch({
+      type: FETCH_LISTINGS,
+    });
+
+    return request.then(// Success callback
       ({ data }) => {
         callback();
 
         // Dispatch the action to the reducer
         dispatch({
-          type: FETCH_LISTINGS,
+          type: FETCH_LISTINGS_COMPLETE,
           payload: data,
         });
       },
@@ -46,6 +53,7 @@ export const fetchListings = (searchBounds, callback = () => {}) => {
         alert(`The request could not be completed due to a system error: ${error}`);
       }
     );
+  };
 };
 
 export const selectSearchArea = ({ points, shape }) => ({

@@ -52,7 +52,9 @@ class App extends Component {
   updateListings() {
     // Build query string that specifies the latitude/longitude sets within the selected search area
     const searchPointsArray = this.createPointsArray(this.getSearchLatLngSets());
+    // Get search values and remove any properties that are empty strings (this occurs when a field is touched and then nothing is entered according to redux-form functionality)
     const searchParameters = _pickBy(this.props.SearchFiltersForm.values, (val, key) => val !== '');
+    // Create the querystring to include with the AJAX call to the endpoint
     const searchQueryString = createQueryStringFromArray([...searchPointsArray, searchParameters]);
     // Call the action creator to fetch the listings
     this.props.fetchListings(`?${searchQueryString}`);
@@ -108,10 +110,20 @@ class App extends Component {
  * mapStateToProps which gives the component access to the redux store
  * @return {object} - Mapping of state properties (in the redux store) to prop properties that will be available within the component
  */
-const mapStateToProps = state => ({
-  map: state.map,
-  selectedSearchArea: state.selectedSearchArea,
-  SearchFiltersForm: state.form.SearchFiltersForm,
-});
+// const mapStateToProps = state => ({
+//   map: state.map,
+//   selectedSearchArea: state.selectedSearchArea,
+//   SearchFiltersForm: state.form.SearchFiltersForm,
+// });
+//
+const mapStateToProps = (state) => {
+  console.log('state in App.js:', state);
+  console.log('loadingStatus in App.js:', state.listings.loadingStatus);
+  return {
+    map: state.map,
+    selectedSearchArea: state.selectedSearchArea,
+    SearchFiltersForm: state.form.SearchFiltersForm,
+  };
+};
 
 export default connect(mapStateToProps, { fetchListings })(App);

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Map, Marker, Popup } from 'react-leaflet';
+import { Map, Marker, Popup, Polygon } from 'react-leaflet';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import dotProp from 'dot-prop-immutable-chain';
 import { isEmpty as _isEmpty, map as _map } from 'lodash';
 import { resetSearchArea, setViewingArea } from '../actions';
 import CustomTileLayer from '../components/CustomTileLayer';
@@ -25,6 +26,10 @@ class SearchMap extends Component {
         },
         zoom: 10,
       },
+      visible: {
+        removeShapeButton: false,
+        selectedSearchArea: false,
+      },
     };
   }
 
@@ -36,14 +41,54 @@ class SearchMap extends Component {
     this.props.setViewingArea(this.getLatLngSetsInViewingArea());
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (!_isEmpty(nextProps.selectedSearchArea.points)) {
+      const updatedState = dotProp.set(this.state, 'visible.selectedSearchArea', true);
+      this.setState(updatedState);
+    }
+
+    // If the loading status changes (which signifies that the listings have finished fetching)
+    if (this.props.loadingStatus !== nextProps.loadingStatus && nextProps.loadingStatus === 'LOADED') {
+      // Check if the selected search area is selected
+      if (!_isEmpty(nextProps.selectedSearchArea.points)) {
+        // Set the removeShapeButton to be visible
+        // Using the `dot-prop-immutable` utility to deep copy the state object and assign a new value
+        // Equivalent to:
+        // {
+        //   ...this.state,
+        //   visible: {
+        //     ...this.state.visible,
+        //     removeShapeButton: true
+        //   }
+        // }
+        const updatedState = dotProp.set(this.state, 'visible.removeShapeButton', true);
+        this.setState(updatedState);
+      }
+
+      // Check if the selected search area is selected
+      if (_isEmpty(nextProps.selectedSearchArea.points)) {
+        // Set the removeShapeButton to not be visible
+        const updatedState = dotProp(this.state)
+          .set('visible.removeShapeButton', false)
+          .set('visible.selectedSearchArea', false)
+          .value();
+        this.setState(updatedState);
+
+        // If the shape has been added previously
+        // if (!_isEmpty(nextProps.selectedSearchArea.shape)) {
+        //   // Remove previously drawn shape from the map
+        //   this.props.selectedSearchArea.shape.remove();
+        // }
+      }
+    }
+  }
+
   /**
-   * When the remove shape button is clicked, fetch all listings that fit within the map viewing area
-   * When the fetch is complete, remove the selected search area shape and reset its properties on the store
+   * Reset the selected search area properties on the store
    * @return void
    */
   onRemoveShapeButtonClick() {
-    // Remove previously drawn shape from the map
-    this.props.selectedSearchArea.shape.remove();
+    // this.props.selectedSearchArea.shape.remove();
     // Reset the state properties for the selected search area
     this.props.resetSearchArea();
   }
@@ -72,7 +117,7 @@ class SearchMap extends Component {
    * @return {ReactElement} - Markup of marker and its associated popup
    */
   renderMarkers() {
-    return _map(this.props.listings, (listing) => {
+    return _map(this.props.properties, (listing) => {
       const { listingId, geo: { lat, lng } } = listing;
 
       return (
@@ -83,6 +128,13 @@ class SearchMap extends Component {
         </Marker>
       );
     });
+  }
+
+  renderSelectedArea() {
+    if (this.state.visible.selectedSearchArea) {
+      return <Polygon positions={this.props.selectedSearchArea.points} opacity="0.5" weight="4" />;
+    }
+    return false;
   }
 
   /**
@@ -104,6 +156,7 @@ class SearchMap extends Component {
         <CustomTileLayer mapKey="another" />
         <SearchControls />
         {this.renderMarkers()}
+        {this.renderSelectedArea()}
       </Map>
     );
   }
@@ -113,7 +166,7 @@ class SearchMap extends Component {
    * @return {ReactElement} - Markup of remove shape button
    */
   renderRemoveShapeButton() {
-    if (!_isEmpty(this.props.selectedSearchArea.points)) {
+    if (this.state.visible.removeShapeButton) {
       return (
         <button id="remove-shape-btn" className="uk-position-top-right uk-button uk-button-primary uk-button-small" onClick={this.onRemoveShapeButtonClick}>
           Remove Shape
@@ -152,18 +205,18 @@ class SearchMap extends Component {
  * @return {object} - Mapping of state properties (in the redux store) to prop properties that will be available within the component
  */
 const mapStateToProps = state => ({
-  listings: state.listings,
+  properties: state.listings.properties,
   map: state.map,
   selectedSearchArea: state.selectedSearchArea,
+  loadingStatus: state.listings.loadingStatus,
 });
 
 export default connect(mapStateToProps, { resetSearchArea, setViewingArea })(SearchMap);
 
 SearchMap.propTypes = {
   resetSearchArea: PropTypes.func.isRequired,
-  listings: PropTypes.objectOf(PropTypes.object).isRequired,
+  properties: PropTypes.objectOf(PropTypes.object).isRequired,
   selectedSearchArea: PropTypes.shape({
     points: PropTypes.arrayOf(PropTypes.object).isRequired,
-    shape: PropTypes.object.isRequired,
   }).isRequired,
 };
