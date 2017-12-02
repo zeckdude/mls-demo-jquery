@@ -1,11 +1,14 @@
 import { mapKeys as _mapKeys } from 'lodash';
-import { FETCH_LISTINGS, FETCH_LISTINGS_COMPLETE } from '../actions';
+import { FETCH_LISTING, FETCH_LISTINGS, FETCH_LISTINGS_COMPLETE } from '../actions';
 
 export default (state = {
   properties: {},
   loadingStatus: 'IDLE',
 }, action) => {
   switch (action.type) {
+    case FETCH_LISTING:
+      // Copy the current state and set a new property with a dynamic key value and the payload as the value
+      return { ...state, properties: { ...state.properties, [action.payload.mlsId]: action.payload } };
     case FETCH_LISTINGS:
       // Copy the current state and set a new property
       return { ...state, loadingStatus: 'LOADING' };

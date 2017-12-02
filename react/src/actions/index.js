@@ -7,25 +7,29 @@ export const FETCH_LISTING = 'FETCH_LISTING';
 export const SELECT_SEARCH_AREA = 'SELECT_SEARCH_AREA';
 export const RESET_SEARCH_AREA = 'RESET_SEARCH_AREA';
 export const SET_VIEWING_AREA = 'SET_VIEWING_AREA';
+export const SHOW_MODAL = 'SHOW_MODAL';
+export const HIDE_MODAL = 'HIDE_MODAL';
+export const SET_MODAL_CONTENT = 'SET_MODAL_CONTENT';
 
-// export const fetchListings = () => {
-//   const request = axios.get(`${ROOT_URL}/properties`);
-//
-//   // When returning only an object, the redux-promise middleware will wait for the AJAX request response and will then get the data out of the response to send to the reducer
-//   return {
-//     type: FETCH_POSTS,
-//     payload: request
-//   };
-// };
+export const fetchListing = (id, callback = () => {}) => {
+  const request = axios.get(`${ROOT_URL}/properties/${id}`, AUTH_HEADER);
 
-// export const fetchPost = id => {
-//   const request = axios.get(`${ROOT_URL}/posts/${id}${API_KEY}`);
-//
-//   return {
-//     type: FETCH_POST,
-//     payload: request
-//   };
-// };
+  return dispatch => request.then(// Success callback
+    ({ data }) => {
+      callback();
+
+      // Dispatch the action to the reducer
+      dispatch({
+        type: FETCH_LISTING,
+        payload: data,
+      });
+    },
+    // Error callback
+    (error) => {
+      alert(`The request could not be completed due to a system error: ${error}`);
+    }
+  );
+};
 
 
 export const fetchListings = (searchBounds, callback = () => {}) => {
@@ -71,4 +75,18 @@ export const resetSearchArea = () => ({
 export const setViewingArea = points => ({
   type: SET_VIEWING_AREA,
   points,
+});
+
+export const showModal = content => ({
+  type: SHOW_MODAL,
+  content,
+});
+
+export const hideModal = () => ({
+  type: HIDE_MODAL,
+});
+
+export const setModalContent = content => ({
+  type: SET_MODAL_CONTENT,
+  content,
 });

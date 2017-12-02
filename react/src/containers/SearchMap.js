@@ -7,6 +7,7 @@ import { isEmpty as _isEmpty, map as _map } from 'lodash';
 import { resetSearchArea, setViewingArea } from '../actions';
 import CustomTileLayer from '../components/CustomTileLayer';
 import SearchControls from './SearchControls';
+import ListingPopup from '../components/ListingPopup';
 
 /**
  * SearchMap Component
@@ -118,13 +119,31 @@ class SearchMap extends Component {
    */
   renderMarkers() {
     return _map(this.props.properties, (listing) => {
-      const { listingId, geo: { lat, lng } } = listing;
+      const {
+        listingId,
+        listPrice,
+        photos,
+        address: { streetNumber, streetName },
+        geo: { lat, lng },
+        property: {
+          bedrooms, bathsFull,
+        },
+        mlsId,
+      } = listing;
 
       return (
         <Marker key={listingId} position={{ lat, lng }}>
-          <Popup>
-            <span>A pretty CSS3 popup. <br /> Easily customizable.</span>
-          </Popup>
+          <ListingPopup
+            listingId={listingId}
+            photos={photos}
+            listPrice={listPrice}
+            streetNumber={streetNumber}
+            streetName={streetName}
+            bedrooms={bedrooms}
+            bathsFull={bathsFull}
+            map={this.map}
+            mlsId={mlsId}
+          />
         </Marker>
       );
     });
@@ -183,17 +202,15 @@ class SearchMap extends Component {
    */
   render() {
     return (
-      <div>
-        <div id="map-panel" className="uk-position-relative">
-          {this.renderMap()}
-          {this.renderRemoveShapeButton()}
-          <div id="mobile-bottom-menu" className="uk-position-bottom-center uk-container uk-background-primary uk-flex-center uk-width-1-1">
-            <button id="mobile-search-button" className="uk-button uk-button-primary flaticon-magnifying-glass" data-panel="#search-panel" />
-            <button id="mobile-results-button" className="uk-button uk-button-primary flaticon-interface" data-panel="#search-results-panel">
-              <span className="uk-badge results-num">0</span>
-            </button>
-            <button id="mobile-map-button" className="uk-button uk-button-primary flaticon-world active" />
-          </div>
+      <div id="map-panel" className="uk-position-relative">
+        {this.renderMap()}
+        {this.renderRemoveShapeButton()}
+        <div id="mobile-bottom-menu" className="uk-position-bottom-center uk-container uk-background-primary uk-flex-center uk-width-1-1">
+          <button id="mobile-search-button" className="uk-button uk-button-primary flaticon-magnifying-glass" data-panel="#search-panel" />
+          <button id="mobile-results-button" className="uk-button uk-button-primary flaticon-interface" data-panel="#search-results-panel">
+            <span className="uk-badge results-num">0</span>
+          </button>
+          <button id="mobile-map-button" className="uk-button uk-button-primary flaticon-world active" />
         </div>
       </div>
     );

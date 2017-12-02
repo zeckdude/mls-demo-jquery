@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import { map as _map } from 'lodash';
 import UIkit from 'uikit';
 import SingleResult from '../components/SingleResult';
+import ListingDetail from './ListingDetail';
+import { showModal } from '../actions';
 
 class SearchResults extends Component {
   componentDidUpdate() {
@@ -18,6 +20,7 @@ class SearchResults extends Component {
   renderSingleResults() {
     return _map(this.props.properties, (listing) => {
       const {
+        mlsId,
         listingId,
         listPrice,
         address: { streetNumber, streetName },
@@ -28,7 +31,7 @@ class SearchResults extends Component {
 
       return (
         <SingleResult
-          key={listingId}
+          key={mlsId}
           featuredPhoto={listing.photos[0]}
           streetNumber={streetNumber}
           streetName={streetName}
@@ -37,6 +40,7 @@ class SearchResults extends Component {
           garageSpaces={garageSpaces}
           bathsFull={bathsFull}
           listPrice={listPrice}
+          mlsId={mlsId}
           listingId={listingId}
         />
       );
@@ -86,7 +90,7 @@ const mapStateToProps = state => ({
   properties: state.listings.properties,
 });
 
-export default connect(mapStateToProps, null)(SearchResults);
+export default connect(mapStateToProps, { showModal })(SearchResults);
 
 SearchResults.propTypes = {
   properties: PropTypes.objectOf(PropTypes.object).isRequired,

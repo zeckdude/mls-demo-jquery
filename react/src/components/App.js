@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { isEmpty as _isEmpty, map as _map, pickBy as _pickBy } from 'lodash';
+import { HashRouter, Route, Switch } from 'react-router-dom';
+import { get as _get, isEmpty as _isEmpty, map as _map, pickBy as _pickBy } from 'lodash';
 import Spinner from './Spinner';
 import NavBarOffCanvas from './NavBarOffCanvas';
 import NavBar from './NavBar';
 import SearchMap from '../containers/SearchMap';
 import SearchFilters from '../containers/SearchFilters';
 import SearchResults from '../containers/SearchResults';
+import Modal from '../containers/Modal';
+import ListingDetailPage from '../containers/ListingDetailPage';
 import { fetchListings } from '../actions';
 import { createQueryStringFromArray } from '../helpers';
+
 
 class App extends Component {
   constructor(props) {
@@ -20,12 +24,15 @@ class App extends Component {
    * @return void
    */
   componentDidUpdate(prevProps) {
+    console.log('_get(this.props, "SearchFiltersForm.initial")', _get(this.props, 'SearchFiltersForm.initial'));
+    console.log('_get(this.props.SearchFiltersForm, "initial")', _get(this.props.SearchFiltersForm, 'initial'));
+    console.log('_get(prevProps, "SearchFiltersForm.initial")', _get(prevProps, 'SearchFiltersForm.initial'));
     // Fetch the new listings if the map viewing area or selected search area points get changed
     // Make sure that the props are actually updated, since componentDidUpdate will also run when the component is mounted
     if (
       prevProps.map.points !== this.props.map.points ||
       prevProps.selectedSearchArea.points !== this.props.selectedSearchArea.points ||
-      prevProps.SearchFiltersForm.initial !== this.props.SearchFiltersForm.initial
+      prevProps.SearchFiltersForm.initial !== _get(this.props, 'SearchFiltersForm.initial')
     ) {
       this.updateListings();
     }
@@ -89,19 +96,35 @@ class App extends Component {
 
   render() {
     return (
-      <div>
-        <Spinner />
-        <NavBarOffCanvas />
+      <HashRouter>
+        <div>
+          <Spinner />
+          <NavBarOffCanvas />
 
-        <div id="page-container">
-          <NavBar />
-          <SearchMap />
-          <section id="lower-container" className="uk-container uk-padding uk-padding-remove-top uk-remove-padding@m">
-            <SearchFilters />
-            <SearchResults />
-          </section>
+          <div id="page-container">
+            <NavBar />
+            <main>
+              <Switch>
+                <Route exact path="/listings/:mlsId" component={ListingDetailPage} />
+                <Route
+                  exact path="/" render={() => (
+                    <div>
+                      <SearchMap />
+                      <section id="lower-container" className="uk-container uk-padding uk-padding-remove-top uk-remove-padding@m">
+                        <SearchFilters />
+                        <SearchResults />
+                      </section>
+                    </div>
+                )}
+                />
+              </Switch>
+            </main>
+          </div>
+
+          {/* <Route path="/listings/:listingId" component={Modal} /> */}
+
         </div>
-      </div>
+      </HashRouter>
     );
   }
 }
@@ -123,7 +146,10 @@ const mapStateToProps = (state) => {
     map: state.map,
     selectedSearchArea: state.selectedSearchArea,
     SearchFiltersForm: state.form.SearchFiltersForm,
+    modal: state.modal,
   };
 };
 
-export default connect(mapStateToProps, { fetchListings })(App);
+export default connect(mapStateToProps, {
+  fetchListings,
+})(App);

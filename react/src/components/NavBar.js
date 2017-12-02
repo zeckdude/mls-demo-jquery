@@ -1,25 +1,25 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router';
 
-export default () => (
+const NavBar = props => (
   <header id="main-nav" className="uk-card uk-card-default uk-box-shadow-small">
     <div className="uk-container">
       <div className="uk-flex uk-flex-middle uk-height-1-1">
         <div id="logo">
-          <span className="icon-logo flaticon-hand" />
-          <span className="text-logo">HomeSearch.com</span>
+          <Link className="uk-link-reset" to="/">
+            <span className="icon-logo flaticon-hand" />
+            <span className="text-logo">HomeSearch.com</span>
+          </Link>
         </div>
         <nav id="main-navbar" className="uk-flex-1" data-uk-navbar>
           <div className="uk-navbar-right">
             <ul className="uk-navbar-nav">
-              <li className="uk-active">
-                <a className="uk-text-capitalize" href="#">
-                    Home
-                </a>
+              <li className={props.location.pathname === '/' ? 'uk-active' : ''}>
+                <Link className="uk-text-capitalize" to="/">Home</Link>
               </li>
-              <li>
-                <a className="uk-text-capitalize js-modal-dialog" data-href="about" href="#">
-                    About
-                </a>
+              <li className={props.location.pathname === '/about/' ? 'uk-active' : ''}>
+                <Link className="uk-text-capitalize" to="/about/">About</Link>
               </li>
             </ul>
           </div>
@@ -45,3 +45,5 @@ export default () => (
     </div>
   </header>
 );
+
+export default withRouter(NavBar);

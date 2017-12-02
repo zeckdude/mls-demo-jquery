@@ -1,29 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { round as _round } from 'lodash';
+import { formatCurrency } from '../helpers';
 
 const SingleResult = ({
-  featuredPhoto, streetNumber, streetName, area, bedrooms, garageSpaces, bathsFull, listPrice, listingId,
+  populateModal, featuredPhoto, streetNumber, streetName, area, bedrooms, garageSpaces, bathsFull, listPrice, mlsId, listingId,
 }) => (
   <div>
     <div className="search-result-single uk-card uk-card-default uk-background-light-grey uk-text-dark-grey">
       <div className="ratio16_9">
         <div>
-          <a
-            className="js-modal-dialog" data-listing-id={listingId} data-href="listing-detail"
-            href="#"
+          <Link
+            to={`listings/${mlsId}`}
           >
             <img className="uk-width-expand" src={featuredPhoto} alt="" />
-          </a>
+          </Link>
         </div>
       </div>
       <h4 className="uk-background-primary uk-margin-remove uk-text-white uk-padding-tiny uk-text-truncate">
-        <a
-          className="js-modal-dialog modal-dialog" data-listing-id={listingId} data-href="listing-detail"
-          href="#"
+        <Link
+          className="modal-dialog"
+          to={`listings/${mlsId}`}
         >
           {streetNumber} {streetName}
-        </a>
+        </Link>
       </h4>
       <div className="search-results-property-features uk-child-width-expand uk-padding-tiny" data-uk-grid>
         <div>
@@ -49,7 +50,7 @@ const SingleResult = ({
       </div>
       <div className="uk-card-footer uk-flex uk-padding-tiny">
         <h5 className="uk-margin-remove uk-text-dark-grey">
-          ${listPrice}
+          {formatCurrency(listPrice)}
         </h5>
         <small className="uk-flex-1 uk-flex uk-flex-bottom uk-flex-right">
           MLS #{listingId}
@@ -70,5 +71,5 @@ SingleResult.propTypes = {
   garageSpaces: PropTypes.number.isRequired,
   bathsFull: PropTypes.number.isRequired,
   listPrice: PropTypes.number.isRequired,
-  listingId: PropTypes.string.isRequired,
+  mlsId: PropTypes.number.isRequired,
 };
