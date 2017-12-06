@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
-import { map as _map, has as _has } from 'lodash';
+import { map as _map } from 'lodash';
 import { connect } from 'react-redux';
 import { SEARCH_FILTERS_FORM_FIELDS } from '../config/form/formFields';
 
@@ -10,10 +10,35 @@ class SearchFilters extends Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.renderField = this.renderField.bind(this);
     this.renderAlert = this.renderAlert.bind(this);
+    this.onChangeField = this.onChangeField.bind(this);
+    this.onBlurField = this.onBlurField.bind(this);
 
     this.state = {
       isAlertVisible: false,
     };
+  }
+
+  onBlurField(event, newValue, previousValue) {
+    if (event.currentTarget.nodeName === 'INPUT') {
+      this.props.handleSubmit(this.onSubmit)();
+    }
+  }
+
+  onChangeField(event, newValue, previousValue) {
+    if (event.currentTarget.nodeName !== 'INPUT') {
+      // handleSubmit() submits the values as they currently are in the props, and the props don't get updated from Redux until the next process tick (https://github.com/erikras/redux-form/issues/883#issuecomment-216022940)
+      // Therefore we need to dispatch an action to update the value in redux
+      // After that we submit the form, which then knows that the form has been changed
+
+      // console.log(this.props.change('SearchFiltersForm', event.target.name, event.target.value));
+
+      // https://github.com/erikras/redux-form/issues/369#issuecomment-278758539
+      this.props.dispatch(this.props.change('SearchFiltersForm', event.target.name, event.target.value));
+
+      // The setTimeout is a sort of hack so we wait for a split second for the dispatch action to the store to occur first and the onSubmit method knows the form has been changed
+      // https://github.com/erikras/redux-form/issues/537#issuecomment-309751480
+      setTimeout(this.props.handleSubmit(this.onSubmit));
+    }
   }
 
   /**
@@ -123,7 +148,6 @@ class SearchFilters extends Component {
             <form
               ref={(form) => { this.form = form; }}
               onSubmit={handleSubmit(this.onSubmit)}
-              onChange={this.onChange}
               id="properties-search-form"
               className="uk-grid-small uk-form-stacked"
               data-uk-grid
@@ -144,7 +168,8 @@ class SearchFilters extends Component {
                   placeholder={placeholder}
                   options={options}
                   addOn={addOn}
-                  onBlur={handleSubmit(this.onSubmit)}
+                  onChange={this.onChangeField}
+                  onBlur={this.onBlurField}
                 />
               ))}
               <div className="uk-width-expand@s uk-width-1-6@m">
@@ -167,7 +192,7 @@ class SearchFilters extends Component {
 const validate = (values) => {
   const errors = {};
 
-  console.log('values in validate()', values);
+  // console.log('values in validate()', values);
 
   // Check for required fields
   // _each(SEARCH_FILTERS_FORM_FIELDS, (fieldObject, fieldName) => {

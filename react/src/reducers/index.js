@@ -5,6 +5,8 @@ import MapReducer from './MapReducer';
 import SelectedSearchAreaReducer from './SelectedSearchAreaReducer';
 import ModalReducer from './ModalReducer';
 
+console.log(formReducer);
+
 const rootReducer = combineReducers({
   listings: ListingsReducer,
   // listingsFetchStatus: makeFlagReducer('LOADING', 'LOADED', ['FETCH_LISTINGS'], ['FETCH_LISTINGS_COMPLETE'], 'IDLE'),

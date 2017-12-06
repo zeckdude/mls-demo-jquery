@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+// import { dispatch } from 'redux';
 import { connect } from 'react-redux';
+import { destroy } from 'redux-form';
 import PropTypes from 'prop-types';
 import { map as _map } from 'lodash';
 import UIkit from 'uikit';
@@ -8,9 +10,19 @@ import ListingDetail from './ListingDetail';
 import { showModal } from '../actions';
 
 class SearchResults extends Component {
+  constructor(props) {
+    super(props);
+
+    this.clearFilters = this.clearFilters.bind(this);
+  }
+
   componentDidUpdate() {
     // The UIkit grid needs to re-initialized whenever the search results re-rendered
     UIkit.grid('#search-results-grid');
+  }
+
+  clearFilters() {
+    this.props.destroy('SearchFiltersForm');
   }
 
   /**
@@ -65,6 +77,16 @@ class SearchResults extends Component {
     );
   }
 
+  renderClearFiltersButton() {
+    if (this.props.SearchFiltersForm.values) {
+      return (
+        <button className="uk-button uk-button-primary uk-button-small" onClick={this.clearFilters}>Clear Filters</button>
+      );
+    }
+
+    return false;
+  }
+
   render() {
     return (
       <div id="search-results-panel" className="mobile-panel">
@@ -73,7 +95,7 @@ class SearchResults extends Component {
             <h3 className="uk-flex-1 uk-margin-remove-bottom">
               Search Results (<span className="results-num">{Object.keys(this.props.properties).length}</span>)
             </h3>
-            <button className="uk-hidden uk-button uk-button-primary uk-button-small clear-search-parameters-btn">Clear Filters</button>
+            {this.renderClearFiltersButton()}
           </div>
           {this.renderSearchResults()}
         </div>
@@ -88,9 +110,22 @@ class SearchResults extends Component {
  */
 const mapStateToProps = state => ({
   properties: state.listings.properties,
+  SearchFiltersForm: state.form.SearchFiltersForm,
 });
 
-export default connect(mapStateToProps, { showModal })(SearchResults);
+// const mapDispatchToProps = (dispatch, ownProps) => {
+//   console.log('yo');
+//   return {
+//     getDueDate: dispatch(getDueDate(ownProps.id))
+//   }
+// }
+
+// const mapDispatchToProps = (dispatch) => {
+//   console.log('yo');
+//   return bindActionCreators({ reset }, dispatch);
+// };
+
+export default connect(mapStateToProps, { showModal, destroy })(SearchResults);
 
 SearchResults.propTypes = {
   properties: PropTypes.objectOf(PropTypes.object).isRequired,

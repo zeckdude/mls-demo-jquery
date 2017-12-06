@@ -10,6 +10,7 @@ export const SET_VIEWING_AREA = 'SET_VIEWING_AREA';
 export const SHOW_MODAL = 'SHOW_MODAL';
 export const HIDE_MODAL = 'HIDE_MODAL';
 export const SET_MODAL_CONTENT = 'SET_MODAL_CONTENT';
+export const REMOVE_FORM_VALUES = 'REMOVE_FORM_VALUES';
 
 export const fetchListing = (id, callback = () => {}) => {
   const request = axios.get(`${ROOT_URL}/properties/${id}`, AUTH_HEADER);
@@ -89,4 +90,8 @@ export const hideModal = () => ({
 export const setModalContent = content => ({
   type: SET_MODAL_CONTENT,
   content,
+});
+
+export const removeFormValues = () => ({
+  type: REMOVE_FORM_VALUES,
 });

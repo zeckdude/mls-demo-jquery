@@ -24,9 +24,9 @@ class App extends Component {
    * @return void
    */
   componentDidUpdate(prevProps) {
-    console.log('_get(this.props, "SearchFiltersForm.initial")', _get(this.props, 'SearchFiltersForm.initial'));
-    console.log('_get(this.props.SearchFiltersForm, "initial")', _get(this.props.SearchFiltersForm, 'initial'));
-    console.log('_get(prevProps, "SearchFiltersForm.initial")', _get(prevProps, 'SearchFiltersForm.initial'));
+    // console.log('_get(this.props, "SearchFiltersForm.initial")', _get(this.props, 'SearchFiltersForm.initial'));
+    // console.log('_get(this.props.SearchFiltersForm, "initial")', _get(this.props.SearchFiltersForm, 'initial'));
+    // console.log('_get(prevProps, "SearchFiltersForm.initial")', _get(prevProps, 'SearchFiltersForm.initial'));
     // Fetch the new listings if the map viewing area or selected search area points get changed
     // Make sure that the props are actually updated, since componentDidUpdate will also run when the component is mounted
     if (
@@ -139,17 +139,15 @@ class App extends Component {
 //   SearchFiltersForm: state.form.SearchFiltersForm,
 // });
 //
-const mapStateToProps = (state) => {
-  console.log('state in App.js:', state);
-  console.log('loadingStatus in App.js:', state.listings.loadingStatus);
-  return {
+const mapStateToProps = state =>
+  // console.log('state in App.js:', state);
+  // console.log('loadingStatus in App.js:', state.listings.loadingStatus);
+  ({
     map: state.map,
     selectedSearchArea: state.selectedSearchArea,
     SearchFiltersForm: state.form.SearchFiltersForm,
     modal: state.modal,
-  };
-};
-
+  });
 export default connect(mapStateToProps, {
   fetchListings,
 })(App);
