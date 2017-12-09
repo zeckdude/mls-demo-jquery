@@ -5,7 +5,7 @@ import { round as _round } from 'lodash';
 import { formatCurrency } from '../helpers';
 
 const SingleResult = ({
-  populateModal, featuredPhoto, streetNumber, streetName, area, bedrooms, garageSpaces, bathsFull, listPrice, mlsId, listingId,
+  featuredPhoto, streetNumber, streetName, area, bedrooms, garageSpaces, bathsFull, listPrice, mlsId, listingId,
 }) => (
   <div>
     <div className="search-result-single uk-card uk-card-default uk-background-light-grey uk-text-dark-grey">
@@ -53,7 +53,7 @@ const SingleResult = ({
           {formatCurrency(listPrice)}
         </h5>
         <small className="uk-flex-1 uk-flex uk-flex-bottom uk-flex-right">
-          MLS #{listingId}
+          MLS #{mlsId}
         </small>
       </div>
     </div>

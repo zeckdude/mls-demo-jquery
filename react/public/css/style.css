@@ -47,6 +47,10 @@ font-weight: normal;
   color: #1e87f0;
 }
 
+.leaflet-draw-actions a {
+  color: #ffffff;
+}
+
 .leaflet-container .uk-button {
   border-radius: 4px;
 }

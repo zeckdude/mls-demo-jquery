@@ -1,4 +1,4 @@
-import { map as _map, each as _each } from 'lodash';
+import { map as _map } from 'lodash';
 
 /**
  * Create encoded URL string for key/value pairs in an object
@@ -49,6 +49,9 @@ export const formatCurrency = new Intl.NumberFormat('en-US', {
 
 /**
  * Convert state between short and long form
+ * @param {string} word - Term to convert to long/short format
+ * @param {string} to - The type to convert it to. Options: name(long form) or abbreviation(short form)
+ * @returns {string} The state in the version requested (name or abbreviation)
  */
 export const convertState = (word, to) => {
   const states = [

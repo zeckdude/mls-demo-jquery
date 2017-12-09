@@ -3,7 +3,7 @@ import Slider from 'react-slick';
 import { map as _map } from 'lodash';
 
 function CarouselArrow(props) {
-  const { style, onClick } = props;
+  const { onClick } = props;
   const positionClassName = props.className.includes('next') ? 'uk-position-center-right' : 'uk-position-center-left';
   return (
     <div
@@ -60,7 +60,7 @@ export default (props) => {
           xmlns="http://www.w3.org/2000/svg" width={width} height={height}
           viewBox={viewBox} icon="slidenav-previous" ratio="1"
           style={{
-            filter: 'drop-shadow( 1px 0px 1px #ccc )',
+            // filter: 'drop-shadow( 1px 0px 1px #ccc )',
             marginLeft: '10px',
           }}
         >
@@ -77,7 +77,7 @@ export default (props) => {
           xmlns="http://www.w3.org/2000/svg" width={width} height={height}
           viewBox={viewBox} icon="slidenav-next" ratio="1"
           style={{
-            filter: 'drop-shadow( 1px 0px 1px #ccc )',
+            // filter: 'drop-shadow( 1px 0px 1px #ccc )',
             marginRight: '10px',
           }}
         >

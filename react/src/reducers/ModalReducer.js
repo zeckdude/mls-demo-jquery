@@ -3,8 +3,6 @@ import { SHOW_MODAL, HIDE_MODAL, SET_MODAL_CONTENT } from '../actions';
 const initialState = { content: '', visible: false };
 
 export default (state = initialState, action) => {
-  const { points, shape } = action;
-
   switch (action.type) {
     case SHOW_MODAL:
       return { content: action.content, visible: true };

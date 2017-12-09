@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { HashRouter, Route, Switch } from 'react-router-dom';
+import { LastLocationProvider } from 'react-router-last-location';
 import { get as _get, isEmpty as _isEmpty, map as _map, pickBy as _pickBy } from 'lodash';
 import Spinner from './Spinner';
 import NavBarOffCanvas from './NavBarOffCanvas';
@@ -8,8 +9,7 @@ import NavBar from './NavBar';
 import SearchMap from '../containers/SearchMap';
 import SearchFilters from '../containers/SearchFilters';
 import SearchResults from '../containers/SearchResults';
-import Modal from '../containers/Modal';
-import ListingDetailPage from '../containers/ListingDetailPage';
+import ListingDetail from '../containers/ListingDetail';
 import { fetchListings } from '../actions';
 import { createQueryStringFromArray } from '../helpers';
 
@@ -32,7 +32,7 @@ class App extends Component {
     if (
       prevProps.map.points !== this.props.map.points ||
       prevProps.selectedSearchArea.points !== this.props.selectedSearchArea.points ||
-      prevProps.SearchFiltersForm.initial !== _get(this.props, 'SearchFiltersForm.initial')
+      _get(prevProps, 'SearchFiltersForm.initial') !== _get(this.props, 'SearchFiltersForm.initial')
     ) {
       this.updateListings();
     }
@@ -60,7 +60,7 @@ class App extends Component {
     // Build query string that specifies the latitude/longitude sets within the selected search area
     const searchPointsArray = this.createPointsArray(this.getSearchLatLngSets());
     // Get search values and remove any properties that are empty strings (this occurs when a field is touched and then nothing is entered according to redux-form functionality)
-    const searchParameters = _pickBy(this.props.SearchFiltersForm.values, (val, key) => val !== '');
+    const searchParameters = _pickBy(_get(this.props, 'SearchFiltersForm.values'), (val, key) => val !== '');
     // Create the querystring to include with the AJAX call to the endpoint
     const searchQueryString = createQueryStringFromArray([...searchPointsArray, searchParameters]);
     // Call the action creator to fetch the listings
@@ -97,33 +97,31 @@ class App extends Component {
   render() {
     return (
       <HashRouter>
-        <div>
-          <Spinner />
-          <NavBarOffCanvas />
-
-          <div id="page-container">
-            <NavBar />
-            <main>
-              <Switch>
-                <Route exact path="/listings/:mlsId" component={ListingDetailPage} />
-                <Route
-                  exact path="/" render={() => (
-                    <div>
-                      <SearchMap />
-                      <section id="lower-container" className="uk-container uk-padding uk-padding-remove-top uk-remove-padding@m">
-                        <SearchFilters />
-                        <SearchResults />
-                      </section>
-                    </div>
-                )}
-                />
-              </Switch>
-            </main>
+        <LastLocationProvider>
+          <div>
+            <Spinner />
+            <NavBarOffCanvas />
+            <div id="page-container">
+              <NavBar />
+              <main>
+                <Switch>
+                  <Route exact path="/listings/:mlsId" component={ListingDetail} />
+                  <Route
+                    exact path="/" render={() => (
+                      <div>
+                        <SearchMap />
+                        <section id="lower-container" className="uk-container uk-padding uk-padding-remove-top uk-remove-padding@m">
+                          <SearchFilters />
+                          <SearchResults />
+                        </section>
+                      </div>
+                  )}
+                  />
+                </Switch>
+              </main>
+            </div>
           </div>
-
-          {/* <Route path="/listings/:listingId" component={Modal} /> */}
-
-        </div>
+        </LastLocationProvider>
       </HashRouter>
     );
   }
@@ -133,21 +131,12 @@ class App extends Component {
  * mapStateToProps which gives the component access to the redux store
  * @return {object} - Mapping of state properties (in the redux store) to prop properties that will be available within the component
  */
-// const mapStateToProps = state => ({
-//   map: state.map,
-//   selectedSearchArea: state.selectedSearchArea,
-//   SearchFiltersForm: state.form.SearchFiltersForm,
-// });
-//
 const mapStateToProps = state =>
-  // console.log('state in App.js:', state);
-  // console.log('loadingStatus in App.js:', state.listings.loadingStatus);
   ({
     map: state.map,
     selectedSearchArea: state.selectedSearchArea,
     SearchFiltersForm: state.form.SearchFiltersForm,
     modal: state.modal,
   });
-export default connect(mapStateToProps, {
-  fetchListings,
-})(App);
+
+export default connect(mapStateToProps, { fetchListings })(App);

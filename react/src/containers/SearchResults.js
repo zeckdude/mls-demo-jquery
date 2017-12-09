@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
-// import { dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { destroy } from 'redux-form';
 import PropTypes from 'prop-types';
-import { map as _map } from 'lodash';
+import { every as _every, get as _get, map as _map, values as _values } from 'lodash';
 import UIkit from 'uikit';
 import SingleResult from '../components/SingleResult';
-import ListingDetail from './ListingDetail';
-import { showModal } from '../actions';
 
 class SearchResults extends Component {
   constructor(props) {
@@ -30,6 +27,7 @@ class SearchResults extends Component {
    * @return {ReactElement} - Markup of single listing
    */
   renderSingleResults() {
+    // console.log('this.props.properties from renderSingleResults: ', this.props.properties);
     return _map(this.props.properties, (listing) => {
       const {
         mlsId,
@@ -78,7 +76,12 @@ class SearchResults extends Component {
   }
 
   renderClearFiltersButton() {
-    if (this.props.SearchFiltersForm.values) {
+    // Get the form values if they are set
+    const values = _get(this.props, 'SearchFiltersForm.values');
+    // Check if the values are either undefined or all empty strings
+    const isValuesEmpty = _every(_values(values), value => value === '');
+
+    if (!isValuesEmpty) {
       return (
         <button className="uk-button uk-button-primary uk-button-small" onClick={this.clearFilters}>Clear Filters</button>
       );
@@ -113,19 +116,7 @@ const mapStateToProps = state => ({
   SearchFiltersForm: state.form.SearchFiltersForm,
 });
 
-// const mapDispatchToProps = (dispatch, ownProps) => {
-//   console.log('yo');
-//   return {
-//     getDueDate: dispatch(getDueDate(ownProps.id))
-//   }
-// }
-
-// const mapDispatchToProps = (dispatch) => {
-//   console.log('yo');
-//   return bindActionCreators({ reset }, dispatch);
-// };
-
-export default connect(mapStateToProps, { showModal, destroy })(SearchResults);
+export default connect(mapStateToProps, { destroy })(SearchResults);
 
 SearchResults.propTypes = {
   properties: PropTypes.objectOf(PropTypes.object).isRequired,

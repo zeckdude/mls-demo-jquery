@@ -70,24 +70,15 @@ export default class extends Component {
             <div className="listing-popup-content">
               <div className="detailed-info">
                 <p className="uk-text-bold uk-text-primary uk-text-truncate uk-text-medium">
-                  <a
-                    className="js-modal-dialog" data-listing-id="<%= listingId %>" data-href="listing-detail"
-                    href="#"
-                  >
-                    {streetNumber} {streetName}
-                  </a>
+                  <RouterForwarder context={this.context}>
+                    <Link to={`listings/${mlsId}`}>{streetNumber} {streetName}</Link>
+                  </RouterForwarder>
                 </p>
                 <RouterForwarder className="uk-button uk-button-primary uk-margin-small uk-width-1-1 uk-button-small" context={this.context}>
                   <Link to={`listings/${mlsId}`}>View Details</Link>
                 </RouterForwarder>
-
-                {/* <button
-                  className="js-modal-dialog open-listing-details-btn uk-button uk-button-primary uk-margin-small uk-width-1-1 uk-button-small" data-listing-id={listingId} data-href="listing-detail"
-                  href="#"
-                >View Details
-                </button> */}
               </div>
-              <div className="mls-id uk-flex uk-flex-center uk-text-muted">MLS #{listingId}</div>
+              <div className="mls-id uk-flex uk-flex-center uk-text-muted">MLS #{mlsId}</div>
             </div>
           </div>
         </Popup>

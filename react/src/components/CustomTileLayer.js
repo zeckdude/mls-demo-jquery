@@ -64,12 +64,3 @@ export default class MapboxTileLayer extends Component {
 MapboxTileLayer.propTypes = {
   mapKey: PropTypes.string.isRequired,
 };
-
-
-// export function getTileLayer(name) {
-//   const urlAddOn = layers[name].isMapBox ? `?access_token=${mapBoxAccessToken}` : '';
-//   return L.tileLayer(layers[name].url + urlAddOn, {
-//     attribution,
-//     detectRetina,
-//   });
-// }
