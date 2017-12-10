@@ -14,8 +14,9 @@
     "react/jsx-first-prop-new-line": [2, "multiline-multiprop"],
     "react/jsx-max-props-per-line": [2, { "maximum": 3 }],
     "class-methods-use-this": [0],
-    "jsx-a11y/href-no-hash": [0],
+    "jsx-a11y/href-no-hash": "off",
     "jsx-a11y/anchor-is-valid": [0],
+    "jsx-a11y/anchor-has-content": "off",
     "comma-dangle": [error, always-multiline, {functions: never}]
   }
 }

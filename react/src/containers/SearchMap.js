@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Map, Marker, Popup, Polygon } from 'react-leaflet';
+import { Map, Marker, Polygon } from 'react-leaflet';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import dotProp from 'dot-prop-immutable-chain';
@@ -205,13 +205,6 @@ class SearchMap extends Component {
       <div id="map-panel" className="uk-position-relative">
         {this.renderMap()}
         {this.renderRemoveShapeButton()}
-        <div id="mobile-bottom-menu" className="uk-position-bottom-center uk-container uk-background-primary uk-flex-center uk-width-1-1">
-          <button id="mobile-search-button" className="uk-button uk-button-primary flaticon-magnifying-glass" data-panel="#search-panel" />
-          <button id="mobile-results-button" className="uk-button uk-button-primary flaticon-interface" data-panel="#search-results-panel">
-            <span className="uk-badge results-num">0</span>
-          </button>
-          <button id="mobile-map-button" className="uk-button uk-button-primary flaticon-world active" />
-        </div>
       </div>
     );
   }

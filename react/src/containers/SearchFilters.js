@@ -1,8 +1,12 @@
+// Needed because .eslintrc override for this rule isn't working
+/* eslint-disable jsx-a11y/anchor-has-content */
+
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { map as _map } from 'lodash';
 import { connect } from 'react-redux';
 import { SEARCH_FILTERS_FORM_FIELDS } from '../config/form/formFields';
+import { triggerWindowResize } from '../helpers';
 
 class SearchFilters extends Component {
   constructor(props) {
@@ -16,6 +20,16 @@ class SearchFilters extends Component {
     this.state = {
       isAlertVisible: false,
     };
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    // If the mobile panel has changed to this one
+    if (prevProps.activePanel !== this.props.activePanel && this.props.activePanel === 'searchFilters') {
+      // Scroll to the top of the panel
+      document.getElementById('search-filters-panel').scrollTo(0, 0);
+      // Trigger a resize so that UI kit grid updates the margins programmatically
+      triggerWindowResize();
+    }
   }
 
   onBlurField(event, newValue, previousValue) {
@@ -113,7 +127,7 @@ class SearchFilters extends Component {
   }
 
   renderField(field) {
-    const { meta: { touched, error } } = field;
+    // const { meta: { touched, error } } = field;
     const formControlsClassName = field.addOn ? 'uk-form-controls uk-form-group' : 'uk-form-controls';
 
     return (
@@ -137,8 +151,8 @@ class SearchFilters extends Component {
     } = this.props;
 
     return (
-      <div id="search-panel" className="mobile-panel">
-        <div id="search-panel-container" className="uk-padding-small">
+      <div id="search-filters-panel" className={`${this.props.activePanel === 'searchFilters' ? 'lifted' : ''} mobile-panel`}>
+        <div id="search-filters-panel-container" className="uk-padding-small">
           {this.renderAlert()}
           <div className="uk-heading-divider uk-flex uk-flex-top uk-margin-bottom">
             <h3 className="uk-flex-1 uk-margin-remove-bottom">Filter Search </h3>
@@ -148,7 +162,7 @@ class SearchFilters extends Component {
             <form
               ref={(form) => { this.form = form; }}
               onSubmit={handleSubmit(this.onSubmit)}
-              id="properties-search-form"
+              id="search-filters-form"
               className="uk-grid-small uk-form-stacked"
               data-uk-grid
             >
@@ -221,6 +235,7 @@ const validate = (values) => {
 // });
 const mapStateToProps = state => ({
   SearchFiltersForm: state.form.SearchFiltersForm,
+  activePanel: state.mobile.activePanel,
 });
 
 export default reduxForm({

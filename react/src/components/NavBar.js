@@ -26,7 +26,7 @@ const NavBar = props => (
         </nav>
         <nav id="mobile-navbar" className="uk-flex-1" data-uk-navbar>
           <div className="uk-navbar-right">
-            <a className="uk-navbar-toggle" href="#" data-uk-toggle="target: #offcanvas-nav">
+            <button className="uk-button-link uk-navbar-toggle" data-uk-toggle="target: #offcanvas-nav">
               <span className="uk-navbar-toggle-icon uk-icon">
                 <svg
                   xmlns="http://www.w3.org/2000/svg" width="20" height="20"
@@ -38,7 +38,7 @@ const NavBar = props => (
                 </svg>
               </span>
               <span className="uk-margin-small-left">Menu</span>
-            </a>
+            </button>
           </div>
         </nav>
       </div>

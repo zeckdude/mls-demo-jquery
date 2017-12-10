@@ -1,9 +1,12 @@
+// Needed because .eslintrc override for this rule isn't working
+/* eslint-disable jsx-a11y/href-no-hash */
+
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Map, Marker } from 'react-leaflet';
 import PropTypes from 'prop-types';
 import { withLastLocation } from 'react-router-last-location';
-import { get as _get, round as _round } from 'lodash';
+import { round as _round } from 'lodash';
 import UIkit from 'uikit';
 import CustomTileLayer from '../components/CustomTileLayer';
 import Carousel from '../components/Carousel';
@@ -21,23 +24,12 @@ class ListingDetail extends Component {
 
     this.state = {
       showMap: false,
-      // showBackButton: false,
     };
   }
 
   componentDidMount() {
     this.props.fetchListing(this.props.match.params.mlsId);
   }
-
-  // componentWillReceiveProps(nextProps) {
-  //   console.group('Location Props');
-  //   console.log('nextProps.location.pathname', nextProps.location.pathname);
-  //   console.log('this.props.location.pathname', this.props.location.pathname);
-  //   console.groupEnd();
-  //
-  //   const routeChanged = nextProps.location !== this.props.location;
-  //   this.setState({ showBackButton: routeChanged });
-  // }
 
   componentDidUpdate() {
     // The UIkit grid needs to re-initialized whenever the search results re-rendered
@@ -51,10 +43,6 @@ class ListingDetail extends Component {
       </div>
     );
   }
-
-  // renderSlidePhoto(photo, index) {
-  //   return <li key={index} className="ratio16_9"><div><img className="uk-width-1-1" src={photo} alt="" /></div></li>;
-  // }
 
   renderAmenities(amenities) {
     const amenitiesArray = amenities.split(',');

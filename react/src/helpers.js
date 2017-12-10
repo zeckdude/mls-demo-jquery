@@ -89,3 +89,13 @@ export const convertState = (word, to) => {
   // Return the state in the version requested (name or abbreviation)
   return selectedState[to];
 };
+
+/**
+ * Trigger Window Resize
+ * @return void
+ */
+export const triggerWindowResize = () => {
+  const event = document.createEvent('HTMLEvents');
+  event.initEvent('resize', true, false);
+  window.dispatchEvent(event);
+};

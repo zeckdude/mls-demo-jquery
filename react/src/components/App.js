@@ -10,8 +10,19 @@ import SearchMap from '../containers/SearchMap';
 import SearchFilters from '../containers/SearchFilters';
 import SearchResults from '../containers/SearchResults';
 import ListingDetail from '../containers/ListingDetail';
+import ScrollToTop from './ScrollToTop';
+import MobileMenu from './MobileMenu';
+import About from './About';
 import { fetchListings } from '../actions';
 import { createQueryStringFromArray } from '../helpers';
+
+// Animate component route changes
+// Using react-transition-group v1
+// https://blog.logrocket.com/routes-animation-transitions-in-react-router-v4-9f4788deb964
+// https://codesandbox.io/s/zKqlQ2vO?from-embed
+//
+// Using react-transition-group v2
+// https://medium.com/@pshrmn/a-shallow-dive-into-react-router-v4-animated-transitions-4b73f634992a
 
 
 class App extends Component {
@@ -24,9 +35,6 @@ class App extends Component {
    * @return void
    */
   componentDidUpdate(prevProps) {
-    // console.log('_get(this.props, "SearchFiltersForm.initial")', _get(this.props, 'SearchFiltersForm.initial'));
-    // console.log('_get(this.props.SearchFiltersForm, "initial")', _get(this.props.SearchFiltersForm, 'initial'));
-    // console.log('_get(prevProps, "SearchFiltersForm.initial")', _get(prevProps, 'SearchFiltersForm.initial'));
     // Fetch the new listings if the map viewing area or selected search area points get changed
     // Make sure that the props are actually updated, since componentDidUpdate will also run when the component is mounted
     if (
@@ -98,14 +106,16 @@ class App extends Component {
     return (
       <HashRouter>
         <LastLocationProvider>
-          <div>
+          <div className="uk-offcanvas-content">
             <Spinner />
             <NavBarOffCanvas />
             <div id="page-container">
               <NavBar />
               <main>
+                <Route path="/" component={ScrollToTop} />
                 <Switch>
                   <Route exact path="/listings/:mlsId" component={ListingDetail} />
+                  <Route exact path="/about" component={About} />
                   <Route
                     exact path="/" render={() => (
                       <div>
@@ -114,8 +124,10 @@ class App extends Component {
                           <SearchFilters />
                           <SearchResults />
                         </section>
+                        <MobileMenu />
                       </div>
-                  )}
+                    )
+                  }
                   />
                 </Switch>
               </main>

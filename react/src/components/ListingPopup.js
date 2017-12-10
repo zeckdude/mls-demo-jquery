@@ -50,7 +50,7 @@ export default class extends Component {
 
   render() {
     const {
-      photos, listPrice, bedrooms, bathsFull, streetNumber, streetName, listingId, mlsId,
+      listPrice, bedrooms, bathsFull, streetNumber, streetName, mlsId,
     } = this.props;
 
     return (

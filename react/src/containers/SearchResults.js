@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { every as _every, get as _get, map as _map, values as _values } from 'lodash';
 import UIkit from 'uikit';
 import SingleResult from '../components/SingleResult';
+import { triggerWindowResize } from '../helpers';
 
 class SearchResults extends Component {
   constructor(props) {
@@ -13,9 +14,17 @@ class SearchResults extends Component {
     this.clearFilters = this.clearFilters.bind(this);
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     // The UIkit grid needs to re-initialized whenever the search results re-rendered
     UIkit.grid('#search-results-grid');
+
+    // If the mobile panel has changed to this one
+    if (prevProps.activePanel !== this.props.activePanel && this.props.activePanel === 'searchResults') {
+      // Scroll to the top of the panel
+      document.getElementById('search-results-panel').scrollTo(0, 0);
+      // Trigger a resize so that UI kit grid updates the margins programmatically
+      triggerWindowResize();
+    }
   }
 
   clearFilters() {
@@ -92,7 +101,7 @@ class SearchResults extends Component {
 
   render() {
     return (
-      <div id="search-results-panel" className="mobile-panel">
+      <div id="search-results-panel" className={`${this.props.activePanel === 'searchResults' ? 'lifted' : ''} mobile-panel`}>
         <div className="uk-padding-small">
           <div className="uk-heading-divider uk-flex uk-flex-top uk-margin-bottom">
             <h3 className="uk-flex-1 uk-margin-remove-bottom">
@@ -114,6 +123,7 @@ class SearchResults extends Component {
 const mapStateToProps = state => ({
   properties: state.listings.properties,
   SearchFiltersForm: state.form.SearchFiltersForm,
+  activePanel: state.mobile.activePanel,
 });
 
 export default connect(mapStateToProps, { destroy })(SearchResults);
