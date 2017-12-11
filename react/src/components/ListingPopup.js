@@ -6,7 +6,7 @@ import Carousel from './Carousel';
 import RouterForwarder from './RouterForwarder';
 import { formatCurrency } from '../helpers';
 
-export default class extends Component {
+export default class ListingPopup extends Component {
   constructor(props, context) {
     super(props);
 

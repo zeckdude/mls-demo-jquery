@@ -1,6 +1,3 @@
-// Needed because .eslintrc override for this rule isn't working
-/* eslint-disable jsx-a11y/anchor-has-content */
-
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { map as _map } from 'lodash';
@@ -43,8 +40,6 @@ class SearchFilters extends Component {
       // handleSubmit() submits the values as they currently are in the props, and the props don't get updated from Redux until the next process tick (https://github.com/erikras/redux-form/issues/883#issuecomment-216022940)
       // Therefore we need to dispatch an action to update the value in redux
       // After that we submit the form, which then knows that the form has been changed
-
-      // console.log(this.props.change('SearchFiltersForm', event.target.name, event.target.value));
 
       // https://github.com/erikras/redux-form/issues/369#issuecomment-278758539
       this.props.dispatch(this.props.change('SearchFiltersForm', event.target.name, event.target.value));
@@ -120,7 +115,6 @@ class SearchFilters extends Component {
     const messageTypeClass = 'uk-alert-success';
     return (
       <div id="search-confirmation-message" className={`uk-fixed-alert uk-alert ${visibilityClass} ${messageTypeClass}`} data-uk-alert>
-        <a className="uk-alert-close" data-uk-close />
         <p>Your filters have been updated.</p>
       </div>
     );
@@ -205,8 +199,6 @@ class SearchFilters extends Component {
 
 const validate = (values) => {
   const errors = {};
-
-  // console.log('values in validate()', values);
 
   // Check for required fields
   // _each(SEARCH_FILTERS_FORM_FIELDS, (fieldObject, fieldName) => {

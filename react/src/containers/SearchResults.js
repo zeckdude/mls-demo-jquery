@@ -36,7 +36,6 @@ class SearchResults extends Component {
    * @return {ReactElement} - Markup of single listing
    */
   renderSingleResults() {
-    // console.log('this.props.properties from renderSingleResults: ', this.props.properties);
     return _map(this.props.properties, (listing) => {
       const {
         mlsId,

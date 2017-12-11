@@ -1,20 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { HashRouter, Route, Switch } from 'react-router-dom';
+import { HashRouter, Route } from 'react-router-dom';
 import { LastLocationProvider } from 'react-router-last-location';
 import { get as _get, isEmpty as _isEmpty, map as _map, pickBy as _pickBy } from 'lodash';
-import Spinner from './Spinner';
-import NavBarOffCanvas from './NavBarOffCanvas';
-import NavBar from './NavBar';
-import SearchMap from '../containers/SearchMap';
-import SearchFilters from '../containers/SearchFilters';
-import SearchResults from '../containers/SearchResults';
+import About from '../components/About';
+import Home from '../components/Home';
 import ListingDetail from '../containers/ListingDetail';
-import ScrollToTop from './ScrollToTop';
-import MobileMenu from './MobileMenu';
-import About from './About';
-import { fetchListings } from '../actions';
+import NavBar from '../components/NavBar';
+import NavBarOffCanvas from '../components/NavBarOffCanvas';
+import ScrollToTop from '../components/ScrollToTop';
+import Spinner from '../components/Spinner';
 import { createQueryStringFromArray } from '../helpers';
+import { fetchListings } from '../actions';
 
 // Animate component route changes
 // Using react-transition-group v1
@@ -105,35 +102,28 @@ class App extends Component {
   render() {
     return (
       <HashRouter>
-        <LastLocationProvider>
-          <div className="uk-offcanvas-content">
-            <Spinner />
-            <NavBarOffCanvas />
-            <div id="page-container">
-              <NavBar />
-              <main>
-                <Route path="/" component={ScrollToTop} />
-                <Switch>
-                  <Route exact path="/listings/:mlsId" component={ListingDetail} />
-                  <Route exact path="/about" component={About} />
+        <ScrollToTop>
+          <LastLocationProvider>
+            <div className="uk-offcanvas-content">
+              <Spinner />
+              <NavBarOffCanvas />
+              <div id="page-container">
+                <NavBar />
+                <main>
+                  <Route exact path="/" component={Home} />
                   <Route
-                    exact path="/" render={() => (
-                      <div>
-                        <SearchMap />
-                        <section id="lower-container" className="uk-container uk-padding uk-padding-remove-top uk-remove-padding@m">
-                          <SearchFilters />
-                          <SearchResults />
-                        </section>
-                        <MobileMenu />
-                      </div>
-                    )
-                  }
+                    exact path="/listings/:mlsId"
+                    component={ListingDetail}
                   />
-                </Switch>
-              </main>
+                  <Route
+                    exact path="/about"
+                    component={About}
+                  />
+                </main>
+              </div>
             </div>
-          </div>
-        </LastLocationProvider>
+          </LastLocationProvider>
+        </ScrollToTop>
       </HashRouter>
     );
   }
